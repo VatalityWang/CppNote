@@ -15,7 +15,8 @@
 #include <memory>
 #include <set>
 int LogFlag = 0;
-using namespace::std;
+using namespace ::std;
+using std::allocator;
 using std::cin;
 using std::cin;
 using std::cout;
@@ -32,9 +33,8 @@ using std::runtime_error;
 using std::set;
 using std::shared_ptr;
 using std::string;
-using std::vector;
-using std::allocator;
 using std::uninitialized_copy;
+using std::vector;
 template <typename TYPE>
 void print(const TYPE &p);
 bool SecondSearch(vector<int> &test, int Elem, vector<int>::iterator begin, vector<int>::iterator end);
@@ -90,7 +90,7 @@ void PrintList()
 		StrInput.push_back(str);
 	}*/
 	for (string str; cin >> str; StrInput.push_back(str))
-		; //��forѭ�������ӱ�׼�����ж�ȡԪ��
+		; 
 	for (auto iter : StrInput)
 		cout << iter << endl;
 }
@@ -103,7 +103,7 @@ void CopyFormDeque_odd_even()
 	list<int> elems;
 	deque<int> elem_odds, elem_evens;
 	for (int input; cin >> input; elems.push_back(input))
-		; //��forѭ�������ӱ�׼�����ж�ȡԪ��
+		; //
 	for (auto iter : elems)
 	{
 		if (iter % 2)
@@ -125,7 +125,7 @@ void double_and_insert(vector<int> &InserElem, int Elem)
 {
 	cout << "Enter Into founction:double_and_insert" << endl;
 	//auto mid = InserElem.begin() + (InserElem.end()-InserElem.begin()) / 2;
-	auto mid = [&] { return InserElem.begin() + InserElem.size() / 2; }; //��������
+	auto mid = [&] { return InserElem.begin() + InserElem.size() / 2; }; //
 	//cout << "*mid=" << *mid << endl;
 	for (auto it = InserElem.begin(); it < mid(); ++it)
 	{
@@ -141,7 +141,7 @@ void double_and_insert(vector<int> &InserElem, int Elem)
 	for (auto it : InserElem)
 		cout << it << endl;
 	for (vector<int>::iterator it = InserElem.begin(); it != InserElem.end(); it++)
-		cout << &*it << endl; //���������λ��
+		cout << &*it << endl; //
 }
 
 template <typename TYPE>
@@ -177,8 +177,8 @@ FriendTest::~FriendTest()
 class Account
 {
   public:
-	Account(double interestRate); //�û�����
-	Account();					  //Ĭ�Ϲ���
+	Account(double interestRate); //
+	Account();					  //
 	/*friend  ostream&operator<<(ostream &out, const Account &account)
 	{
 		out << "interestRate=" << account.interestRate << ",InterInterestRate= " << account.InterInterestRate;
@@ -186,14 +186,14 @@ class Account
 	}*/
 	void print();
 	~Account();
-	//����Ԫ����������������
+	//
 
   private:
 	static double interestRate;
 	static double InitRate();
 	double InterInterestRate;
 };
-Account::Account(double interestRate) //��̬���ݳ�Ա������ʵ��
+Account::Account(double interestRate) //
 {
 	InterInterestRate = interestRate;
 }
@@ -215,15 +215,15 @@ void Account::print()
 }
 
 /*
-*��ӡģ���ຯ��
+*
 */
 template <typename TYPE>
 void print(const TYPE &p)
 {
 	for (auto it : p)
 	{
-		cout << (it) << endl; //static_cast< char*> ֻ�������ʽ������ĸ
-		//	printf("%s\n",*it);
+		cout << (it) << endl; //static_cast< char*> 
+							  //	printf("%s\n",*it);
 	}
 	return;
 }
@@ -237,7 +237,7 @@ class Sale_Data
   public:
 	Sale_Data(string isbn, double price, int mount);
 	~Sale_Data();
-	//bool operator !=(const Sale_Data &lhs,const Sale_Data &rhs)//���ز����������
+	//bool operator !=(const Sale_Data &lhs,const Sale_Data &rhs)//
 	//{
 	//	cons
 	//}
@@ -247,9 +247,9 @@ class Sale_Data
 	}
 
   private:
-	string Isbn;  //isbn��
-	double Price; //�۸�
-	int Mount;	//����
+	string Isbn;  //
+	double Price; //
+	int Mount;	//
 };
 Sale_Data::Sale_Data(string isbn, double price, int mount)
 
@@ -262,13 +262,13 @@ Sale_Data::~Sale_Data()
 }
 
 /*
-* ��һ�ε��ʰ��ֵ�˳������
+* 
 */
 void elimDups(vector<string> &words)
 {
 	sort(words.begin(), words.end());
-	//ʹ���ظ�Ԫ�س�����vector�Ŀ�ʼ����
-	auto end_unique = unique(words.begin(), words.end()); //ָ���ظ�����֮��һ��λ�õĵ�������unique�������뷶Χ
+	//
+	auto end_unique = unique(words.begin(), words.end()); //
 	words.erase(end_unique, words.end());
 }
 
@@ -277,11 +277,11 @@ auto f = [] {
 };
 
 /*
-*lambda		ɾ��һ���ı���ָ�����ȵĵ���
+*lambda		
 */
 
 /*
-* ���ֵ䳤������,lambda������
+* 
 */
 
 //void biggies(vector<string> &words, vector<string>::size_type sz)
@@ -299,15 +299,15 @@ auto f = [] {
 */
 
 /*
-* bigges,�ı��ֵ�����ȥ�أ���ӡ���������ĵ���
+* bigges,
 */
 void biggies(vector<string> &words, vector<string>::size_type sz)
 {
-	elimDups(words);																							   //ȥ��
-	stable_sort(words.begin(), words.end(), [](const string &a, const string &b) { return a.size() < b.size(); }); //���ֵ�����,isshorter��lambda�汾
-	auto wc = find_if(words.begin(), words.end(), [sz](const string &a) { return a.size() >= sz; });			   //ȥ�أ����ص�һ�����Ȳ�С��sz��Ԫ�ء���ʱ��Ҫ������������������ν�ʺ����޷����㹦��Ҫ��
-	auto count = words.end() - wc;																				   //����ĳ�����ȵĵ��ʵĸ�����
-	//��ӡ���д��ڶ�Ӧ���ȵĵ��ʡ�
+	elimDups(words);																							   //
+	stable_sort(words.begin(), words.end(), [](const string &a, const string &b) { return a.size() < b.size(); }); //,
+	auto wc = find_if(words.begin(), words.end(), [sz](const string &a) { return a.size() >= sz; });			   //
+	auto count = words.end() - wc;																				   //
+	//
 	for_each(wc, words.end(), [](const string &s) { cout << s << " "; });
 
 	cout << endl;
@@ -318,17 +318,17 @@ void biggies(vector<string> &words, vector<string>::size_type sz)
 */
 void biggies1(vector<string> &words, vector<string>::size_type sz, ostream &os = cout, char c = ' ')
 {
-	elimDups(words);																							   //ȥ��
-	stable_sort(words.begin(), words.end(), [](const string &a, const string &b) { return a.size() < b.size(); }); //���ֵ�����,isshorter��lambda�汾
-	auto wc = find_if(words.begin(), words.end(), [sz](const string &a) { return a.size() >= sz; });			   //ȥ�أ����ص�һ�����Ȳ�С��sz��Ԫ�ء���ʱ��Ҫ������������������ν�ʺ����޷����㹦��Ҫ��
-	auto count = words.end() - wc;																				   //����ĳ�����ȵĵ��ʵĸ�����
-																												   //��ӡ���д��ڶ�Ӧ���ȵĵ��ʡ�
+	elimDups(words);																							   //
+	stable_sort(words.begin(), words.end(), [](const string &a, const string &b) { return a.size() < b.size(); }); //
+	auto wc = find_if(words.begin(), words.end(), [sz](const string &a) { return a.size() >= sz; });			   //
+	auto count = words.end() - wc;																				   //
+																												   //
 	for_each(wc, words.end(), [&os, c](const string &s) { os << s << c; });
 	cout << endl;
 }
 
 /*
-*	ʹ�÷������͡�
+*	
 */
 //void transform(vector<int>::iterator begin, vector<int>::iterator end, [](int i)->int {if (i < 0) return -i;else return i;});
 
@@ -344,11 +344,11 @@ bool check_size(string &s, vector<int>::size_type sz)
 
 void biggies2(vector<string> &words, vector<string>::size_type sz)
 {
-	elimDups(words);																							   //ȥ��
-	stable_sort(words.begin(), words.end(), [](const string &a, const string &b) { return a.size() < b.size(); }); //���ֵ�����,isshorter��lambda�汾
-	auto wc = find_if(words.begin(), words.end(), bind(check_size, _1, sz));									   //ȥ�أ����ص�һ�����Ȳ�С��sz��Ԫ�ء���ʱ��Ҫ������������������ν�ʺ����޷����㹦��Ҫ��
-	auto count = words.end() - wc;																				   //����ĳ�����ȵĵ��ʵĸ�����
-																												   //��ӡ���д��ڶ�Ӧ���ȵĵ��ʡ�
+	elimDups(words);																							   //
+	stable_sort(words.begin(), words.end(), [](const string &a, const string &b) { return a.size() < b.size(); }); //
+	auto wc = find_if(words.begin(), words.end(), bind(check_size, _1, sz));									   //
+	auto count = words.end() - wc;																				   //
+																												   //
 	for_each(wc, words.end(), [](const string &s) { cout << s << " "; });
 	cout << endl;
 }
@@ -369,7 +369,7 @@ map<string, string> BuildMap(ifstream &mapfile)
 	string key, value;
 	while (mapfile >> key && getline(mapfile, value))
 		if (value.size() > 1)
-			bulidmap[key] = value.substr(1); //����ǰ���ո�
+			bulidmap[key] = value.substr(1); //
 		else
 			throw runtime_error("no rule for" + key);
 	return bulidmap;
@@ -380,7 +380,7 @@ const string &transform(const string &key, map<string, string> &buildmap)
 	auto MapFindIterator = buildmap.find(key);
 	if (MapFindIterator != buildmap.cend())
 	{
-		return MapFindIterator->second; //ʹ���滻��
+		return MapFindIterator->second; //
 	}
 	else
 		return key;
@@ -388,16 +388,16 @@ const string &transform(const string &key, map<string, string> &buildmap)
 
 void word_transform(ifstream &mapfile, ifstream &input)
 {
-	auto RuleMap = BuildMap(mapfile); //�������ĵ�����map�ļ�
+	auto RuleMap = BuildMap(mapfile); //
 	string text;
-	while (getline(input, text)) //��ȡһ���ı�
+	while (getline(input, text)) //
 	{
 		string word;
-		istringstream stream(text); //��ȡÿ������
-		bool firstword = true;		//�����Ƿ��ӡ�ո�
+		istringstream stream(text); //
+		bool firstword = true;		//
 		while (stream >> word)
 		{
-			if (firstword) //��ӡ��ʱ���һ������֮ǰ��Ҫ��ӡ�ո�����ʱ����Ҫ��ӡ�ո�
+			if (firstword) //
 				firstword = false;
 			else
 				cout << " ";
@@ -408,7 +408,7 @@ void word_transform(ifstream &mapfile, ifstream &input)
 }
 
 /*
-*  �ı���ѯ����  ������ʵ��
+*    
 */
 class QueryResult;
 class TextQuery
@@ -434,7 +434,7 @@ TextQuery::TextQuery(ifstream &is) : File(new vector<string>), ifs(is)
 		//cout << text << endl;
 		File->push_back(text);
 		int n = File->size() - 1;
-		istringstream line(text); //��string ����ת��ΪString����
+		istringstream line(text); // 
 		string word;
 		while (line >> word)
 		{
@@ -447,7 +447,7 @@ TextQuery::TextQuery(ifstream &is) : File(new vector<string>), ifs(is)
 		}
 	}
 }
-//��ӡ���ʳ��ִ���  �к� �͸��е�����
+//   
 TextQuery::~TextQuery()
 {
 }
@@ -462,9 +462,9 @@ class QueryResult
 	~QueryResult();
 
   private:
-	string QueryString;								//Ҫ��ѯ�ĵ���
-	std::shared_ptr<std::vector<std::string>> file; //��ȡ�ļ��γ�string
-	shared_ptr<set<line_no>> lines;					//�������ڵ��к�
+	string QueryString;								//
+	std::shared_ptr<std::vector<std::string>> file; //
+	shared_ptr<set<line_no>> lines;					//
 };
 QueryResult::QueryResult(string s, shared_ptr<vector<string>> out, shared_ptr<set<line_no>> outlines) : QueryString(s), file(out), lines(outlines)
 {
@@ -498,7 +498,7 @@ QueryResult TextQuery::query(const string &QueryString) const
 	}
 }
 
-std::ostream &print(std::ostream &out, const QueryResult &OutResult) //��Ԫ�������Է������˽�г�Ա
+std::ostream &print(std::ostream &out, const QueryResult &OutResult) //
 {
 	cout << OutResult.lines->size() << endl;
 	out << OutResult.QueryString << "occurs " << OutResult.lines->size() << "times" << endl;
@@ -513,66 +513,71 @@ std::ostream &print(std::ostream &out, const QueryResult &OutResult) //��Ԫ�
 */
 class HasPtr
 {
-	public:
-		HasPtr(const string &s=string()):ps(new string(s)),i(0)//默认拷贝构造函数
-		{}
-		HasPtr(const HasPtr & hasptr):ps(new string(*hasptr.ps)),i(hasptr.i)//拷贝构造
-		{}
-		HasPtr & operator=(const HasPtr &hp)//拷贝赋值
-		{
-			auto np=new string(*hp.ps);
-			delete ps;
-			ps=np;
-			i=hp.i;
-			return *this;
-		}
-	private:
-		string *ps;
-		int i;
-};
+  public:
+	HasPtr(const string &s = string()) : ps(new string(s)), i(0) //默认拷贝构造函数
+	{
+	}
+	HasPtr(const HasPtr &hasptr) : ps(new string(*hasptr.ps)), i(hasptr.i) //拷贝构造
+	{
+	}
+	HasPtr &operator=(const HasPtr &hp) //拷贝赋值
+	{
+		auto np = new string(*hp.ps);
+		delete ps;
+		ps = np;
+		i = hp.i;
+		return *this;
+	}
 
+  private:
+	string *ps;
+	int i;
+};
 
 /*
 *	LeetCode Question:K-th Smallest Prime Fraction
 */
-class Solution {
-public:
-    vector<int> kthSmallestPrimeFraction(vector<int>& A, int k) {
-        int Length=A.size();
+class Solution
+{
+  public:
+	vector<int> kthSmallestPrimeFraction(vector<int> &A, int k)
+	{
+		int Length = A.size();
 		vector<int> Answer;
 		//vector<vector<int>> TempIter;
-        vector<double> TempVector;
-		int numerator,denominator;
-        for(vector<int>::iterator it=A.begin();it!=A.end();it++)
-            for(vector<int>::iterator next=it+1;next!=A.end();next++)
+		vector<double> TempVector;
+		int numerator, denominator;
+		for (vector<int>::iterator it = A.begin(); it != A.end(); it++)
+			for (vector<int>::iterator next = it + 1; next != A.end(); next++)
 			{
-				TempVector.push_back(double(*it)/(*next));
-			//	TempIter[numerator].push_back(denominator);
+				TempVector.push_back(double(*it) / (*next));
+				//	TempIter[numerator].push_back(denominator);
 			}
-    
-	sort(TempVector.begin(),TempVector.end());
-	for(vector<int>::iterator it=A.begin();it!=A.end();it++)
-            for(vector<int>::iterator next=it+1;next!=A.end();next++)
+
+		sort(TempVector.begin(), TempVector.end());
+		for (vector<int>::iterator it = A.begin(); it != A.end(); it++)
+			for (vector<int>::iterator next = it + 1; next != A.end(); next++)
 			{
-				if(*(TempVector.begin()+k-1)==(double(*it)/(*next)))//注意第k个的意思
+				if (*(TempVector.begin() + k - 1) == (double(*it) / (*next))) //注意第k个的意思
 				{
 					Answer.push_back(*it);
 					Answer.push_back(*next);
 					return Answer;
 				}
 				//TempVector.push_back(*it / (*next));
-			//	TempIter[numerator].push_back(denominator);
+				//	TempIter[numerator].push_back(denominator);
 			}
-	// for(auto row=TempIter.begin(),numerator=1;row!=TempIter.end();row++,numerator++)		
-	// 	for(vector<int>::iterator col=TempIter[row],denominator=1;col!=TempIter[row].end();col++,denominator++)
-	// 		if(*(TempVector.begin()+k)==numerator/denominator)
-	// 		{
-	// 			Answer.push_back(numerator);
-	// 			Answer.push_back(denominator);				
-	// 		}
-	// return Answer;
+		// for(auto row=TempIter.begin(),numerator=1;row!=TempIter.end();row++,numerator++)
+		// 	for(vector<int>::iterator col=TempIter[row],denominator=1;col!=TempIter[row].end();col++,denominator++)
+		// 		if(*(TempVector.begin()+k)==numerator/denominator)
+		// 		{
+		// 			Answer.push_back(numerator);
+		// 			Answer.push_back(denominator);
+		// 		}
+		// return Answer;
 	}
-private:
+
+  private:
 	vector<int> A;
 	int k;
 };
@@ -589,89 +594,91 @@ private:
 // 			cout<<s.mysn<<endl;
 // 		}
 // 	private:
-		
+
 // }
 
 /*
 *  类vector
 */
 
-static std::allocator<std::string> alloc;//分配元素,静态数据，所有对象实例共享
+static std::allocator<std::string> alloc; //分配元素,静态数据，所有对象实例共享
 
 class StrVec
 {
-	public:	
-		StrVec():elements(nullptr),first_free(nullptr),cap(nullptr){}//默认构造
-		StrVec(const StrVec&);// 拷贝构造
-		StrVec& operator=(const StrVec &rhs);//拷贝赋值
-		~StrVec();		
-		void push_back(const std::string &);//添加元素
-		size_t size() const {return first_free-elements;}//空间大小
-		size_t capacity(){ return cap-elements;}
-		string *begin() const {return elements;}
-		string * end() const {return first_free;}
-	private:
-		std::pair<string*,string*> alloc_n_copy(const string*,const string*);//工具函数，用于拷贝
-		void chk_n_alloc(){ if(size()==capacity())   reallocate();}
-		void free();//释放空间
-		void reallocate();
-		
-		std::string *first_free;//第一个空闲元素的指针
-		string *elements;//指向数组首元素的指针
-		string *cap;//指向内存最后一个单元的指针(数组尾后元素)
-		
+  public:
+	StrVec() : elements(nullptr), first_free(nullptr), cap(nullptr) {} //默认构造
+	StrVec(const StrVec &);											   // 拷贝构造
+	StrVec &operator=(const StrVec &rhs);							   //拷贝赋值
+	~StrVec();
+	void push_back(const std::string &);				  //添加元素
+	size_t size() const { return first_free - elements; } //空间大小
+	size_t capacity() { return cap - elements; }
+	string *begin() const { return elements; }
+	string *end() const { return first_free; }
+
+  private:
+	std::pair<string *, string *> alloc_n_copy(const string *, const string *); //工具函数，用于拷贝
+	void chk_n_alloc()
+	{
+		if (size() == capacity())
+			reallocate();
+	}
+	void free(); //释放空间
+	void reallocate();
+
+	std::string *first_free; //第一个空闲元素的指针
+	string *elements;		 //指向数组首元素的指针
+	string *cap;			 //指向内存最后一个单元的指针(数组尾后元素)
 };
-StrVec::StrVec(const StrVec&s)// 拷贝构造
+StrVec::StrVec(const StrVec &s) // 拷贝构造
 {
-	auto newdata=alloc_n_copy(s.begin(),s.end());
-	elements=newdata.first;
-	first_free=cap=newdata.second;
+	auto newdata = alloc_n_copy(s.begin(), s.end());
+	elements = newdata.first;
+	first_free = cap = newdata.second;
 }
 
 void StrVec::free()
 {
-	if(elements)
-		for(auto p=first_free;p!=elements;)
+	if (elements)
+		for (auto p = first_free; p != elements;)
 			alloc.destroy(--p);
-		alloc.deallocate(elements,cap-elements);//销毁空间
+	alloc.deallocate(elements, cap - elements); //销毁空间
 }
 StrVec::~StrVec()
 {
 	free();
 }
-StrVec& StrVec::operator=(const StrVec &rhs)
+StrVec &StrVec::operator=(const StrVec &rhs)
 {
-	auto data=alloc_n_copy(rhs.begin(),rhs.end());
+	auto data = alloc_n_copy(rhs.begin(), rhs.end());
 	free();
-	elements=data.first;
-	first_free=data.second;
+	elements = data.first;
+	first_free = data.second;
 	return *this;
 }
 void StrVec::push_back(const string &s)
 {
-	chk_n_alloc();//确保有空间容纳新元素
-	alloc.construct(first_free++,s);
+	chk_n_alloc(); //确保有空间容纳新元素
+	alloc.construct(first_free++, s);
 }
-std::pair<string*,string*> StrVec::alloc_n_copy(const string*b,const string*e)//工具函数，用于拷贝
+std::pair<string *, string *> StrVec::alloc_n_copy(const string *b, const string *e) //工具函数，用于拷贝
 {
 	//分配空间保存给定范围内的元素
-	auto data=alloc.allocate(e-b);
-	return {data,uninitialized_copy(b,e,data)};
+	auto data = alloc.allocate(e - b);
+	return {data, uninitialized_copy(b, e, data)};
 }
 void StrVec::reallocate()
 {
-	auto newcapacity=size()?size():1;
+	auto newcapacity = size() ? size() : 1;
 	//分配新内存
-	auto newdata=alloc.allocate(newcapacity);
+	auto newdata = alloc.allocate(newcapacity);
 	//将数据从旧内存移到新内存
-	auto dest=newdata;
-	auto elem=elements;
-	for(size_t i=0;i!=size();++i)
-		alloc.construct(dest++,std::move(*elem++));
-	free();//一旦移动完成，释放旧内存
-	elements=newdata;
-	first_free=dest;
-	cap=elements+newcapacity;
+	auto dest = newdata;
+	auto elem = elements;
+	for (size_t i = 0; i != size(); ++i)
+		alloc.construct(dest++, std::move(*elem++));
+	free(); //一旦移动完成，释放旧内存
+	elements = newdata;
+	first_free = dest;
+	cap = elements + newcapacity;
 }
-
-
