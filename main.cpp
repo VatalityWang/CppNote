@@ -30,10 +30,10 @@ using std::placeholders::_1;
 using std::string;
 using std::string;
 using std::vector;
-using namespace std::placeholders; //����ռλ������ʹ��
+using namespace std::placeholders; 
 using std::list;
 using std::numeric_limits;
-using std::streamsize; //���ڱ�ʾ I/O ������ת���ַ����� I/O ��������С���з�����������
+using std::streamsize; 
 	static void timeout_cb(EV_P_ ev_timer * w, int revents)
 	{
 		puts("timeout");
@@ -48,7 +48,7 @@ int main()
 	//	vector<int> test( 10,1 );//һ�γ�ʼ�����
 
 	/*
-	*	����assign����
+	*	list如何增长空间
 	*/
 	log("assign");
 	list<string> names;
@@ -67,23 +67,23 @@ int main()
 	oldstyle.push_back(string1);
 	oldstyle.push_back(string2);
 	oldstyle.push_back(string3);
-	names.assign(oldstyle.cbegin(), oldstyle.cend());//ת��Ϊָ����Χ��Ԫ��,
-	//oldstyle.push_front("heihei");//�޸ó�Ա����
+	names.assign(oldstyle.cbegin(), oldstyle.cend());
+	//oldstyle.push_front("heihei");//
 
 	/*
-	*����insert����
+	*
 	*/
 	log("insert");
-	oldstyle.insert(oldstyle.cend(), "ok");/*��β����������һ��Ԫ��,��ָ��λ��*/
-	oldstyle.insert(oldstyle.cend(), 3, "theendinsert");//������β��������Ӧ��Ԫ�أ�������insert����
+	oldstyle.insert(oldstyle.cend(), "ok");
+	oldstyle.insert(oldstyle.cend(), 3, "theendinsert");
 	print(oldstyle);
 	auto iter = oldstyle.begin();
 	/*
-	* ����,ʹ֮��������һ����Ԫ��
+	* 
 	*/
 	while (iter != oldstyle.end())
 	{
-		iter = oldstyle.insert(iter, *iter);//insert �Ż�ָ������Ԫ�صĵ�����������Ӧλ��֮ǰ���������
+		iter = oldstyle.insert(iter, *iter);//
 		iter += 2;
 	}
 	print(oldstyle);
@@ -91,20 +91,20 @@ int main()
 
 
 	/*
-	*�����ض�λ�õĵ�������������һ��λ�÷�������Ԫ��
+	*
 	*/
 	//log("plcace push_front");
 	//auto iter0 = names.cbegin();
 	//string word;
 	//while (cin>>word)
 	//{
-	//	iter0 = names.insert(iter0, word);//�ȼ��ڵ���push_front,insert���صĵ�����ָ���²����Ԫ��
+	//	iter0 = names.insert(iter0, word);
 	//}
 	//print(oldstyle);
 
 
 	/*
-	*����emplace_back,emplace_front, emplace
+	*emplace_back,emplace_front, emplace
 	*/
 	log("emplace_back,emplace_front, emplace");
 	list<Sale_Data>s_books;
@@ -117,12 +117,12 @@ int main()
 	s_books.emplace_front("20185689", 52.8, 80);
 
 	/*
-	*��ֱ�Ӹ�ֵ����
+	*
 	*/
 	log("class dierctly  exchange");
 	vector<int>test{ 1,2,3,4,5,6,7,8,9,10 };
 	vector<int>test2{ 9,8,7,6,5,4,3,2,1,0 };
-	test = test2;//���������ͬ������
+	test = test2;//
 	for (vector<int>::iterator it = test.begin();it != test.end();++it)
 	{
 		cout << *it << endl;
@@ -132,7 +132,7 @@ int main()
 
 
 	/*
-	*���ֲ���
+	*
 	*/
 	log("second search");
 	if (SecondSearch(test, 5, test.begin(), test.end() - 1))
@@ -140,7 +140,7 @@ int main()
 
 
 	/*
-	*���Ա�������ò���
+	*
 	*/
 	log("class function called");
 	FriendTest friendtest(0);
@@ -148,13 +148,13 @@ int main()
 	Account bankeraccout;
 	bankeraccout.print();
 	/*
-	*�������������
+	*
 	*/
 	log("ifstream overload");
 	/*cout << bankeraccout << endl;*/
 
 	/*
-	*����д�벻һ������
+	*
 	*/
 	//log("write into till difference");
 	//int i = 1;
@@ -166,7 +166,7 @@ int main()
 	//{
 	//	cout << "enter into success\n" << endl;
 	//}
-	//cout << i << endl;//���β�һ����д��ʧ��\
+	//cout << i << endl;//
 
 
 	 /*
@@ -185,33 +185,33 @@ int main()
 	 CopyFormDeque_odd_even();*/
 
 	/*
-	*����βԪ��
+	*
 	*/
 	log("access the begin and end elem");
 	print(test2);
 	if (!test2.empty())
 	{
-		auto val1 = *test2.begin();//���߶��Ƿ���ͷԪ��
+		auto val1 = *test2.begin();
 		cout << val1 << endl;
-		auto val2 = test2.front();//������Ԫ�ص�����
+		auto val2 = test2.front();
 		cout << val2 << endl;
 
-		auto endl2 = test2.back();//����βԪ�ص�����
+		auto endl2 = test2.back();
 		cout << "the end1=" << endl2 << endl;
-		auto end1 = *(test2.end() - 1);//ע��end()ָ�����һ��Ԫ�ص���һ��Ԫ��
+		auto end1 = *(test2.end() - 1);
 		cout << "the end1=" << end1 << endl;
 	}
 
 
 	/*
-	*at ��ֹ�±�Խ��
+	*
 	*/
 	log("Forbiden index overstep");
 	vector<int> svec;
 	svec.push_back(0);
 	svec.push_back(1);
-	//	cout << svec[0];//��Ԫ�أ��׳��쳣
-	cout << svec.at(0);//ȷ����������
+	//	cout << svec[0];
+	cout << svec.at(0);
 
 	/*
 	* erase
@@ -219,14 +219,13 @@ int main()
 	log("Erase");
 	list<int> lst = { 0,1,2,3,4,5,6,7,8,9 };
 	print(lst);
-	lst.erase(lst.begin(), lst.end());//ɾ����Ӧ��������Χ�ڵ�Ԫ��,�ȼ���clear
-
+	lst.erase(lst.begin(), lst.end());//
 	/*auto it = lst.begin();
 	while (it!=lst.end())
 	{
 		if (*it % 2)
 		{
-			it=lst.erase(it);//ɾ���󷵻�ָ����ɾ��Ԫ�ص���һ��Ԫ�صĵ�����
+			it=lst.erase(it);//
 		}
 		else
 		{
@@ -235,7 +234,7 @@ int main()
 	}*/
 
 	/*
-	*����ֱ�Ӹ�ֵ
+	*
 	*/
 	log("Directly Assign");
 	int ia[10] = { 0,1,2,3,4,5,6,7,8,9 };
@@ -246,7 +245,7 @@ int main()
 	for (auto it = lstia.begin();it != lstia.end();)
 		//for (auto it:lstia)
 	{
-		if (*it & 0x01) //����
+		if (*it & 0x01) 
 			it = lstia.erase(it);
 		else
 		{
@@ -256,7 +255,7 @@ int main()
 	}
 	for (auto it = vecia.begin();it != vecia.end();)
 	{
-		if (!(*it & 0x01))//Ϊż��
+		if (!(*it & 0x01))//
 		{
 			it = vecia.erase(it);
 		}
@@ -275,10 +274,10 @@ int main()
 	//	forward_list<int>::iterator it = forlist.begin();
 	forward_list<int>::iterator ittemp = forlist.before_begin();
 	forlist.insert_after(ittemp, 99);// 
-	forlist.insert_after(ittemp, 98);//ittemp   ʼ��ָ����ǰԪ��,������ǰԪ��ǰ����Ԫ��
+	forlist.insert_after(ittemp, 98);//
 	forlist.insert_after(ittemp, 97);
 	forward_list<int>::iterator it = forlist.begin();
-	forlist.insert_after(it, 3, 88);//��it��ָ�ĵ����������Ԫ��
+	forlist.insert_after(it, 3, 88);//
 	forlist.insert_after(it, {});
 	print(forlist);
 	/*
@@ -292,21 +291,21 @@ int main()
 	forlist.resize(20);
 	print(forlist);
 	log("resize + n");
-	forlist.resize(25, 1);//����5��Ԫ�ص�������β
+	forlist.resize(25, 1);//
 	print(forlist);
 
 
 	/*
-	* ������ʧЧ����
+	*
 	*/
 	log("vector iterator lose efficacy");
 	vector<int>::iterator it1 = vecia.end();
 	vector<int>::iterator it2 = vecia.begin();
 	vecia.push_back(99);
-	//	cout << *it1 << endl;//������ʧЧ������
+	//	cout << *it1 << endl;//
 	cout << *it2 << endl;
 	log("deque iterator lose efficacy");
-	deque<int> deq1;//��һ��˫�����,�����ɾ��Ԫ�أ���β������ʧЧ
+	deque<int> deq1;
 	deq1.push_back(1);
 	deq1.push_back(2);
 	deq1.push_back(3);
@@ -327,7 +326,7 @@ int main()
 	log("accumulate");
 	int isum = accumulate(vecia.cbegin(), vecia.cend(), 0);
 	//string strsum = accumulate(oldstyle.begin(), oldstyle.end(), "");
-	string strsum = accumulate(oldstyle.begin(), oldstyle.end(), string(""));//�������ַ�����������
+	string strsum = accumulate(oldstyle.begin(), oldstyle.end(), string(""));//
 	cout << "the sum " << isum << endl;
 	cout << "the strsum" << strsum << endl;
 	log("Back_Inserter");
@@ -359,11 +358,11 @@ int main()
 	
 	log("unique");
 	auto end_unique=unique(vecib.begin(),vecib.end());
-	vecib.erase(end_unique, vecib.end());//ɾ���ظ�Ԫ��
+	vecib.erase(end_unique, vecib.end());//
 	print(vecib);
 
 
-	log("Predicate");//ν�ʺ���
+	log("Predicate");//
 	print(names);
 	list<string>namess;
 	replace_copy(names.begin(),names.end(),back_inserter(namess),"","");
@@ -374,7 +373,7 @@ int main()
 	vector<string> strname{"wangchunji","xulin","wangqiang"};
 	//list���Դ��������㷨
 	print(strname);
-	sort(strname.begin(), strname.end(), IsShorter);//����ĸ˳����С��������
+	sort(strname.begin(), strname.end(), IsShorter);//
 	print(strname);
 
 	/*
@@ -386,21 +385,21 @@ int main()
 
 
 	/*
-	*lambda����stable_sort
+	*lambda stable_sort
 	*/
 	log("lambda stable_sort");
 	names.push_back("hi");
 	names.push_back("hi");
 	names.push_back("hi");
 	print(names);
-	stable_sort(names.begin(), names.end(), [](const string &a, const string &b)//������ͬ��Ԫ�ذ��ֵ�����
+	stable_sort(names.begin(), names.end(), [](const string &a, const string &b)//
 	{
 		return a.size() < b.size();
 	});
 	log("After lambda stable_sort");
 	print(names);
 
-	//���ҵ�һ����ĳ������ĳ������sz��Ԫ��
+	//
 	log("find_if");
 	int sz = 4;
 	auto wc = find_if(names.begin(), names.end(), [sz](const string &a) {return a.size() >= sz;});
@@ -408,12 +407,12 @@ int main()
 
 
 	/*
-	*	��ӡ�����г��ȴ��ڵ���ĳ��ֵ��Ԫ��
+	*	
 	*/
 	log("for_each");
 	for_each(wc, names.end(), [](const string &s) {cout << s << " ";});
 	cout << endl;
-	//cout << *names.end() << endl;//���������ɷ���
+	//cout << *names.end() << endl;//
 
 
 	log("Lambdaf1");
@@ -467,9 +466,9 @@ int main()
 	vector<int>testinsert1;
 	list<int>testinsert2;
 	vector<int>testinsert3;
-	copy(test2.begin(),test2.end(),back_inserter(testinsert1));//ֻ������֧��push_back����ʹ��
-	copy(test2.begin(),test2.end(),front_inserter(testinsert2));//ֻ������֧��push_front����ʹ��
-	copy(test2.begin(),test2.end(),inserter(testinsert3,testinsert3.begin()));//�����к��е������Ϳ�ʹ��
+	copy(test2.begin(),test2.end(),back_inserter(testinsert1));//
+	copy(test2.begin(),test2.end(),front_inserter(testinsert2));//
+	copy(test2.begin(),test2.end(),inserter(testinsert3,testinsert3.begin()));//
 	print(testinsert1);
 	print(testinsert2);
 	print(testinsert3);
@@ -477,11 +476,11 @@ int main()
 	
 
 	/*
-	*iostream ������
+	*iostream 
 	*/
 	log("iostream");
 	vector<int> testinsert4;
-	istream_iterator<int> in_iter(cin);//����һ���ӱ�׼��������ȡint�����ݵ�����������
+	istream_iterator<int> in_iter(cin);//
 	istream_iterator<int> eof;
 	while (in_iter!=eof)
 	{
@@ -500,7 +499,7 @@ int main()
 
 
 	log("ostream_iterator");
-	ostream_iterator<int> out_iter(cout," ");//ÿ�����ֺ������һ���ո�
+	ostream_iterator<int> out_iter(cout," ");//
 	for (auto e : testinsert3)
 	{
 		*out_iter++=e;
@@ -513,12 +512,12 @@ int main()
 	cout << endl;
 
 	/*
-	* ʹ��������������������???
+	* ???
 	*/
-	//istream_iterator<Sale_Data> item_iter(cin),eof1;//�ӱ�׼�������ж�ȡһ��Sale_Data����
+	//istream_iterator<Sale_Data> item_iter(cin),eof1;//
 	////istream_iterator<Sale_Data>eof;
 	//ostream_iterator<Sale_Data> out_iter(cout,"\n");
-	//Sale_Data sum = *item_iter++;//��һ�ʽ��׼�¼����sum��
+	//Sale_Data sum = *item_iter++;//
 	//while (item_iter!=eof1)
 	//{
 	//	if (item_iter->isbn()==sum.isbn())
@@ -528,13 +527,13 @@ int main()
 	//}
 
 	/*
-	*ʹ��������������һ���ı��ļ�������һ��vector�е�String��
+	*
 	*/
 	//fflush(stdin);
 	std::cin.clear();
-	cin.ignore(numeric_limits<streamsize>::max(),'\n');//������뻺����
+	cin.ignore(numeric_limits<streamsize>::max(),'\n');//
 	log("Enter a series string into a vector");
-	//cinĬ��֧�ֻ��з�����������ѭ��
+	//
 	//istream_iterator<string> FileCin(cin), eof2;
 	//while (FileCin != eof2)
 	//{
@@ -552,7 +551,7 @@ int main()
 	
 
 	/*
-	* �ӱ�׼�������ȡһ���������У����򣬲���ӡ���
+	* 
 	*/
 	log("Enter Into some Integer and sort ,print");
 	testinsert4.clear();
@@ -565,7 +564,7 @@ int main()
 	print(testinsert4);
 
 	/*
-	* �����ļ�������һ���ļ��е��������ڶ����ļ�������һ���ļ���ż�����������ļ�
+	* 
 	*/
 	log("Read Three File,divide even and odd");
 	ifstream ifsnum("number.txt");
@@ -591,29 +590,29 @@ int main()
 	}
 
 	/*
-	* reverse_iterator(���������) �����ӡvector
+	* reverse_iterator() 
 	*/
 	log("reverse_iterator print");
 	//print(strname);
 	/*auto flag = find(strname.cbegin(), strname.cend(),"to");
 	cout << *flag << endl;
 	cout << string(strname.crbegin(), flag) << endl;*/
-	//for (vector<string>::reverse_iterator r_iter = strname.crbegin(); r_iter != strname.crend();++r_iter)//������������ֿյĵ�����
+	//for (vector<string>::reverse_iterator r_iter = strname.crbegin(); r_iter != strname.crend();++r_iter)//
 	for (auto r_iter = strname.crbegin(); r_iter != strname.crend();++r_iter)
 
 	{
 		cout << *r_iter << endl;
 	}
 	
-	//Ϊ�δ�ӡ�������ԣ���ӡStringȴ���У�����
+	//
 	print(testinsert3);
 	for (auto r_iter = testinsert3.crbegin();r_iter != testinsert3.crend();r_iter++)
 		cout << *r_iter << endl;
 	/*
-	*find����ֵΪ0��Ԫ��,�������
+	*
 	*/
 	int IterDis = 0;
-	auto FlagZero =find(testinsert2.crbegin(), testinsert2.crend(),0);//find���ص�����
+	auto FlagZero =find(testinsert2.crbegin(), testinsert2.crend(),0);//
 	/*while (FlagZero != testinsert2.end())
 	{
 		IterDis++;
@@ -626,7 +625,7 @@ int main()
 
 
 	/*
-	*ʹ��list�ĳ�Ա����ʵ��ɾ��list�е��ظ�Ԫ��
+	*
 	*/
 	//print(testinsert2);
 	log("list unique");
@@ -639,11 +638,11 @@ int main()
 	print(testinsert2);
 
 	/*
-	*����ͳ�Ƴ���
+	*
 	*/
 	log("count the word mount");
 	std::cin.clear();
-	cin.ignore(numeric_limits<streamsize>::max(), '\n');//������뻺����
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');//
 	map<string, int> word_account;
 	string word;
 	while (cin>>word&&word!="end")
@@ -654,7 +653,7 @@ int main()
 		cout << w.first << " occurs " << w.second << ((w.second > 1) ? " times" : " time") << endl;
 
 	/*
-	* ����string �� int ����pair pair������vector��
+	*  
 	*/
 	log("vector<pair()>");
 	int PairInt;
@@ -674,11 +673,11 @@ int main()
 	//print(AssocativeContinerVector);
 
 	/*
-	* insert �����±����ʵ�ֵ��ʲ�ѯ
+	* insert 
 	*/
 	log("count the word mount��using insert");
 	std::cin.clear();
-	cin.ignore(numeric_limits<streamsize>::max(), '\n');//������뻺����
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');//
 	/*map<string, int> word_account;
 	string word;*/
 	while (cin >> word&&word != "end")
@@ -693,17 +692,17 @@ int main()
 
 
 	/*
-	* map �±�������ص���������
+	* map 
 	*/
 	log("Return KeyType Test");
 	map<string, int> MapIndex{ {"wangchunji",23 }, {"XuLin",22}, {"Damon Wang",23} };
 	cout << MapIndex["wangchunji"] << endl;
-	//cout << decltype(MapIndex["wangchunji"]) << endl;�Զ��Ƶ���������
+	//cout << decltype(MapIndex["wangchunji"]) << endl;
 	using KeyType = map<string, int>::key_type;
 	cout << "Type to subcript:" << typeid(KeyType).name() << endl;
 
 	/*
-	* ��ʼ��map<string,vector<int>> ������
+	* ��ʼ��map<string,vector<int>> 
 	*/
 	log("Map.find");
 	map<string, vector<int>> MapFind{ {"wangchunji", { 99,98,97,95 }}, { "XuLin",{96,95,94,93} }, { "Damon Wang",{88,87,86,85} } };
@@ -713,7 +712,7 @@ int main()
 
 #if 1
 	/*
-	* ������ĵ���ת������ 
+	*  
 	*/
 	log("Word Transfer");
 	string filenamein = "Rule.txt";
@@ -727,7 +726,7 @@ int main()
 #endif
 #if 0
 	/*
-	* �ı���ѯ����
+	* 
 	*/
 
 	log("TextQuery");
@@ -767,7 +766,7 @@ int main()
 	/*
 	*  libev test
 	*/
-	//log("libev test");
+	log("libev test");
 
 	ev_timer timeout_watcher;
 
@@ -779,16 +778,16 @@ int main()
 	ev_run(loop, 0);
 
 
-//	log("StrVec test");
-	
+	log("StrVec test");
+
 	// int i=1,j=3;
 	// double k=0.5;
 	// k=double(i)/j;
 	// cout<<double(i)/j<<endl;
 	// cout<<k<<endl;
-
-
 	//	system("pause");
+
+
 	return 0;
 }
 
