@@ -45,7 +45,7 @@ int main()
 #if 0
 	/*string word;*/
 
-	//	vector<int> test( 10,1 );//һ�γ�ʼ�����
+	//	vector<int> test( 10,1 );//
 
 	/*
 	*	list如何增长空间
@@ -371,7 +371,7 @@ int main()
 
 
 	vector<string> strname{"wangchunji","xulin","wangqiang"};
-	//list���Դ��������㷨
+	//list
 	print(strname);
 	sort(strname.begin(), strname.end(), IsShorter);//
 	print(strname);
@@ -675,7 +675,7 @@ int main()
 	/*
 	* insert 
 	*/
-	log("count the word mount��using insert");
+	log("count the word mount using insert");
 	std::cin.clear();
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');//
 	/*map<string, int> word_account;
@@ -702,7 +702,7 @@ int main()
 	cout << "Type to subcript:" << typeid(KeyType).name() << endl;
 
 	/*
-	* ��ʼ��map<string,vector<int>> 
+	* map<string,vector<int>> 
 	*/
 	log("Map.find");
 	map<string, vector<int>> MapFind{ {"wangchunji", { 99,98,97,95 }}, { "XuLin",{96,95,94,93} }, { "Damon Wang",{88,87,86,85} } };
