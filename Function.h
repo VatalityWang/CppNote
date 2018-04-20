@@ -610,7 +610,7 @@ class StrVec
 	StrVec(const StrVec &);											   // 拷贝构造
 	StrVec &operator=(const StrVec &rhs);							   //拷贝赋值
 	~StrVec();
-	void push_back(const std::string &);				  //添加元素
+	void Push_back(const std::string &);				  //添加元素
 	size_t size() const { return first_free - elements; } //空间大小
 	size_t capacity() { return cap - elements; }
 	string *begin() const { return elements; }
@@ -656,7 +656,7 @@ StrVec &StrVec::operator=(const StrVec &rhs)
 	first_free = data.second;
 	return *this;
 }
-void StrVec::push_back(const string &s)
+void StrVec::Push_back(const string &s)
 {
 	chk_n_alloc(); //确保有空间容纳新元素
 	alloc.construct(first_free++, s);
@@ -682,3 +682,37 @@ void StrVec::reallocate()
 	first_free = dest;
 	cap = elements + newcapacity;
 }
+
+/*
+*	饱汉式 单线程，多线程可以加锁
+*/
+class singleton
+{
+	private:
+		static singleton *pInstance;
+		singleton()
+		{
+			cout<<"This is constructer"<<endl;	
+		}
+		~singleton(){}
+	public:
+		static singleton * GetInstance()
+		{
+			if (!pInstance)
+			{
+				pInstance = new singleton();
+			}
+			return pInstance;
+		}
+		static void DestroyPinstance()
+		{
+			if(!pInstance)
+			{
+				delete pInstance;
+				pInstance=NULL;
+			}			
+		}
+};
+
+
+

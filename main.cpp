@@ -17,7 +17,7 @@
 #include <memory>
 
 #include "ev.h"
-#include"ev++.h"
+#include "ev++.h"
 #include "Function.h"
 using namespace std;
 using std::cin;
@@ -30,16 +30,17 @@ using std::placeholders::_1;
 using std::string;
 using std::string;
 using std::vector;
-using namespace std::placeholders; 
+using namespace std::placeholders;
 using std::list;
 using std::numeric_limits;
-using std::streamsize; 
-	static void timeout_cb(EV_P_ ev_timer * w, int revents)
-	{
-		puts("timeout");
-		ev_break(EV_A_ EVBREAK_ONE);
-	}
+using std::streamsize;
+static void timeout_cb(EV_P_ ev_timer *w, int revents)
+{
+	puts("timeout");
+	ev_break(EV_A_ EVBREAK_ONE);
+}
 //using std:algorthm
+singleton *singleton::pInstance = NULL;
 int main()
 {
 #if 0
@@ -737,62 +738,50 @@ int main()
 	 cout<<"Enter word to query:";
 	print( cout, testquery.query("beautiful"));
 
-	
 #endif
 
-
-	
 	/*
 	*	拷贝构造
 	*/
 	log("string first elem test");
-	string test="wangchunji";
-	cout<<static_cast<unsigned int>(test[0])<<endl;
-	
-
-
-
+	string test = "wangchunji";
+	cout << static_cast<unsigned int>(test[0]) << endl;
 
 	/*
 	*	LeetCode Question:K-th Smallest Prime Fraction
 	*/
 	log("K-th Smallest Prime Fraction");
-	vector<int> A={1,2,3,5};
+	vector<int> A = {1, 2, 3, 5};
 	Solution FindTheKthFraction;
-	vector<int> Answer=FindTheKthFraction.kthSmallestPrimeFraction(A,3);
+	vector<int> Answer = FindTheKthFraction.kthSmallestPrimeFraction(A, 3);
 	print(Answer);
-
 
 	/*
 	*  libev test
 	*/
 	log("libev test");
-
 	ev_timer timeout_watcher;
-
-
-	
 	struct ev_loop *loop = EV_DEFAULT;
 	ev_timer_init(&timeout_watcher, timeout_cb, 5.5, 0);
 	ev_timer_start(loop, &timeout_watcher);
 	ev_run(loop, 0);
 
-
 	log("StrVec test");
-
-	// int i=1,j=3;
-	// double k=0.5;
-	// k=double(i)/j;
-	// cout<<double(i)/j<<endl;
-	// cout<<k<<endl;
-	//	system("pause");
+	StrVec strvec;
+	string s("wangchunji");
+	strvec.Push_back(s);
 
 
+	log("singleton");
+	//pInstance->GetInstance();
+	singleton* singleton = singleton::GetInstance();
+	//int i=1,j=3;
+	//double k=0.5;
+	//k=double(i)/j;
+	//cout<<double(i)/j<<endl;
+	//cout<<k<<endl;
+	//system("pause");
 	return 0;
 }
-
-
-
-
 
 
