@@ -713,6 +713,65 @@ class singleton
 			}			
 		}
 };
+class String
+{	
+	public:
+		String():String(""){}
+		String(const char *);//
+		String(const String &);//拷贝构造
+		String &operator=(const String&);//拷贝赋值
+		~String();
+
+		const char *c_str() const {return elements;}
+		size_t size() const {return end-elements;}
+		size_t length() { return end-elements-1;}
+	private:
+		std::pair<char *,char *>alloc_n_copy(const char*,const char *);
+		void range_initalizer(const char*,const char*);
+		void free();
+	private:
+		char *elements;
+		char * end;
+		std::allocator<char> alloc;
+};
+
+ String::String(const char *str)
+{
+
+	char* tmpstr=const_cast<char*>(str);
+	while(*tmpstr)
+		++tmpstr;
+	range_initalizer(str,++tmpstr);//把'\0'字符串也拷贝进去
 
 
 
+}
+String& String::operator=(const String& rhs)
+{
+	auto newdata = alloc_n_copy(rhs.elements, rhs.end);
+	elements = newdata.first;
+	end= newdata.second;
+}
+String::~String()
+{
+	free();
+}
+void String::free()
+{
+	for(auto p=elements;p!=end;)
+		alloc.destroy(--p);
+	elements=NULL;
+	end=NULL;
+}
+void String::range_initalizer(const char*e,const char*b)
+{
+	auto data = alloc_n_copy(e,b);
+	elements=data.first;
+	end=data.second;
+}
+
+std::pair<char* ,char*>String::alloc_n_copy(const char*e,const char*b)
+{
+	auto str=alloc.allocate(e-b);
+	return{str,std::uninitialized_copy(b,e,str)};
+}

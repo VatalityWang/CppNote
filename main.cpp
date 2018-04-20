@@ -775,6 +775,12 @@ int main()
 	log("singleton");
 	//pInstance->GetInstance();
 	singleton* singleton = singleton::GetInstance();
+
+
+	log("own string");
+	String str("wangchunji");
+	cout<<"the strlength="<<str.length()<<endl;
+
 	//int i=1,j=3;
 	//double k=0.5;
 	//k=double(i)/j;
