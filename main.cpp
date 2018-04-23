@@ -777,10 +777,27 @@ int main()
 	singleton* singleton = singleton::GetInstance();
 
 
-	log("own string");
+	log("own -------String");
 	String str("wangchunji");
 	cout<<"the strlength="<<str.length()<<endl;
 
+	log(" own -------string ");
+	ownstring ownstring0;
+	ownstring ownstring1("wangchunji");
+	ownstring ownstring2=ownstring1;
+	ownstring2.showstring();
+
+	log("recongize the computer system is 32bits or 64bits-----1");
+	int k=~0;
+	if((unsigned int)k>65536)   cout<<"at least 32bits"<<endl;
+	else 
+		cout<<"16 bits"<<endl;
+
+	log("recongize the computer system is 32bits or 64bits-----2");
+	int i=65536;
+	cout<<i<<endl;
+	int j=65535;
+	cout<<j<<endl;
 	//int i=1,j=3;
 	//double k=0.5;
 	//k=double(i)/j;

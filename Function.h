@@ -759,19 +759,76 @@ String::~String()
 void String::free()
 {
 	for(auto p=elements;p!=end;)
-		alloc.destroy(--p);
+		alloc.destroy(++p);
 	elements=NULL;
 	end=NULL;
 }
-void String::range_initalizer(const char*e,const char*b)
+void String::range_initalizer(const char*b,const char*e)
 {
-	auto data = alloc_n_copy(e,b);
+	auto data = alloc_n_copy(b,e);
 	elements=data.first;
 	end=data.second;
 }
 
-std::pair<char* ,char*>String::alloc_n_copy(const char*e,const char*b)
+std::pair<char* ,char*>String::alloc_n_copy(const char*b,const char*e)
 {
 	auto str=alloc.allocate(e-b);
 	return{str,std::uninitialized_copy(b,e,str)};
+}
+
+
+
+
+
+class ownstring
+{
+	public:
+		  ownstring(){}
+		  ownstring(const ownstring &rhs);
+		  ownstring(const char *);
+		  ownstring& operator=(const ownstring &rhs);
+		  ~ownstring();
+		  void showstring();
+	private:
+		  char *m_data;
+};
+ownstring::ownstring(const char *s)
+{	
+
+	if(s==NULL)//初始串不存在，为m_data申请一个空间存放'\0'
+	{
+		m_data=new char(1);
+		m_data='\0';
+	}
+	else 
+	{
+		int length = strlen(s);
+		m_data = (char*)malloc(length * sizeof(char));
+		strcpy(m_data, s);
+	}
+}
+ownstring::ownstring(const ownstring &rhs)
+{
+	int length=strlen(rhs.m_data);
+	m_data=(char*)malloc(length*sizeof(char));
+	strcpy(m_data,rhs.m_data);
+
+}
+ ownstring& ownstring::operator=(const ownstring &rhs)
+ {
+	 if(&rhs==this)
+		 return *this;
+	delete []m_data;//地址不相同时，删除原来申请的空间，重新开始构造
+	int length=strlen(rhs.m_data);
+	m_data=(char*)malloc(length*sizeof(char));
+	strcpy(m_data,rhs.m_data);
+	return *this;
+ }
+ ownstring::~ownstring()
+ {
+	 delete []m_data;
+ }
+void ownstring::showstring()
+{
+	cout<<this->m_data<<endl;
 }
