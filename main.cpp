@@ -798,6 +798,22 @@ int main()
 	cout<<i<<endl;
 	int j=65535;
 	cout<<j<<endl;
+
+	log("IsBigEndian  ");
+	if(IsBigEndian(0x1234))
+		cout<<"This Computer System is IsBigEndian"<<endl;
+	else
+		cout<<"This Computer System is IsSmallEndian"<<endl;
+	
+
+
+	
+
+
+
+	
+
+
 	//int i=1,j=3;
 	//double k=0.5;
 	//k=double(i)/j;

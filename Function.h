@@ -832,3 +832,29 @@ void ownstring::showstring()
 {
 	cout<<this->m_data<<endl;
 }
+
+bool IsBigEndian()
+{	//联合体的大小等于最大成员的大小
+	union NUM {
+		int a;
+		char b;
+	} num;
+	num.a = 0x1234;
+	if (num.b = 0x12) //高地址端高字节
+		return false;
+	else
+		return true;
+}
+
+bool IsBigEndian(int num)
+{
+	char a=*(char*)&num;
+	if(a==0x12)//低端高字节
+		return true;
+	else 
+		return	false;
+}
+
+
+
+
