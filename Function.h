@@ -14,6 +14,8 @@
 #include <stdexcept>
 #include <memory>
 #include <set>
+//#include<match>
+#include<stack>
 int LogFlag = 0;
 using namespace ::std;
 using std::allocator;
@@ -35,6 +37,7 @@ using std::shared_ptr;
 using std::string;
 using std::uninitialized_copy;
 using std::vector;
+int ForkNum=0;
 template <typename TYPE>
 void print(const TYPE &p);
 bool SecondSearch(vector<int> &test, int Elem, vector<int>::iterator begin, vector<int>::iterator end);
@@ -233,32 +236,66 @@ void print(const TYPE &p)
 //}
 
 class Sale_Data
-{
+{ 
+	friend std::istream& operator>>(std::istream &,Sale_Data&);//input
+	friend std::ostream& operator<<(std::ostream &,const Sale_Data&);//output
+	friend Sale_Data& operator+(const Sale_Data&,const Sale_Data&);//addition
+	
   public:
-	Sale_Data(string isbn, double price, int mount);
+	Sale_Data(const string &s, unsigned  n, double p):bookNo(s),units_sold(n),revenue(n*p){}
+	Sale_Data():Sale_Data("",0,0.0f){}
+	Sale_Data(const std::string &s):Sale_Data(s,0,0.0f){}
+	Sale_Data(std::istream &is);
+	Sale_Data& operator+=(const Sale_Data&);
+	string isbn() const {return bookNo;}
 	~Sale_Data();
 	//bool operator !=(const Sale_Data &lhs,const Sale_Data &rhs)//
 	//{
 	//	cons
 	//}
-	string isbn()
-	{
-		return Isbn;
-	}
-
   private:
-	string Isbn;  //
-	double Price; //
-	int Mount;	//
+    inline double avg_price() const;
+	std::string bookNo;
+	double revenue=0.0;
+	unsigned units_sold=0;
 };
-Sale_Data::Sale_Data(string isbn, double price, int mount)
-
-	: Isbn(isbn), Price(price), Mount(mount)
+inline double Sale_Data::avg_price() const
 {
+	return units_sold?revenue/units_sold:0;
 }
-
+Sale_Data::Sale_Data(std::istream &is):Sale_Data()
+{
+	is>>*this;
+}
+Sale_Data& Sale_Data::operator+=(const Sale_Data&rhs)
+{
+	revenue+=rhs.revenue;
+	units_sold+=rhs.units_sold;
+	//bookNo+=rhs.bookNo;//书名不用变
+	return *this;
+}
 Sale_Data::~Sale_Data()
 {
+}
+std::istream& operator>>(std::istream &is,Sale_Data&item)//input
+{
+	double price=0.0;
+	is>>item.bookNo>>item.units_sold>>price;
+	if(is)
+		item.revenue=price*item.revenue;
+	else 
+		item=Sale_Data();
+}
+ std::ostream& operator<<(std::ostream &os,const Sale_Data&item)//output
+{
+	os<<item.isbn()<<" "<<item.units_sold<<" "<<item.revenue<<" "<<item.avg_price();
+	return os;
+}
+ Sale_Data& operator+(const Sale_Data&lhs,const Sale_Data&rhs)//addition
+{
+	Sale_Data sum=lhs;
+	sum+=rhs;
+	return sum;
 }
 
 /*
@@ -743,14 +780,19 @@ class String
 		++tmpstr;
 	range_initalizer(str,++tmpstr);//把'\0'字符串也拷贝进去
 
-
-
 }
+String::String(const String& rhs)
+{
+    range_initalizer(rhs.elements, rhs.end);
+    std::cout << "copy constructor" << std::endl;
+}
+
 String& String::operator=(const String& rhs)
 {
 	auto newdata = alloc_n_copy(rhs.elements, rhs.end);
 	elements = newdata.first;
 	end= newdata.second;
+	  std::cout << "copy-assignment" << std::endl;
 }
 String::~String()
 {
@@ -783,7 +825,7 @@ std::pair<char* ,char*>String::alloc_n_copy(const char*b,const char*e)
 class ownstring
 {
 	public:
-		  ownstring(){}
+		  ownstring();
 		  ownstring(const ownstring &rhs);
 		  ownstring(const char *);
 		  ownstring& operator=(const ownstring &rhs);
@@ -792,6 +834,11 @@ class ownstring
 	private:
 		  char *m_data;
 };
+
+ownstring::ownstring()
+{
+	m_data=NULL;
+}
 ownstring::ownstring(const char *s)
 {	
 
@@ -818,7 +865,8 @@ ownstring::ownstring(const ownstring &rhs)
  {
 	 if(&rhs==this)
 		 return *this;
-	delete []m_data;//地址不相同时，删除原来申请的空间，重新开始构造
+    if(m_data)
+		delete []m_data;//地址不相同时，删除原来申请的空间，重新开始构造
 	int length=strlen(rhs.m_data);
 	m_data=(char*)malloc(length*sizeof(char));
 	strcpy(m_data,rhs.m_data);
@@ -832,7 +880,129 @@ void ownstring::showstring()
 {
 	cout<<this->m_data<<endl;
 }
+class solution
+{
+  public:
+	void push(int node)
+	{
+		// if (stack1.empty())
+		// {
+			cout << "log 0" << endl;
+			stack1.push(node);
+		// }
+		// else if(!stack2.empty())
+		// {
+		// 	int tmpflag;
+		// 	while (!stack2.empty())
+		// 	{
+		// 		cout << "log 1" << endl;
 
+		// 		tmpflag = stack2.top();
+		// 		stack2.pop();
+		// 	}
+		// 	stack2.push(tmpflag);
+		// 	cout << "log 2" << endl;
+
+		// 	stack1.push(node);
+		// }
+	}
+
+	int pop()
+	{
+		int tmpflag = 0;
+		//  cout<<"size  "<<stack2.size()<<endl;
+		//  cout<<stack2.empty()<<endl;
+		if (!stack2.empty())
+		{
+			cout << "log 3" << endl;
+
+			tmpflag = stack2.top();
+			stack2.pop();
+		}
+		else
+		{
+
+			while (!stack1.empty())
+			{
+				cout << "log 4" << endl;
+
+				tmpflag = stack1.top();
+				stack1.pop();
+				stack2.push(tmpflag);
+			}
+			if (!stack2.empty())
+			{
+				cout << "log 5" << endl;
+
+				tmpflag = stack2.top();
+				stack2.pop();
+			}
+		}
+		cout << "log 6" << endl;
+		return tmpflag;
+	}
+
+  private:
+	stack<int> stack1;
+	stack<int> stack2;
+};
+class FindMinInRotateArray {
+public:
+    int minNumberInRotateArray(vector<int> rotateArray) {
+		int  i;
+		if(!rotateArray.size())
+           return 0;
+        for(i=1;i<rotateArray.size();i++)
+        {
+            if(rotateArray[i]>=rotateArray[i-1])
+				continue;
+			break;
+        }
+		return rotateArray[i];
+    }
+};
+
+class Fibonacci {
+public:
+    int fibonaccifunc(int n) {
+		int i;
+		vector<int> TmpArray;
+		if (n >= 1)
+		{
+			for (i = 1; i <= n; i++)
+				if (i == 1)
+					TmpArray.push_back(1);
+				else if (i == 2)
+					TmpArray.push_back(1);
+				else
+					TmpArray.push_back(TmpArray[i - 2] + TmpArray[i - 3]);
+			return TmpArray[n - 1];
+		}
+       return 0;
+	}
+};
+/*
+class jumpFloor {
+public:
+    int jumpFloorFunc(int number) {
+        int jumpFloorWay,i;
+		int TmepNum=number;
+		while(number)
+		{
+			int TmepNum=number;
+			TmepNum-=2;
+			if(TmepNum)
+			else if()
+			{
+				for(int i=0;i<N;i++)
+				{
+					
+				}
+			}
+		}
+			
+    }
+};*/
 bool IsBigEndian()
 {	//联合体的大小等于最大成员的大小
 	union NUM {
@@ -855,6 +1025,182 @@ bool IsBigEndian(int num)
 		return	false;
 }
 
+void ForkFunc()
+{
+	ForkNum++;
+	cout<<"ForkNum="<<ForkNum<<endl;
+}
+/*
+* Add overloaded input,output,addition,add commpund-assignment operators
+*/
+
+class DoublePower {
+public:
+    double Power(double base, int exponent) {
+		double baseresult=1.0;
+		int Tmp;
+		Tmp=abs(exponent);
+		for(int i=0;i<Tmp;i++)
+		{
+			baseresult*=base;
+		}
+		return exponent>0?baseresult:1/baseresult;
+	}
+};
 
 
+/*
+*输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有的奇数位于数组的前半部分，所有的偶数位于位于数组的后半部分，并保证奇数和奇数，偶数和偶数之间的相对位置不变。
+*/
+class ReOrderArray {
+public:
+    void reOrderArray(vector<int> &array) {
+	
+    }
+};
+namespace alg
+{
+	template<typename K,typename V>
+	class LruCache
+	{
+		typedef struct _Node_
+		{
+			K key;
+			V value;
+			struct _Node_ *pre;
+			struct _Node_ *pnext;
+		}CacheNode;
+  		private:
+		  	int CacheSize_;
+			CacheNode *CacheListPre;//头
+			CacheNode *CacheListPnext;//尾
+			map<K,CacheNode*> Cache_Hash;
+  		public:
+			LruCache(int CacheSize=10)
+			{
+			   CacheSize_=CacheSize;
+			   CacheListPre =new CacheNode();
+			   CacheListPnext=new CacheNode();
+			   CacheListPre->pre=NULL;
+			   CacheListPre->pnext=CacheListPnext;
+			   CacheListPnext->pre=CacheListPre;
+			   CacheListPnext->pnext=NULL;
+			}	
+			~LruCache()
+			{
+				CacheNode *p;
+				p=CacheListPre->pnext;//从头指针开始删除节点分配的内存
+				while(p)
+				{
+					delete p->pre;
+					p=p->pnext;
+				}
+				delete CacheListPnext;//删除尾节点
+				Cache_Hash.clear();//删除缓存容器
+			}
+			V getValue(K key_)
+			{
+				
+				if(Cache_Hash.find(key_)!=Cache_Hash.end())
+				{
+					CacheNode *p=Cache_Hash[key_];
+					DeatchNode(p);
+					AddFirstNode(p);
+					return Cache_Hash[key_]->value;
+				}
+				else
+				{
+					cout<<"No elem has Key:"<<key_<<endl;
+					return V();
+				}
+			}
+			void InsertValue(K key_,V value_)
+			{
+				if (Cache_Hash.find(key_) != Cache_Hash.end())//能找到
+				{
+					Cache_Hash[key_]->value=value_;	
+					CacheNode *p=Cache_Hash[key_];
+					DeatchNode(p);
+					AddFirstNode(p);
+					//长度检查
+					
 
+				}
+				else//不能找到
+				{
+					CacheNode *p = new CacheNode();
+					p->key = key_;
+					p->value = value_;
+					Cache_Hash[key_] = p;
+				
+					AddFirstNode(p);
+					//cout<<"CacheSize_="<<CacheSize_ <<endl;
+					if (Cache_Hash.size() > CacheSize_)
+					{
+						cout << "The CacheList  full " << endl;
+						DelEndCacheNode();
+					}
+				}
+			}
+			
+
+			void Display()
+			{
+				CacheNode *p=CacheListPre;
+				//cout<<"CacheList length ="<<Cache_Hash.size() <<endl;
+				while(p)
+				{
+					cout<<"[Key]: "<<p->key<<"--->"<<"[Value]: "<<p->value<<endl;
+					p=p->pnext;
+				}
+				// for(map<K,CacheNode*>::iterator it :Cache_Hash)
+				// {
+				// 	cout<<"[Key]: "<<it->first<<"--->"<<"[Value]: "<<it->second->value<<endl;
+				// }
+			}
+			void DeatchNode(CacheNode *p)
+			{
+				//cout << "log 3" << endl;
+				//cout<<"args_p="<<p<<endl;
+				p->pre->pnext=p->pnext;
+				p->pnext->pre=p->pre;
+			}
+			void AddFirstNode(CacheNode *p)
+			{
+				if(!CacheListPre)
+				{
+					CacheListPre->pre = NULL;
+					CacheListPre->pnext = p;
+					CacheListPnext->pre = p;
+					CacheListPnext->pnext = NULL;
+				}
+				else//头插
+				{
+					p->pnext=CacheListPre->pnext;
+					CacheListPre->pnext->pre=p;
+					CacheListPre->pnext=p;
+					p->pre=CacheListPre;
+				}
+			}
+			void DelEndCacheNode()
+			{
+				CacheNode *p=CacheListPre;
+				if (CacheListPnext)
+				{
+					//cout << "log 1" << endl;
+					while (p->pnext != CacheListPnext)
+					{
+						//cout << "log 2" << endl;
+						p = p->pnext;
+					}
+					DeatchNode(p);
+					//cout << "log 4" << endl;
+					Cache_Hash.erase(p->key);
+					//cout << "log 5" << endl;
+					free(p);
+					//cout << "log 6" << endl;
+					//	CacheListPnext = p;
+				}
+			}
+	};
+} // namespace alg	

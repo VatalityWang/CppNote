@@ -15,7 +15,8 @@
 #include <map>
 #include <typeinfo>
 #include <memory>
-
+#include<unistd.h>
+#include<sys/types.h>
 #include "ev.h"
 #include "ev++.h"
 #include "Function.h"
@@ -34,13 +35,19 @@ using namespace std::placeholders;
 using std::list;
 using std::numeric_limits;
 using std::streamsize;
+using namespace alg;
 static void timeout_cb(EV_P_ ev_timer *w, int revents)
 {
-	puts("timeout");
+	puts("timeout\n");
 	ev_break(EV_A_ EVBREAK_ONE);
 }
 //using std:algorthm
 singleton *singleton::pInstance = NULL;
+#define Test_Define( a, b) do {			\
+  	*a=				\
+	*b=990;					\
+ 					\
+} while (0)
 int main()
 {
 #if 0
@@ -709,7 +716,7 @@ int main()
 	map<string, vector<int>> MapFind{ {"wangchunji", { 99,98,97,95 }}, { "XuLin",{96,95,94,93} }, { "Damon Wang",{88,87,86,85} } };
 	auto FindResult=MapFind.find("wangchunji");
 	//cout << FindResult << endl;
-#endif
+
 
 #if 1
 	/*
@@ -764,6 +771,7 @@ int main()
 	struct ev_loop *loop = EV_DEFAULT;
 	ev_timer_init(&timeout_watcher, timeout_cb, 5.5, 0);
 	ev_timer_start(loop, &timeout_watcher);
+	ev_timer_stop(loop, &timeout_watcher);
 	ev_run(loop, 0);
 
 	log("StrVec test");
@@ -805,15 +813,61 @@ int main()
 	else
 		cout<<"This Computer System is IsSmallEndian"<<endl;
 	
+    log("Vector<String> push_back,watch the copy num");
+	vector<String> StringPush;
+	for(int i=0;i<10;i++)
+		StringPush.push_back("Hehe");
+	for(const auto &s:StringPush)
+		cout<<s.c_str()<<endl;
 
 
+	// log("OverLoad,input,output,addition");
+	// Sale_Data isb;
+	// cin>>isb;
+	// cout<<isb<<endl;
+#if 0
+	 for (int i = 0; i < 5; i++)
+	 {
+		pid_t fpid = fork();
+		if (fpid > 0)
+		{
+			cout << "This is Parent Process id"<<getpid()<<"  Ppid "<<getppid()<< endl;			
+			ForkFunc();
+		}
+		else
+		{
+			cout << "This is child Process id"<<getpid()<<"  Ppid "<<getppid() << endl;
+			ForkFunc();
+		}
+	}
+	log("Fork end");
+
+#endif
+	log("stack");
+	solution Stack;
+	Stack.push(1);
+	Stack.push(2);
+	Stack.push(3);
+	Stack.push(4);
+	cout<<Stack.pop()<<endl;
+	cout<<Stack.pop()<<endl;
+	cout<<Stack.pop()<<endl;
+	cout<<Stack.pop()<<endl;
 	
-
-
-
-	
-
-
+    int a=99,b=99;
+	Test_Define(&a,&b);
+	cout<<"a="<<a<<"b="<<b<<endl;
+#endif
+#if 1
+	LruCache<string,int> MyCache(5);
+	MyCache.InsertValue("wangchunji",24);
+	MyCache.InsertValue("XuLin",23);
+	MyCache.InsertValue("TangBoWen",5);
+	MyCache.InsertValue("TangDan",5);
+	MyCache.InsertValue("TangQiang",5);
+	MyCache.InsertValue("SunBoWen",5);
+	MyCache.Display();
+#endif
 	//int i=1,j=3;
 	//double k=0.5;
 	//k=double(i)/j;
