@@ -106,7 +106,7 @@ void CopyFormDeque_odd_even()
 	list<int> elems;
 	deque<int> elem_odds, elem_evens;
 	for (int input; cin >> input; elems.push_back(input))
-		; //
+		; 
 	for (auto iter : elems)
 	{
 		if (iter % 2)
@@ -128,8 +128,8 @@ void double_and_insert(vector<int> &InserElem, int Elem)
 {
 	cout << "Enter Into founction:double_and_insert" << endl;
 	//auto mid = InserElem.begin() + (InserElem.end()-InserElem.begin()) / 2;
-	auto mid = [&] { return InserElem.begin() + InserElem.size() / 2; }; //
-	//cout << "*mid=" << *mid << endl;
+	auto mid = [&] { return InserElem.begin() + InserElem.size() / 2; };
+	cout << "*mid=" << *mid() << endl;
 	for (auto it = InserElem.begin(); it < mid(); ++it)
 	{
 		cout << "mid=" << *mid() << endl;
@@ -144,7 +144,7 @@ void double_and_insert(vector<int> &InserElem, int Elem)
 	for (auto it : InserElem)
 		cout << it << endl;
 	for (vector<int>::iterator it = InserElem.begin(); it != InserElem.end(); it++)
-		cout << &*it << endl; //
+		cout << &*it << endl; 
 }
 
 template <typename TYPE>
@@ -180,8 +180,8 @@ FriendTest::~FriendTest()
 class Account
 {
   public:
-	Account(double interestRate); //
-	Account();					  //
+	Account(double interestRate); 
+	Account();					  
 	/*friend  ostream&operator<<(ostream &out, const Account &account)
 	{
 		out << "interestRate=" << account.interestRate << ",InterInterestRate= " << account.InterInterestRate;
@@ -189,14 +189,14 @@ class Account
 	}*/
 	void print();
 	~Account();
-	//
+	
 
   private:
 	static double interestRate;
 	static double InitRate();
 	double InterInterestRate;
 };
-Account::Account(double interestRate) //
+Account::Account(double interestRate) 
 {
 	InterInterestRate = interestRate;
 }
@@ -230,6 +230,16 @@ void print(const TYPE &p)
 	}
 	return;
 }
+namespace alg
+{
+	template <typename T>
+	void swap(T &a, T &b)
+	{
+		T _t(a);
+		a = b;
+		b = _t;
+	}
+} // namespace alg
 //static void initrate()
 //{
 //	interestrate = 0.6;
@@ -340,11 +350,10 @@ auto f = [] {
 */
 void biggies(vector<string> &words, vector<string>::size_type sz)
 {
-	elimDups(words);																							   //
-	stable_sort(words.begin(), words.end(), [](const string &a, const string &b) { return a.size() < b.size(); }); //,
-	auto wc = find_if(words.begin(), words.end(), [sz](const string &a) { return a.size() >= sz; });			   //
-	auto count = words.end() - wc;																				   //
-	//
+	elimDups(words);																							   
+	stable_sort(words.begin(), words.end(), [](const string &a, const string &b) { return a.size() < b.size(); }); 
+	auto wc = find_if(words.begin(), words.end(), [sz](const string &a) { return a.size() >= sz; });			   
+	auto count = words.end() - wc;																				   
 	for_each(wc, words.end(), [](const string &s) { cout << s << " "; });
 
 	cout << endl;
@@ -355,11 +364,11 @@ void biggies(vector<string> &words, vector<string>::size_type sz)
 */
 void biggies1(vector<string> &words, vector<string>::size_type sz, ostream &os = cout, char c = ' ')
 {
-	elimDups(words);																							   //
-	stable_sort(words.begin(), words.end(), [](const string &a, const string &b) { return a.size() < b.size(); }); //
-	auto wc = find_if(words.begin(), words.end(), [sz](const string &a) { return a.size() >= sz; });			   //
-	auto count = words.end() - wc;																				   //
-																												   //
+	elimDups(words);																							   
+	stable_sort(words.begin(), words.end(), [](const string &a, const string &b) { return a.size() < b.size(); }); 
+	auto wc = find_if(words.begin(), words.end(), [sz](const string &a) { return a.size() >= sz; });			   
+	auto count = words.end() - wc;																				   
+																												   
 	for_each(wc, words.end(), [&os, c](const string &s) { os << s << c; });
 	cout << endl;
 }
@@ -381,11 +390,11 @@ bool check_size(string &s, vector<int>::size_type sz)
 
 void biggies2(vector<string> &words, vector<string>::size_type sz)
 {
-	elimDups(words);																							   //
-	stable_sort(words.begin(), words.end(), [](const string &a, const string &b) { return a.size() < b.size(); }); //
-	auto wc = find_if(words.begin(), words.end(), bind(check_size, _1, sz));									   //
-	auto count = words.end() - wc;																				   //
-																												   //
+	elimDups(words);																							   
+	stable_sort(words.begin(), words.end(), [](const string &a, const string &b) { return a.size() < b.size(); }); 
+	auto wc = find_if(words.begin(), words.end(), bind(check_size, _1, sz));									   
+	auto count = words.end() - wc;																				   
+																												   
 	for_each(wc, words.end(), [](const string &s) { cout << s << " "; });
 	cout << endl;
 }
@@ -406,7 +415,7 @@ map<string, string> BuildMap(ifstream &mapfile)
 	string key, value;
 	while (mapfile >> key && getline(mapfile, value))
 		if (value.size() > 1)
-			bulidmap[key] = value.substr(1); //
+			bulidmap[key] = value.substr(1); 
 		else
 			throw runtime_error("no rule for" + key);
 	return bulidmap;
@@ -417,7 +426,7 @@ const string &transform(const string &key, map<string, string> &buildmap)
 	auto MapFindIterator = buildmap.find(key);
 	if (MapFindIterator != buildmap.cend())
 	{
-		return MapFindIterator->second; //
+		return MapFindIterator->second; 
 	}
 	else
 		return key;
@@ -425,16 +434,16 @@ const string &transform(const string &key, map<string, string> &buildmap)
 
 void word_transform(ifstream &mapfile, ifstream &input)
 {
-	auto RuleMap = BuildMap(mapfile); //
+	auto RuleMap = BuildMap(mapfile); 
 	string text;
-	while (getline(input, text)) //
+	while (getline(input, text)) 
 	{
 		string word;
-		istringstream stream(text); //
-		bool firstword = true;		//
+		istringstream stream(text); 
+		bool firstword = true;		
 		while (stream >> word)
 		{
-			if (firstword) //
+			if (firstword) 
 				firstword = false;
 			else
 				cout << " ";
@@ -443,6 +452,29 @@ void word_transform(ifstream &mapfile, ifstream &input)
 		cout << endl;
 	}
 }
+void UsersAccount(ifstream &Usersfile)
+{
+	set<int> UsersSet;
+	string text;
+	while(getline(Usersfile,text))//读一行
+	{
+		//string symbol;
+		int usernum;
+		istringstream stream(text);//将这一行转换为字符流
+		while(stream>>usernum)
+		{
+			UsersSet.insert(usernum);
+		}
+		//while(stream>>symbol)
+	}
+	cout<<"DAU:"<<UsersSet.size()<<endl;
+	for(auto it:UsersSet)
+	{
+		cout<<it<<endl;
+	}
+}
+
+
 
 /*
 *    
@@ -471,7 +503,7 @@ TextQuery::TextQuery(ifstream &is) : File(new vector<string>), ifs(is)
 		//cout << text << endl;
 		File->push_back(text);
 		int n = File->size() - 1;
-		istringstream line(text); // 
+		istringstream line(text);  
 		string word;
 		while (line >> word)
 		{
@@ -484,7 +516,7 @@ TextQuery::TextQuery(ifstream &is) : File(new vector<string>), ifs(is)
 		}
 	}
 }
-//   
+   
 TextQuery::~TextQuery()
 {
 }
@@ -499,9 +531,9 @@ class QueryResult
 	~QueryResult();
 
   private:
-	string QueryString;								//
-	std::shared_ptr<std::vector<std::string>> file; //
-	shared_ptr<set<line_no>> lines;					//
+	string QueryString;								
+	std::shared_ptr<std::vector<std::string>> file; 
+	shared_ptr<set<line_no>> lines;					
 };
 QueryResult::QueryResult(string s, shared_ptr<vector<string>> out, shared_ptr<set<line_no>> outlines) : QueryString(s), file(out), lines(outlines)
 {
@@ -535,7 +567,7 @@ QueryResult TextQuery::query(const string &QueryString) const
 	}
 }
 
-std::ostream &print(std::ostream &out, const QueryResult &OutResult) //
+std::ostream &print(std::ostream &out, const QueryResult &OutResult) 
 {
 	cout << OutResult.lines->size() << endl;
 	out << OutResult.QueryString << "occurs " << OutResult.lines->size() << "times" << endl;
@@ -1134,7 +1166,7 @@ namespace alg
 					Cache_Hash[key_] = p;
 				
 					AddFirstNode(p);
-					//cout<<"CacheSize_="<<CacheSize_ <<endl;
+				
 					if (Cache_Hash.size() > CacheSize_)
 					{
 						cout << "The CacheList  full " << endl;
@@ -1147,21 +1179,17 @@ namespace alg
 			void Display()
 			{
 				CacheNode *p=CacheListPre;
-				//cout<<"CacheList length ="<<Cache_Hash.size() <<endl;
+				
 				while(p)
 				{
 					cout<<"[Key]: "<<p->key<<"--->"<<"[Value]: "<<p->value<<endl;
 					p=p->pnext;
 				}
-				// for(map<K,CacheNode*>::iterator it :Cache_Hash)
-				// {
-				// 	cout<<"[Key]: "<<it->first<<"--->"<<"[Value]: "<<it->second->value<<endl;
-				// }
+				
 			}
 			void DeatchNode(CacheNode *p)
 			{
-				//cout << "log 3" << endl;
-				//cout<<"args_p="<<p<<endl;
+			
 				p->pre->pnext=p->pnext;
 				p->pnext->pre=p->pre;
 			}
@@ -1187,20 +1215,247 @@ namespace alg
 				CacheNode *p=CacheListPre;
 				if (CacheListPnext)
 				{
-					//cout << "log 1" << endl;
+					
 					while (p->pnext != CacheListPnext)
 					{
-						//cout << "log 2" << endl;
+					
 						p = p->pnext;
 					}
 					DeatchNode(p);
-					//cout << "log 4" << endl;
+				
 					Cache_Hash.erase(p->key);
-					//cout << "log 5" << endl;
+					
 					free(p);
-					//cout << "log 6" << endl;
-					//	CacheListPnext = p;
+					
 				}
 			}
 	};
+	template<typename T=char>
+	class Array2D
+	{
+		private:
+			uint32_t NR;    //num of rows
+			uint32_t NC;    //num of clolum 
+			T *m_data;
+		public:
+			Array2D(uint32_t nrow,uint32_t ncol)
+			{
+				NR=nrow;
+				NC=ncol;
+				m_data=new T[nrow*ncol];
+			}
+			~Array2D()
+			{
+				delete []m_data;
+			}
+		private:
+			Array2D(const Array2D&);
+			Array2D&operator=(const Array2D);
+		public:
+			/*return the  array's row and col*/
+			inline uint32_t  row(){return NR;}
+			inline uint32_t  col(){return NC;}
+			/*return the assigened num by given (row,col)*/
+			inline T &operator()(int row,int col){return this->m_data[NR*row+col];}
+			const inline T& operator()(int row,int col) const {return this->m_data[NR*row+col];}
+			inline T* operator[](int row){return &m_data[NC*row];}
+			//inline T* operator[](int col){return &m_data[NR*col];}
+			inline const T*operator[](int row) const {return &m_data[NC*row];}
+			/* clear a value by given*/
+			void clear(const T& value)
+			{
+				for(uint32_t i=0;i<NC*NR;i++)
+				{
+					if(m_data)
+						m_data[i]=value;
+				}
+			}
+		
+	};
+	template<typename T>
+	class Heap
+	{
+		struct elem
+		{
+			int key;
+			T data;
+		};
+		private:
+			int m_size;
+			int m_max;
+			elem *pheap;
+			/*prevent changing the object by copy and  assignment*/
+			Heap(const Heap&);
+			Heap&operator=(const Heap&);
+
+		public:
+			Heap(int m_max):m_max(m_max)
+			{
+				m_size=0;
+				pheap=new elem[m_max];
+			}
+			/*pop the minium element*/
+			elem Pop()
+			{
+				int n=m_size-1;
+				swap(pheap[0],pheap[n]);// exchange the elem of the first and the end
+				down(0,n);
+				m_size--;
+				return pheap[m_size];//after adjust last elem is the minimum
+			}
+			void Push(int key,const T& InsertNum)
+			{
+				int n=m_size;
+				pheap[n].data=InsertNum;
+				pheap[n].key=key;
+				up(n);
+				m_size++;
+				
+			}
+			bool Remove(T &InsertValue)
+			{
+				for(int i=0;i<m_size;i++)
+				{
+					if(pheap[i].data==InsertValue)
+					{
+						int n=m_size-1;
+						if(n!=i)
+						{
+							swap(pheap[i], pheap[n]); 
+							down(i, m_size);	// adjust  downward
+							up(i);			    // adjust  upward
+						}
+						m_size--;
+						return true;
+					}
+				}
+				return false;
+			}
+			inline void clear()
+			{
+				m_size=0;
+			}
+			void Count(){return m_size;}
+
+			/*
+			*  test the heap is empty
+			*/
+			inline bool isempty() const
+			{
+				return m_size?true:false;
+			}
+
+			/*
+			*  check there exist elem 
+			*/
+			bool contain(const T &data)
+			{
+				for(int i=0;i<m_size;i++)
+					if(pheap[i].data==data)
+						return true;
+				return false;
+			}
+			void up(int num)
+			{
+				for(;;)
+				{
+					int parent=(num-1)/2; // the index start from 0
+					if(num==parent||!less(num,parent))// the index num is not smaller than parent node
+						break;
+					swap(pheap[num],pheap[parent]);
+					num=parent;
+				}
+			}
+			void down(int i,int n)/*from the node i start to adjust  */
+			{
+				for(;;)
+				{
+					int L=2*i+1;
+					if(L<0||L>=n)
+						break;
+					int M=L;
+					int R=M+1;
+					if(R<n&&!less(L,R))//chooser the smaller node's index
+						M=R;
+					if(!less(M,i))//if the smaller child node is bigger than current node return
+						break;
+					swap(pheap[i],pheap[M]);/*exchange the current and smaller child node*/
+					i=M;	/* change the current node*/
+				}
+			}
+			bool less(int i,int j)
+			{
+				return pheap[i].key<pheap[j].key;
+			}
+			void printheap()
+			{
+				for(int i=0;i<m_size;i++)	
+					//printf("key:%d value:%s",pheap[i].key,decltype(pheap[i].data)==string?pheap[i].data.c_str():pheap[i].data);
+					cout<<" key:"<<pheap[i].key<<" value:"<<pheap[i].data<<";";
+				printf("\n");
+			}
+	};
 } // namespace alg	
+namespace cpporident
+{	/*
+	class ZooAnimal
+	{
+		protected:
+			string ZooDepart;
+			int Age;
+
+	};
+	class Engdangered
+	{
+		protected:
+			bool IsExhibit;
+	};*/
+	class Bear 
+	{
+		protected:
+			string Area;
+		public:
+			Bear(string area):Area(area)
+			{}
+	};
+	class Panda : private Bear
+	{
+	  public:
+	  	/*
+		Panda(string zoopart, string area, int age, bool isexihabit)
+			: Bear(area), Engdangered(isexihabit), ZooAnimal(zoopart, age)
+		{
+		}
+		*/
+		string color="block";
+		Panda(string area):Bear(area)
+		{}
+		void PrintBaseInfo()
+		{
+			// oss << "zoopart:" << ZooDepart;
+			// oss << "age:" << age;
+			cout<<"Area: "<<Area<<" color:"<<color<<endl;
+		}
+	};
+}
+
+namespace copyinitlize
+{
+	class student
+	{
+		private:
+			char *Sname;
+			int A;
+		public:
+			student(int a)
+			{
+				A=a;
+				Sname=new char[A];
+				cout<<"student()"<<endl;
+			}
+			~student()
+			{
+				cout<<"~student()"<<endl;
+			}
+	};
+} // copyinitlize
