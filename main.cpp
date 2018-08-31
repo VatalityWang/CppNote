@@ -48,13 +48,11 @@ singleton *singleton::pInstance = NULL;
 	*b=990;					\
  					\
 } while (0)
-int main()
+int main(int argc,char *argv[])
 {
 #if 0
 	/*string word;*/
-
-	//	vector<int> test( 10,1 );//
-
+	//	vector<int> test( 10,1 );
 	/*
 	*	list如何增长空间
 	*/
@@ -76,7 +74,7 @@ int main()
 	oldstyle.push_back(string2);
 	oldstyle.push_back(string3);
 	names.assign(oldstyle.cbegin(), oldstyle.cend());
-	//oldstyle.push_front("heihei");//
+	//oldstyle.push_front("heihei");
 
 	/*
 	*
@@ -91,13 +89,12 @@ int main()
 	*/
 	while (iter != oldstyle.end())
 	{
-		iter = oldstyle.insert(iter, *iter);//
+		iter = oldstyle.insert(iter, *iter);
 		iter += 2;
 	}
 	print(oldstyle);
 
-
-
+	
 	/*
 	*
 	*/
@@ -130,7 +127,7 @@ int main()
 	log("class dierctly  exchange");
 	vector<int>test{ 1,2,3,4,5,6,7,8,9,10 };
 	vector<int>test2{ 9,8,7,6,5,4,3,2,1,0 };
-	test = test2;//
+	test = test2;
 	for (vector<int>::iterator it = test.begin();it != test.end();++it)
 	{
 		cout << *it << endl;
@@ -174,7 +171,7 @@ int main()
 	//{
 	//	cout << "enter into success\n" << endl;
 	//}
-	//cout << i << endl;//
+	//cout << i << endl;
 
 
 	 /*
@@ -227,13 +224,13 @@ int main()
 	log("Erase");
 	list<int> lst = { 0,1,2,3,4,5,6,7,8,9 };
 	print(lst);
-	lst.erase(lst.begin(), lst.end());//
+	lst.erase(lst.begin(), lst.end());
 	/*auto it = lst.begin();
 	while (it!=lst.end())
 	{
 		if (*it % 2)
 		{
-			it=lst.erase(it);//
+			it=lst.erase(it);
 		}
 		else
 		{
@@ -251,7 +248,7 @@ int main()
 	print(lst);
 	log("delete odd and even");
 	for (auto it = lstia.begin();it != lstia.end();)
-		//for (auto it:lstia)
+	//for (auto it:lstia)
 	{
 		if (*it & 0x01) 
 			it = lstia.erase(it);
@@ -263,7 +260,7 @@ int main()
 	}
 	for (auto it = vecia.begin();it != vecia.end();)
 	{
-		if (!(*it & 0x01))//
+		if (!(*it & 0x01))
 		{
 			it = vecia.erase(it);
 		}
@@ -281,11 +278,11 @@ int main()
 	forward_list<int>forlist{ vecia.begin(),vecia.end() };
 	//	forward_list<int>::iterator it = forlist.begin();
 	forward_list<int>::iterator ittemp = forlist.before_begin();
-	forlist.insert_after(ittemp, 99);// 
-	forlist.insert_after(ittemp, 98);//
+	forlist.insert_after(ittemp, 99); 
+	forlist.insert_after(ittemp, 98);
 	forlist.insert_after(ittemp, 97);
 	forward_list<int>::iterator it = forlist.begin();
-	forlist.insert_after(it, 3, 88);//
+	forlist.insert_after(it, 3, 88);
 	forlist.insert_after(it, {});
 	print(forlist);
 	/*
@@ -299,7 +296,7 @@ int main()
 	forlist.resize(20);
 	print(forlist);
 	log("resize + n");
-	forlist.resize(25, 1);//
+	forlist.resize(25, 1);
 	print(forlist);
 
 
@@ -310,7 +307,7 @@ int main()
 	vector<int>::iterator it1 = vecia.end();
 	vector<int>::iterator it2 = vecia.begin();
 	vecia.push_back(99);
-	//	cout << *it1 << endl;//
+	//	cout << *it1 << endl;
 	cout << *it2 << endl;
 	log("deque iterator lose efficacy");
 	deque<int> deq1;
@@ -334,7 +331,7 @@ int main()
 	log("accumulate");
 	int isum = accumulate(vecia.cbegin(), vecia.cend(), 0);
 	//string strsum = accumulate(oldstyle.begin(), oldstyle.end(), "");
-	string strsum = accumulate(oldstyle.begin(), oldstyle.end(), string(""));//
+	string strsum = accumulate(oldstyle.begin(), oldstyle.end(), string(""));
 	cout << "the sum " << isum << endl;
 	cout << "the strsum" << strsum << endl;
 	log("Back_Inserter");
@@ -366,11 +363,11 @@ int main()
 	
 	log("unique");
 	auto end_unique=unique(vecib.begin(),vecib.end());
-	vecib.erase(end_unique, vecib.end());//
+	vecib.erase(end_unique, vecib.end());
 	print(vecib);
 
 
-	log("Predicate");//
+	log("Predicate");
 	print(names);
 	list<string>namess;
 	replace_copy(names.begin(),names.end(),back_inserter(namess),"","");
@@ -381,7 +378,7 @@ int main()
 	vector<string> strname{"wangchunji","xulin","wangqiang"};
 	//list
 	print(strname);
-	sort(strname.begin(), strname.end(), IsShorter);//
+	sort(strname.begin(), strname.end(), IsShorter);
 	print(strname);
 
 	/*
@@ -400,14 +397,14 @@ int main()
 	names.push_back("hi");
 	names.push_back("hi");
 	print(names);
-	stable_sort(names.begin(), names.end(), [](const string &a, const string &b)//
+	stable_sort(names.begin(), names.end(), [](const string &a, const string &b)
 	{
 		return a.size() < b.size();
 	});
 	log("After lambda stable_sort");
 	print(names);
 
-	//
+	
 	log("find_if");
 	int sz = 4;
 	auto wc = find_if(names.begin(), names.end(), [sz](const string &a) {return a.size() >= sz;});
@@ -420,7 +417,7 @@ int main()
 	log("for_each");
 	for_each(wc, names.end(), [](const string &s) {cout << s << " ";});
 	cout << endl;
-	//cout << *names.end() << endl;//
+	//cout << *names.end() << endl;
 
 
 	log("Lambdaf1");
@@ -442,7 +439,7 @@ int main()
 
 
 	log("lambda transmit into tree parameter");
-	biggies1(strname, 6);//
+	biggies1(strname, 6);
 
 
 	/*
@@ -474,9 +471,9 @@ int main()
 	vector<int>testinsert1;
 	list<int>testinsert2;
 	vector<int>testinsert3;
-	copy(test2.begin(),test2.end(),back_inserter(testinsert1));//
-	copy(test2.begin(),test2.end(),front_inserter(testinsert2));//
-	copy(test2.begin(),test2.end(),inserter(testinsert3,testinsert3.begin()));//
+	copy(test2.begin(),test2.end(),back_inserter(testinsert1));
+	copy(test2.begin(),test2.end(),front_inserter(testinsert2));
+	copy(test2.begin(),test2.end(),inserter(testinsert3,testinsert3.begin()));
 	print(testinsert1);
 	print(testinsert2);
 	print(testinsert3);
@@ -488,7 +485,7 @@ int main()
 	*/
 	log("iostream");
 	vector<int> testinsert4;
-	istream_iterator<int> in_iter(cin);//
+	istream_iterator<int> in_iter(cin);
 	istream_iterator<int> eof;
 	while (in_iter!=eof)
 	{
@@ -507,7 +504,7 @@ int main()
 
 
 	log("ostream_iterator");
-	ostream_iterator<int> out_iter(cout," ");//
+	ostream_iterator<int> out_iter(cout," ");
 	for (auto e : testinsert3)
 	{
 		*out_iter++=e;
@@ -522,10 +519,10 @@ int main()
 	/*
 	* ???
 	*/
-	//istream_iterator<Sale_Data> item_iter(cin),eof1;//
+	//istream_iterator<Sale_Data> item_iter(cin),eof1;
 	////istream_iterator<Sale_Data>eof;
 	//ostream_iterator<Sale_Data> out_iter(cout,"\n");
-	//Sale_Data sum = *item_iter++;//
+	//Sale_Data sum = *item_iter++;
 	//while (item_iter!=eof1)
 	//{
 	//	if (item_iter->isbn()==sum.isbn())
@@ -539,9 +536,9 @@ int main()
 	*/
 	//fflush(stdin);
 	std::cin.clear();
-	cin.ignore(numeric_limits<streamsize>::max(),'\n');//
+	cin.ignore(numeric_limits<streamsize>::max(),'\n');
 	log("Enter a series string into a vector");
-	//
+	
 	//istream_iterator<string> FileCin(cin), eof2;
 	//while (FileCin != eof2)
 	//{
@@ -605,14 +602,14 @@ int main()
 	/*auto flag = find(strname.cbegin(), strname.cend(),"to");
 	cout << *flag << endl;
 	cout << string(strname.crbegin(), flag) << endl;*/
-	//for (vector<string>::reverse_iterator r_iter = strname.crbegin(); r_iter != strname.crend();++r_iter)//
+	//for (vector<string>::reverse_iterator r_iter = strname.crbegin(); r_iter != strname.crend();++r_iter)
 	for (auto r_iter = strname.crbegin(); r_iter != strname.crend();++r_iter)
 
 	{
 		cout << *r_iter << endl;
 	}
 	
-	//
+	
 	print(testinsert3);
 	for (auto r_iter = testinsert3.crbegin();r_iter != testinsert3.crend();r_iter++)
 		cout << *r_iter << endl;
@@ -620,7 +617,7 @@ int main()
 	*
 	*/
 	int IterDis = 0;
-	auto FlagZero =find(testinsert2.crbegin(), testinsert2.crend(),0);//
+	auto FlagZero =find(testinsert2.crbegin(), testinsert2.crend(),0);
 	/*while (FlagZero != testinsert2.end())
 	{
 		IterDis++;
@@ -650,7 +647,7 @@ int main()
 	*/
 	log("count the word mount");
 	std::cin.clear();
-	cin.ignore(numeric_limits<streamsize>::max(), '\n');//
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	map<string, int> word_account;
 	string word;
 	while (cin>>word&&word!="end")
@@ -685,7 +682,7 @@ int main()
 	*/
 	log("count the word mount using insert");
 	std::cin.clear();
-	cin.ignore(numeric_limits<streamsize>::max(), '\n');//
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	/*map<string, int> word_account;
 	string word;*/
 	while (cin >> word&&word != "end")
@@ -858,7 +855,7 @@ int main()
 	Test_Define(&a,&b);
 	cout<<"a="<<a<<"b="<<b<<endl;
 #endif
-#if 1
+#if 0
 	LruCache<string,int> MyCache(5);
 	MyCache.InsertValue("wangchunji",24);
 	MyCache.InsertValue("XuLin",23);
@@ -868,12 +865,76 @@ int main()
 	MyCache.InsertValue("SunBoWen",5);
 	MyCache.Display();
 #endif
+	/*
+	if(argc!=2)
+	{
+		cout<<"error!,Please input the necessary filename" <<endl;
+		return 0;
+	}
+	log("Users Account");
+	string filenamein = argv[1];
+	//string filenameout = "Out.txt";
+	ifstream ifsrule(filenamein);
+	if (ifsrule)
+		UsersAccount(ifsrule);
+	ifsrule.close();
+	*/
+	/*
+	int array[14]={0};
+	vector<int> Index;
+	Index.push_back(1);
+	Index.push_back(2);
+	Index.push_back(3);
+	Index.push_back(4);
+	cout<<sizeof(Index)<<endl;
+	cout<<sizeof(array)<<endl;
+	memcpy(array,&Index,sizeof(Index));
+	for(int i=0;i<14;i++)
+	{
+		cout<<array[i]<<endl;
+	}
+	*/
 	//int i=1,j=3;
 	//double k=0.5;
 	//k=double(i)/j;
 	//cout<<double(i)/j<<endl;
 	//cout<<k<<endl;
 	//system("pause");
+
+	/* test the class Array2D*/
+	Array2D<int>array2(3,4);
+	array2.clear(1);
+
+	/*test cpp class inherit*/
+	using namespace cpporident;
+	//Panda panda1("cat" ,"sichuan",10,true);
+	Panda panda1("sichuan");
+	panda1.PrintBaseInfo();
+	panda1.color="read";
+	panda1.PrintBaseInfo();
+
+	/*test heap*/
+	Heap<string> heap(10);
+	heap.Push(3,"wcj");
+	heap.Push(4,"xu");
+	heap.Push(8,"wangqiang");
+	heap.Push(2,"zhong");
+	heap.printheap();
+
+	string wcj="wcj";
+	wcj="wangqiang";
+	cout<<wcj<<endl;	
+	
+	/*
+		using namespace copyinitlize;
+		student s1(10);
+		student s2(s1);//one constuction and two destruction
+	*/
+	
+
+
+
+
 	return 0;
 }
 
