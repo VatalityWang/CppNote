@@ -16,6 +16,7 @@
 #include <set>
 //#include<match>
 #include<stack>
+#include<exception>
 int LogFlag = 0;
 using namespace ::std;
 using std::allocator;
@@ -1393,6 +1394,81 @@ namespace alg
 					//printf("key:%d value:%s",pheap[i].key,decltype(pheap[i].data)==string?pheap[i].data.c_str():pheap[i].data);
 					cout<<" key:"<<pheap[i].key<<" value:"<<pheap[i].data<<";";
 				printf("\n");
+			}
+	};
+	/*
+	* first in but last out
+	*/
+	template<typename T=uintptr_t>
+	class Stack 
+	{
+		private:
+			class StackEmptyException:public std::exception
+			{
+				public:
+					virtual const char*what() const throw()
+					{
+						return "stack is empty";
+					}
+			}excp_empty;
+			class StackFullException:public std::exception
+			{
+				public:
+					virtual const char*what() const throw()
+					{
+						return "index out of bound";
+					}
+			}excp_bound;
+			uint32_t m_Capcity;//total 
+			uint32_t m_Size;// current size
+			T *pStack;//the elemments
+		public:
+			Stack(uint32_t	m_capcity)
+			{
+				m_Capcity=m_capcity;
+				m_Size=0;
+				pStack=new T[m_Capcity];
+			}
+			~Stack()
+			{
+				delete []pStack;
+			}
+		private:
+			Stack(const Stack&);
+			Stack& operator=(const Stack&);
+		public:
+			inline uint32_t Size() const {return m_Size;}
+			inline bool push(const T &elem)
+			{
+				if(m_Size==m_Capcity) return false;
+				pStack[m_Size++]=elem;
+				return true;
+			}
+			inline  const T& Top() const
+			{
+				if(!m_Size) throw excp_empty;
+				return pStack[m_Size-1];
+			}
+			inline void  Pop() 
+			{
+				if(!m_Size)
+					return;
+				m_Size--;
+			}
+			inline bool IsEmpty() const
+			{
+				return m_Size?true:false;
+			}
+
+			inline const T& operator[](uint32_t pos) const
+			{
+				if(pos<0||pos>=m_Size)
+					throw excp_bound;
+				return pStack[m_Size-1-pos];
+			}
+			inline uint32_t Count() const
+			{
+				return m_Size;
 			}
 	};
 } // namespace alg	

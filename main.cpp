@@ -921,10 +921,14 @@ int main(int argc,char *argv[])
 	heap.Push(2,"zhong");
 	heap.printheap();
 
-	string wcj="wcj";
-	wcj="wangqiang";
-	cout<<wcj<<endl;	
-	
+	/*test Stack*/
+	Stack<int> MyStack(3);
+	MyStack.push(2);
+	MyStack.push(4);
+	MyStack.push(6);
+	MyStack.push(7);
+	int elem=MyStack[4];
+
 	/*
 		using namespace copyinitlize;
 		student s1(10);
