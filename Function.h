@@ -489,12 +489,53 @@ class TextQuery
 	using line_no = std::vector<string>::size_type;
 	TextQuery(ifstream &);
 	QueryResult query(const string &) const;
+	void PrintHighestWords(int frequency,string WordFile);
 
   private:
 	ifstream &ifs;
 	shared_ptr<vector<string>> File;
 	map<string, shared_ptr<set<line_no>>> wm;
 };
+void TextQuery::PrintHighestWords(int frequency,string WordFile)
+{
+	map<int,vector<string>> WordFreq;
+	map<string, shared_ptr<set<line_no>>>::iterator it;
+	map<int,vector<string>>::iterator im,ibegin;
+	vector<string>::iterator in;
+	int i,j;
+	int strnum;
+	vector<string> strtmp;
+	for( it=wm.begin();it!=wm.end();it++)
+	{
+		strnum=it->second->size();
+		strtmp.clear();
+		strtmp.push_back(it->first);
+		im=WordFreq.find(strnum);
+		if(im!=WordFreq.end())
+		{
+			(im->second).push_back(it->first);
+		}
+		else
+		{
+			WordFreq.insert(std::make_pair(strnum,strtmp));
+		}
+	}
+	ibegin=WordFreq.begin();
+	ibegin--;
+	ofstream ofs(WordFile);
+	for(i=0,im=(WordFreq.end()),im--;im!=ibegin&&i!=frequency;im--,i++)
+	{
+		ofs<<im->first<<" "<<endl;
+		for(j=1,in=(im->second).begin();in!=(im->second).end();in++,j++)
+		{
+			ofs<<*in<<"  ";
+			if(j/5&&j%5==0)
+				ofs<<endl;
+		}
+		ofs<<endl;
+	}
+	
+}
 
 TextQuery::TextQuery(ifstream &is) : File(new vector<string>), ifs(is)
 {
@@ -509,6 +550,88 @@ TextQuery::TextQuery(ifstream &is) : File(new vector<string>), ifs(is)
 		while (line >> word)
 		{
 			//print(word);
+			size_t pos;
+			int i,j,num,len,tmpi;
+			pos=word.find(',');
+			if (pos!=std::string::npos)
+			{
+				word=word.substr(0, pos);
+			}
+			pos=word.find(';');
+			if (pos!=std::string::npos)
+			{
+				word=word.substr(0, pos);
+			}
+			pos=word.find('.');
+			if (pos!=std::string::npos)
+			{
+				word=word.substr(0, pos);
+			}
+			pos=word.find(':');
+			if (pos!=std::string::npos)
+			{
+				word=word.substr(0, pos);
+			}
+			//filter left "
+			printf("current word %s\n",word.c_str());
+			
+			//word=word.replace(word.find("\""),1,"");
+			//word=word.replace(word.find("\""),1,"");
+			/*
+			char* strtmp=new char[word.size()];
+			memcpy(strtmp,word.c_str());
+			len=strlen(strtmp);
+			num++;
+			for(i=0;i<len;i++)
+			{
+			//while(strtmp[i]!='\0')
+				if(strtmp[i]=='\"')
+				{
+					tmpi=i;
+					j=i+1;
+					while(j<len)
+						strtmp[i++]=strtmp[j++];
+					num++;
+				}
+				i=tmpi;
+			}
+			*/
+		
+			pos=word.find('"');
+			if(pos!=std::string::npos)
+			{
+				word=word.replace(word.find('\"'),1,"");
+				/*
+				if(pos==0)
+					word=word.substr(1,word.size()-1);
+				else
+					word=word.substr(0,pos);
+					*/
+			}
+			//filter right "
+			pos=word.find('"');			
+			if(pos!=std::string::npos)
+			{
+				word=word.replace(word.find('\"'),1,"");
+				/*
+				if(pos==0)
+					word=word.substr(1,word.size()-1);
+				else
+					word=word.substr(0,pos);
+				*/
+			}
+			/*
+			pos=word.find('”');			
+			if(pos!=std::string::npos)
+			{
+				word=word.replace(word.find('”'),1,"");
+			}
+			pos=word.find('“');			
+			if(pos!=std::string::npos)
+			{
+				word=word.replace(word.find('“'),1,"");
+			}
+			*/
 			cout << word << endl;
 			auto &lines = wm[word];
 			if (!lines)
@@ -532,9 +655,9 @@ class QueryResult
 	~QueryResult();
 
   private:
-	string QueryString;								
-	std::shared_ptr<std::vector<std::string>> file; 
-	shared_ptr<set<line_no>> lines;					
+	string QueryString;	//查询单词					
+	std::shared_ptr<std::vector<std::string>> file; //输入文件
+	shared_ptr<set<line_no>> lines;	//出现行号
 };
 QueryResult::QueryResult(string s, shared_ptr<vector<string>> out, shared_ptr<set<line_no>> outlines) : QueryString(s), file(out), lines(outlines)
 {
@@ -558,20 +681,18 @@ QueryResult TextQuery::query(const string &QueryString) const
 	//if(!nodata)
 	if (loc == wm.end())
 	{
-		log("Not Find it");
 		return QueryResult(QueryString, File, nodata);
 	}
 	else
 	{
-		log(" Find it");
 		return QueryResult(QueryString, File, loc->second);
 	}
 }
 
 std::ostream &print(std::ostream &out, const QueryResult &OutResult) 
 {
-	cout << OutResult.lines->size() << endl;
-	out << OutResult.QueryString << "occurs " << OutResult.lines->size() << "times" << endl;
+	cout << "the results's size: "<<OutResult.lines->size() << endl;
+	out << OutResult.QueryString << " occurs " << OutResult.lines->size() << " times" << endl;
 	for (auto num : *OutResult.lines)
 	{
 		out << "line num " << num + 1 << ":" << *(OutResult.file->begin() + num) << endl;

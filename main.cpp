@@ -729,20 +729,7 @@ int main(int argc,char *argv[])
 	ifsrule.close();
 	ifsout.close();
 #endif
-#if 0
-	/*
-	* 
-	*/
 
-	log("TextQuery");
-	string fileTrans = "Aesop��s Fables(����Ԣ��).txt";
-	string FileOut = "Out.txt";
-	ifstream ifsin(fileTrans);
-	TextQuery   testquery(ifsin);
-	 cout<<"Enter word to query:";
-	print( cout, testquery.query("beautiful"));
-
-#endif
 
 	/*
 	*	拷贝构造
@@ -879,6 +866,7 @@ int main(int argc,char *argv[])
 		UsersAccount(ifsrule);
 	ifsrule.close();
 	*/
+
 	/*
 	int array[14]={0};
 	vector<int> Index;
@@ -894,12 +882,17 @@ int main(int argc,char *argv[])
 		cout<<array[i]<<endl;
 	}
 	*/
-	//int i=1,j=3;
-	//double k=0.5;
-	//k=double(i)/j;
-	//cout<<double(i)/j<<endl;
-	//cout<<k<<endl;
-	//system("pause");
+
+#if 0
+	/*
+	*  test the data type transfer
+	*/
+	int i=1,j=3;
+	double k=0.5;
+	k=double(i)/j;
+	cout<<double(i)/j<<endl;
+	cout<<k<<endl;
+	system("pause");
 
 	/* test the class Array2D*/
 	Array2D<int>array2(3,4);
@@ -928,12 +921,30 @@ int main(int argc,char *argv[])
 	MyStack.push(6);
 	MyStack.push(7);
 	int elem=MyStack[4];
-
+#endif
 	/*
 		using namespace copyinitlize;
 		student s1(10);
 		student s2(s1);//one constuction and two destruction
 	*/
+
+	//
+	//word frequency query
+	//
+	string fileTrans = "english article.txt";
+	string FileOut = "Out.txt";
+	ifstream ifsin(fileTrans);
+	if (ifsin)
+	{
+		TextQuery testquery(ifsin);
+		testquery.PrintHighestWords(100,string("WordFreq.txt"));
+		print(cout, testquery.query("Supreme"));
+	}
+	else 
+		cout<<"ifstream error"<<endl;
+
+
+
 	
 
 
