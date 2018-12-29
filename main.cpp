@@ -927,28 +927,38 @@ int main(int argc,char *argv[])
 		student s1(10);
 		student s2(s1);//one constuction and two destruction
 	*/
+	/*
+		//
+		//word frequency query
+		//
+		string fileTrans = "english article.txt";
+		string FileOut = "Out.txt";
+		ifstream ifsin(fileTrans);
+		if (ifsin)
+		{
+			TextQuery testquery(ifsin);
+			testquery.PrintHighestWords(100,string("WordFreq.txt"));
+			print(cout, testquery.query("Supreme"));
+		}
+		else 
+			cout<<"ifstream error"<<endl;
 
-	//
-	//word frequency query
-	//
-	string fileTrans = "english article.txt";
-	string FileOut = "Out.txt";
-	ifstream ifsin(fileTrans);
-	if (ifsin)
-	{
-		TextQuery testquery(ifsin);
-		testquery.PrintHighestWords(100,string("WordFreq.txt"));
-		print(cout, testquery.query("Supreme"));
-	}
-	else 
-		cout<<"ifstream error"<<endl;
-
+	*/
 
 
 	
-
-
-
+	//
+	//test the reOrderArray
+	//
+	vector<int> array;
+	for(int i=1;i<8;i++)
+		array.push_back(i);
+	class ReOrderArray reorderarr;
+	reorderarr.reOrderArray(array);
+	print(array);
+	//vector<int>::iterator end=array.end()-1;
+	//cout<<"*end="<<*end<<endl;
+	
 
 	return 0;
 }

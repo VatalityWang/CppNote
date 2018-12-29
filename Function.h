@@ -1188,6 +1188,7 @@ void ForkFunc()
 * Add overloaded input,output,addition,add commpund-assignment operators
 */
 
+
 class DoublePower {
 public:
     double Power(double base, int exponent) {
@@ -1209,7 +1210,49 @@ public:
 class ReOrderArray {
 public:
     void reOrderArray(vector<int> &array) {
-	
+		int temp;
+		vector<int>::iterator it=array.begin();
+		//无法保证奇数 偶数相对位置不变
+		int size=array.size();
+		while (size)
+		{
+			if ((*it) % 2 == 0)
+			{
+				temp = *it;
+				it = array.erase(it);
+				array.push_back(temp);
+			}
+			else
+				it++;
+			size--;
+		}
+		/*
+		vector<int>::iterator begin,end;
+		begin=array.begin();
+		end=array.end()-1;
+		for(;begin<=end;)
+		{
+			if(!((*begin)%2))//前一个为偶数, 交换
+			{
+				temp=*end;
+				*end=*begin;
+				*begin=temp;
+				end--;
+			}
+			else if((*end)%2)//后一个为奇数，交换
+			{
+				temp=*begin;
+				*begin=*end;
+				*end=temp;
+				begin++;
+			}
+			else
+			{
+				begin++;
+				end--;
+			}
+		}
+		*/
     }
 };
 namespace alg
