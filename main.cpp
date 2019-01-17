@@ -17,6 +17,7 @@
 #include <memory>
 #include<unistd.h>
 #include<sys/types.h>
+#include<queue>
 #include "ev.h"
 #include "ev++.h"
 #include "Function.h"
@@ -35,6 +36,7 @@ using namespace std::placeholders;
 using std::list;
 using std::numeric_limits;
 using std::streamsize;
+
 using namespace alg;
 static void timeout_cb(EV_P_ ev_timer *w, int revents)
 {
@@ -946,20 +948,119 @@ int main(int argc,char *argv[])
 	*/
 
 
-	
+	/*
 	//
 	//test the reOrderArray
 	//
 	vector<int> array;
 	for(int i=1;i<8;i++)
 		array.push_back(i);
-	class ReOrderArray reorderarr;
+    ReOrderArray reorderarr;
 	reorderarr.reOrderArray(array);
 	print(array);
-	//vector<int>::iterator end=array.end()-1;
-	//cout<<"*end="<<*end<<endl;
-	
+	*/
 
+	//
+	//test find tht kth element form the last,construct the LinkList.
+	//
+	/*
+	ListNode *pListHead=NULL;
+	ListNode *pListRear=NULL;
+	for(int i=1;i<7;i++)
+	{
+		ListNode *listNLink = (ListNode *)malloc(sizeof(ListNode));
+		listNLink->val = i;
+		listNLink->next = NULL;
+		if (i == 1)
+		{
+			pListHead = listNLink;
+			pListRear = listNLink;
+		}
+		else
+		{
+			pListRear->next = listNLink;
+			pListRear = listNLink;
+		}
+	}
+	LinkList list;
+	ListNode*kth=list.ReverseList(pListHead);
+	while(kth)
+	{
+		cout<<"val: "<<kth->val<<endl;
+		kth=kth->next;
+	}
+	*/
+
+	//
+	//construct the binary tree
+	//
+/*
+	//
+	//test push_back
+	// 
+	vector<int> Test;
+	for(int i=0;i<10;i++)
+		Test.push_back(i);
+	cout<<Test.size()<<endl;
+
+	int k=1;
+	vector<vector<int> > TestVector(4);
+	//TestVector.clear();//添加此句编译不通过，定义好了大小不能再进行清除，否则后面分配会失败
+	for(int i=0;i<4;i++)
+		TestVector[i].resize(5);
+	for(int i=0;i<4;i++)
+		for(int j=0;j<5;j++)
+			TestVector[i][j]=k++;
+	for(int i=0;i<TestVector.size();i++)
+		for(int j=0;j<TestVector[0].size();j++)
+			cout<<TestVector[i][j]<<endl;
+	VectorSolution vecsolu;
+	vector<int> PrintVector= vecsolu.printMatrix(TestVector);
+	for(auto iter:PrintVector)
+		cout<<iter<<" "<<endl;
+
+
+	StackMin stackmin;
+	stackmin.push(6);
+	stackmin.push(2);
+	stackmin.push(3);
+	stackmin.push(5);
+	stackmin.push(1);
+	cout<<"MinElem:"<<stackmin.min()<<endl;
+
+	queue<int> TestQueue;
+	TestQueue.push(1);
+	TestQueue.push(2);
+	TestQueue.push(3);
+	TestQueue.push(4);
+	cout<<TestQueue.back()<<endl;
+	cout<<TestQueue.front()<<endl;
+	while(!TestQueue.empty())
+	{
+		cout<<TestQueue.front()<<endl;
+		TestQueue.pop();
+	}
+*/
+	// int *pBinaryTree=new int(10);
+    // for(int i=0;i<10;i++)
+	// 	*(pBinaryTree+i)=i;
+	// TreeSolution<int,int> tree(pBinaryTree,10);
+	
+	vector<int> TreeSeq;
+	TreeSeq.clear();
+	TreeSeq.push_back(4);
+	TreeSeq.push_back(8);
+	TreeSeq.push_back(6);
+	TreeSeq.push_back(12);
+	TreeSeq.push_back(16);
+	TreeSeq.push_back(14);
+	TreeSeq.push_back(10); 
+	bool IsBst=VerifySquenceOfBST(TreeSeq);	 
+	if(IsBst)
+		cout<<"Is Bst"<<endl;
+	else
+		cout<<"Not Bst"<<endl;
+	
 	return 0;
 }
 

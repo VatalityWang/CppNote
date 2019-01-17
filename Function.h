@@ -38,6 +38,7 @@ using std::shared_ptr;
 using std::string;
 using std::uninitialized_copy;
 using std::vector;
+using std::swap;
 int ForkNum=0;
 template <typename TYPE>
 void print(const TYPE &p);
@@ -1184,6 +1185,46 @@ void ForkFunc()
 	ForkNum++;
 	cout<<"ForkNum="<<ForkNum<<endl;
 }
+	//
+	//判断某序列是不是二叉搜素树后序遍历结果
+	//
+	 bool VerifySquenceOfBST(vector<int> sequence) 
+	 {
+		if(sequence.empty())
+			return false;
+		vector<int> LeftTree;
+		vector<int> RightTree;
+		int Size=sequence.size();
+		int Rootval=sequence[Size-1];
+		int i;
+		bool TreeFlag=false;
+		for(i=0;i<Size-1;i++)
+			if (!TreeFlag)
+			{
+				if (sequence[i] < Rootval)
+					LeftTree.push_back(sequence[i]);
+				else if (sequence[i] > Rootval)
+				{
+					TreeFlag = true;
+					RightTree.push_back(sequence[i]);
+				}
+			}
+			else
+			{
+				if(sequence[i]>Rootval)
+					RightTree.push_back(sequence[i]);
+				else
+					return false;					
+			}
+		if(!LeftTree.empty()&&!RightTree.empty())//左右子树均不空才
+			return VerifySquenceOfBST(LeftTree)&&VerifySquenceOfBST(RightTree);
+		else if(!LeftTree.empty())//只有左子树
+			return VerifySquenceOfBST(LeftTree);
+		else if(!RightTree.empty())//只有右子树
+			return VerifySquenceOfBST(RightTree);	
+		else  //只有根节点
+			return true;
+	}
 /*
 * Add overloaded input,output,addition,add commpund-assignment operators
 */
@@ -1212,7 +1253,6 @@ public:
     void reOrderArray(vector<int> &array) {
 		int temp;
 		vector<int>::iterator it=array.begin();
-		//无法保证奇数 偶数相对位置不变
 		int size=array.size();
 		while (size)
 		{
@@ -1226,6 +1266,7 @@ public:
 				it++;
 			size--;
 		}
+		//无法保证奇数 偶数相对位置不变		
 		/*
 		vector<int>::iterator begin,end;
 		begin=array.begin();
@@ -1253,6 +1294,452 @@ public:
 			}
 		}
 		*/
+    }
+};
+
+/*
+* 输入一个链表，输出倒数第k个结点
+*/
+struct ListNode {
+	int val;
+	struct ListNode *next;
+	ListNode(int x) :
+			val(x), next(NULL) {
+	}
+};
+class LinkList {
+public:
+  ListNode *FindKthToTail(ListNode *pListHead, unsigned int k)
+  {
+	  if(!pListHead)
+	  	return NULL;
+	  if(k<0)	
+	  	return NULL;
+	  ListNode *p = pListHead->next;
+	  ListNode *q;
+	  int i;
+	  pListHead->next=NULL;
+	  while (p)
+	  {
+		q = p->next;
+		p->next=pListHead->next;
+		pListHead->next=p;
+		p=q;
+	  }
+	  for(i=0,p=pListHead;i<k;i++,p=p->next);
+	   return p;
+  }
+  ListNode *FindKthToTailSp(ListNode *pListHead,unsigned int k)
+  {
+	if(!pListHead)
+		return NULL;
+	if(k<=0)
+	  	return NULL;
+	int i;
+	ListNode *p,*q;
+	for(i=0,p=pListHead;i<k-1&&p->next;i++,p=p->next);
+		cout<<"val: "<<p->val<<endl;
+	if(i!=k-1)
+		return NULL;
+	for(q=pListHead;p->next;p=p->next,q=q->next)
+	{
+		cout<<"val: "<<p->val<<endl;
+	}
+	cout<<"val: "<<p->val<<endl;
+	return q;		 
+  }
+	ListNode *ReverseList(ListNode *pHead)
+	{
+		if(!pHead)
+			return NULL;
+		ListNode *p,*q;
+		p=pHead->next;
+		pHead->next=NULL;
+		while(p)
+		{
+		    q=p->next;
+			p->next=pHead;
+			pHead=p;
+			p=q;
+		}
+	  return pHead;
+	}
+	/*
+	* 单调不减合并单链表
+	*/
+	ListNode *Merage(ListNode *pHead1,ListNode *pHead2)
+	{
+		ListNode *p1,*q1,*p2,*q2,*pHead=NULL,*pRear=NULL;
+		p1=pHead1,q1=pHead2;
+		while(p1&&q1)
+		{
+			if(p1->val<=q1->val)
+			{
+				if(!pHead)
+					pHead=p1;
+				p2=p1->next;
+				p1->next=q1;
+				pRear=q1;
+				p1=p2;
+			}
+			else
+			{
+				if(!pHead)
+					pHead=q1;
+				q2=q1->next;
+				q1->next=p1;
+				pRear=p1;
+				q1=q2;
+			}
+		}
+		if (!pHead)
+		{
+			if (p1)
+				return p1;
+			else
+				return p2;
+		}
+		else
+		{
+			if (p1)
+			{
+				pRear = p1;
+			}
+			if (q1)
+			{
+				pRear = q1;
+			}
+		}
+		return pHead;
+	}
+};
+
+
+struct TreeNode {
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
+	TreeNode(int x) :
+			val(x), left(NULL), right(NULL) {
+	}
+};
+template<typename Elemtype,typename Elemmount>
+class TreeSolution {
+private:
+	  Elemtype *pStartAddress;
+	  Elemmount Num;
+public:
+	 TreeSolution(Elemtype *p,Elemmount num)
+	 {
+		pStartAddress=(Elemtype*)malloc(num*sizeof(Elemtype));
+		for(int i=0;i<num;i++)
+			*(pStartAddress+i)=*(p+i);
+		Num=num;
+	 }
+	 ~TreeSolution()
+	 {
+		 delete pStartAddress;
+	 }
+	 void ReRangeVector(vector<vector<int>> &Road)
+	 {
+		 vector<int> VectorSize;
+		 int i,j;
+		 for(i=0;i<Road.size()-1;i++)
+		 	for(j=0;j<Road.size()-1-i;j++)
+		 {
+			 if(Road[j].size()<Road[j+1].size())
+			 	std::swap(Road[j],Road[j+1]);
+		 }
+	 }
+	 //输入整数 打印结点值总和=输入值的路径(从根节点到某个叶节点) 返回的路径中长度大的数组靠前
+	 vector<vector<int> > FindPath(TreeNode* root,int expectNumber) 
+	 {
+		int i=0,j;
+		vector<vector<int> >PathRoad;
+		PathRoad.clear();
+		stack<TreeNode> Road;
+		stack<int> ReRoad;
+		TreeNode *p=root;
+		Road.push(p);
+		while(!Road.empty())
+		{
+			p=Road.top();
+			while(p->left)
+			{
+				Road.push(p->left);
+				p=p->left;
+			}
+			if(!p->right)
+				{
+					stack<TreeNode*> TempRoad1;
+					std::copy(Road,TempRoad1);
+					while(!TempRoad1.empty())
+					{
+						int Sum=0;
+						TreeNode* Tempval;
+						TempVal=TempRoad1.top();
+						sum+=TempVal->val;
+						ReRoad.push(TempVal);
+						TempRoad1.pop();
+					}
+					if(sum==expectNumber)
+					{
+						while(!ReRoad.empty())
+						{
+							jPathRoad[i++].push(ReRoad.top());
+							ReRoad.pop();
+						}
+					}
+				}
+			else	
+				Road.pop();
+		}
+     }
+	 bool IsSubTree(TreeNode *pRoot1,TreeNode *pRoot2)
+	{
+		//先判断子树是否遍历完成 若未完成而主树为空 则必不为从树
+        if(!pRoot2)
+            return true;
+		if(!pRoot1)
+			return false;
+       
+		if(pRoot1->val==pRoot2->val)//对应的每个子树相应值都相等
+			return IsSubTree(pRoot1->left,pRoot2->left)&&IsSubTree(pRoot1->right,pRoot2->right);
+        else 
+            return false;
+	}
+    bool HasSubtree(TreeNode* pRoot1, TreeNode* pRoot2)
+    {
+		//空树不是任何一棵树的子树
+		if(!pRoot2||!pRoot1)
+			return false;
+		return IsSubTree(pRoot1,pRoot2)||HasSubtree(pRoot1->left,pRoot2)||HasSubtree(pRoot1->right,pRoot2);
+    }
+	/*
+	* 二叉树镜像
+	*/
+	void Mirror(TreeNode *pRoot)
+	{
+		TreeNode *pTemp;
+		if(!pRoot)
+			return;
+		pTemp=pRoot->left;
+		pRoot->left=pRoot->right;
+		pRoot->right=pTemp;
+		Mirror(pRoot->left);
+		Mirror(pRoot->right);
+	}
+	//
+	//从上至下 从左至右 按层打印二叉树结点
+	//
+	vector<int> PrintFromTopToBottom(TreeNode* root) {
+		queue<TreeNode*> TreeQueue;
+		vector<int> Result;
+		Result.clear();
+		if(!root)
+			return Result;
+		TreeQueue.push(root);
+		while(!TreeQueue.empty())
+		{
+			TreeNode *p=TreeQueue.front();
+			Result.push_back(p->val);
+			if(p->left)
+				TreeQueue.push(p->left);
+			if(p->right)
+				TreeQueue.push(p->right);
+			TreeQueue.pop();
+		}		
+		return Result;
+    }
+
+	
+};
+class VectorSolution
+{
+	public:
+    vector<int> printMatrix(vector<vector<int> > matrix) 
+	{
+
+		vector<int> Result;
+		Result.clear();
+		int row=matrix.size();//行数
+		int column=matrix[0].size();//列数
+		if(matrix.empty()||row<=0||column<=0)
+			return Result;
+		int i,j,endx,endy;
+		int start=0;
+		while(row>2*start&&column>2*start)
+		{
+			//结束行标和列标
+			endx=column-1-start;
+			endy=row-1-start;
+			//左->右
+			j=start;
+			while(j<=endx)
+				Result.push_back(matrix[start][j++]);
+			//上->下
+			if (start < endy)
+			{
+				i = start + 1;
+				while (i <= endy)
+					Result.push_back(matrix[i++][endx]);
+			}
+			//右->左
+			if (start < endy && start < endx)
+			{
+				j = endx - 1;
+				while (j >= start)
+					Result.push_back(matrix[endy][j--]);
+			}
+			//下->上
+			if (start < endy - 1 && start < endx)
+			{
+				i = endy - 1;
+				while (i >= (start + 1))
+					Result.push_back(matrix[i--][start]);
+			}
+			start++;
+		}
+		return Result;
+    }
+};
+/*
+* 定义栈的数据结构，并在该类型中实现一个能够得到栈中最小元素的min函数,时间复杂度O(1)
+*/
+
+class StackMin{
+public:
+    stack<int> stack1,stack2;
+    void push(int value) {
+        
+        if(stack1.empty())
+        {
+			stack1.push(value);
+            stack2.push(value);
+        }
+        else
+        {
+			stack1.push(value);
+            if(stack2.top()>value)    
+                stack2.push(value);
+            else   
+            {
+                int Temp=stack2.top();
+                stack2.push(Temp);
+            }
+        }
+    }
+    void pop() {
+        if(!stack1.empty())
+        {
+            stack2.pop();
+            stack1.pop();
+        }
+    }
+    int top() {
+        if(!stack1.empty())
+         return stack1.top();
+        
+    }
+    int min() {
+        if(!stack2.empty())
+         return stack2.top();
+       
+    }
+};
+class StackSolution
+{
+	private:
+		int *Stack;
+		int *MinStack;
+		int Top;
+		int MinTop;
+		int Size;
+		int Capacity;
+	public:
+	StackSolution(int capacity)
+	{
+		Top=-1;
+		Size=0;
+		Capacity=capacity;
+		Stack=new int[capacity];
+	}
+    void push(int value) {
+		if (Size == Capacity)
+		{
+			cout << "the stack is full" << endl;
+			return;
+		}
+		if (Size == 0)
+		{
+			Stack[++Top] = value;
+			MinStack[++Top] = value;
+		}
+		else
+		{
+			if (value < MinStack[MinTop])
+				MinStack[++Top] = value;
+			else//保证最小栈栈顶元素是最小元素.
+			{
+				int Temp=MinStack[MinTop];
+				MinStack[++MinTop]=Temp;
+			}
+			Stack[++Top] = value;
+		}
+		Size++;
+    }
+    void pop() {
+		if(Stack[Top]==MinStack[MinTop])
+			MinTop--;
+        Top--;
+    }
+    int top() {
+        return Stack[Top];
+    }
+    int min() {
+		return MinStack[MinTop];
+    }
+};
+class StackPopOrderJudge {
+public:
+    bool IsPopOrder(vector<int> pushV,vector<int> popV) 
+	{
+		if(pushV.size()!=popV.size())
+			return false;
+		stack<int> TempStack;
+		vector<int>::iterator iter1=popV.begin();
+		vector<int>::iterator iter2=pushV.begin();
+		//遍历弹出序列
+		while(iter1!=popV.end())
+		{
+			//在压栈序列中找弹出序列 未找到压入辅助栈中
+			while(*iter1!=*iter2&&iter2!=pushV.end())
+			{
+				TempStack.push(*iter2);
+				iter2++;
+			}
+			//弹入序列已遍历完 
+			if(iter2==pushV.end())
+			{
+				while(!TempStack.empty()&&TempStack.top()==*iter1)
+				{
+					TempStack.pop();
+					iter1++;
+				}
+				if(!TempStack.empty())
+					return false;
+			}
+			else if(*iter1==*iter2)
+			{
+				iter1++;
+				iter2++;
+			}
+		}
+		//弹出栈不为空 
+		if(!TempStack.empty())
+			return false;
+		else
+			return true;
     }
 };
 namespace alg
