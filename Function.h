@@ -1412,9 +1412,76 @@ public:
 		}
 		return pHead;
 	}
+	
 };
 
+struct RandomListNode 
+{
+    int label;
+    struct RandomListNode *next, *random;
+    RandomListNode(int x) :
+            label(x), next(NULL), random(NULL) {
+    }
+};
+class RandomListSolution
+{
+	public:
+ 	RandomListNode* Clone(RandomListNode* pHead)
+    {
+		if(!pHead)
+			return NULL;
+		RandomListNode *pRear,*pFront,*p,*pHeadNew;
+		pFront=pHead;
+		while(pFront)		
+		{
+			pRear=pFront->next;
+			p=(RandomListNode*)malloc(sizeof(RandomListNode));
+			pFront->next=p;
+			p->next=pRear;
+			p->label=pFront->label;
+			pFront=pRear;
+		}
+		//后一个复制的结点
+		pFront=pHead;
+		p=pFront->next;
+		while(pFront)
+		{
+			pRear=p->next;
+			if(pFront->random)
+				p->random=pFront->random->next;
+			pFront=pRear;
+			if(pRear)
+					p=pFront->next;
+		}
+		//test the copy link data
+		p = pHead;
+		cout << "the original data after data" << endl;
+		while (p)
+		{
+			cout << "label " << p->label << " ";
+			if (p->random)
+				cout << "random " << p->random->label;
+			cout << endl;
+			p = p->next;
+		}
 
+		//拆分成两个单独的链表
+		pFront=pHead;
+		p=pFront->next;
+		pHeadNew=p;
+		while(pFront)
+		{
+			pRear=p->next;
+			pFront->next=pRear;
+			if(pRear)
+				p->next=pRear->next;
+			pFront=pRear;
+			if(pFront)
+				p=pFront->next;
+		}
+		return pHeadNew;	
+    }
+};
 struct TreeNode {
 	int val;
 	struct TreeNode *left;
@@ -1436,9 +1503,28 @@ public:
 			*(pStartAddress+i)=*(p+i);
 		Num=num;
 	 }
+	 TreeSolution()
+	 {
+
+	 }
 	 ~TreeSolution()
 	 {
 		 delete pStartAddress;
+	 }
+	 TreeNode* CreateTree(vector<int> Elem)
+	 {
+		 int i,size=Elem.size();
+		 TreeNode* p=(TreeNode*)malloc(size*sizeof(TreeNode));
+		 for(i=0;i<size;i++)
+		 {
+		 	p[i].val=Elem[i];
+			if(2*i+1<=size-1)
+				p[i].left=p+2*i+1;
+			if(2*i+2<=size-1)
+				p[i].right=p+2*i+2;
+		 }
+		 PreOrder(p);
+		 return p;
 	 }
 	 void ReRangeVector(vector<vector<int>> &Road)
 	 {
@@ -1452,13 +1538,13 @@ public:
 		 }
 	 }
 	 //输入整数 打印结点值总和=输入值的路径(从根节点到某个叶节点) 返回的路径中长度大的数组靠前
-	 vector<vector<int> > FindPath(TreeNode* root,int expectNumber) 
+	 vector<vector<int> > FindPath_NonRecursive(TreeNode* root,int expectNumber) 
 	 {
 		int i=0,j;
 		vector<vector<int> >PathRoad;
 		PathRoad.clear();
-		stack<TreeNode> Road;
-		stack<int> ReRoad;
+		stack<TreeNode*> Road;
+		stack<TreeNode*> RoadExtra;
 		TreeNode *p=root;
 		Road.push(p);
 		while(!Road.empty())
@@ -1471,30 +1557,71 @@ public:
 			}
 			if(!p->right)
 				{
-					stack<TreeNode*> TempRoad1;
-					std::copy(Road,TempRoad1);
-					while(!TempRoad1.empty())
+					int Sum=0;
+					stack<TreeNode*> TempRoad;
+					while(!Road.empty())
 					{
-						int Sum=0;
-						TreeNode* Tempval;
-						TempVal=TempRoad1.top();
-						sum+=TempVal->val;
-						ReRoad.push(TempVal);
-						TempRoad1.pop();
+						TempRoad.push(Road.top());
+						Road.pop();
+					}											
+					while(!TempRoad.empty())
+					{
+						TreeNode* TempVal;
+						TempVal=TempRoad.top();
+						Sum+=TempVal->val;
+						RoadExtra.push(TempVal);
+						Road.push(TempVal);
+						TempRoad.pop();
 					}
-					if(sum==expectNumber)
+					if(Sum==expectNumber)
 					{
-						while(!ReRoad.empty())
+						while(!RoadExtra.empty())
 						{
-							jPathRoad[i++].push(ReRoad.top());
-							ReRoad.pop();
+							PathRoad[i++].push_back(RoadExtra.top()->val);
+							RoadExtra.pop();
 						}
 					}
 				}
 			else	
 				Road.pop();
 		}
+	 	ReRangeVector(PathRoad);
+		return PathRoad;
      }
+	//
+	//递归版本
+	//
+	 vector<vector<int>> FindPath(TreeNode *root,int expectNumber)
+	 {
+		vector<vector<int>> Road;
+		vector<int> Path;
+		Road.clear();
+		if(!root)
+			return Road;
+		int CurrentSum=0;
+		FindPath(root,expectNumber,Path,CurrentSum,Road);
+		return Road;
+	 }
+	 void FindPath(TreeNode *pRoot,int expectSum,vector<int> &path,int &CurrentSum,vector<vector<int>> &Road)
+	 {
+		CurrentSum+=pRoot->val;
+		path.push_back(pRoot->val);
+		if(!pRoot->left&&!pRoot->right)
+		{
+			if (CurrentSum == expectSum)
+					Road.push_back(path);
+				
+		}
+		if (pRoot->left)
+			FindPath(pRoot->left, expectSum, path, CurrentSum, Road);
+		if (pRoot->right)
+			FindPath(pRoot->right, expectSum, path, CurrentSum, Road);
+
+		//返回父节点时减去当前节点
+		CurrentSum-=pRoot->val;
+		//清除路径中的当前节点值
+		path.pop_back();
+	 }
 	 bool IsSubTree(TreeNode *pRoot1,TreeNode *pRoot2)
 	{
 		//先判断子树是否遍历完成 若未完成而主树为空 则必不为从树
@@ -1551,7 +1678,16 @@ public:
 		}		
 		return Result;
     }
-
+	void PreOrder(TreeNode *pRoot)
+	{
+		if(!pRoot)
+			return;
+		cout<<pRoot->val<<" ";
+		if(pRoot->left)
+			PreOrder(pRoot->left);
+		if(pRoot->right)
+			PreOrder(pRoot->right);
+	}
 	
 };
 class VectorSolution

@@ -198,10 +198,10 @@ int main(int argc,char *argv[])
 	print(test2);
 	if (!test2.empty())
 	{
-		auto val1 = *test2.begin();
-		cout << val1 << endl;
-		auto val2 = test2.front();
-		cout << val2 << endl;
+		auto label1 = *test2.begin();
+		cout << label1 << endl;
+		auto label2 = test2.front();
+		cout << label2 << endl;
 
 		auto endl2 = test2.back();
 		cout << "the end1=" << endl2 << endl;
@@ -846,12 +846,12 @@ int main(int argc,char *argv[])
 #endif
 #if 0
 	LruCache<string,int> MyCache(5);
-	MyCache.InsertValue("wangchunji",24);
-	MyCache.InsertValue("XuLin",23);
-	MyCache.InsertValue("TangBoWen",5);
-	MyCache.InsertValue("TangDan",5);
-	MyCache.InsertValue("TangQiang",5);
-	MyCache.InsertValue("SunBoWen",5);
+	MyCache.Insertlabelue("wangchunji",24);
+	MyCache.Insertlabelue("XuLin",23);
+	MyCache.Insertlabelue("TangBoWen",5);
+	MyCache.Insertlabelue("TangDan",5);
+	MyCache.Insertlabelue("TangQiang",5);
+	MyCache.Insertlabelue("SunBoWen",5);
 	MyCache.Display();
 #endif
 	/*
@@ -969,7 +969,7 @@ int main(int argc,char *argv[])
 	for(int i=1;i<7;i++)
 	{
 		ListNode *listNLink = (ListNode *)malloc(sizeof(ListNode));
-		listNLink->val = i;
+		listNLink->label = i;
 		listNLink->next = NULL;
 		if (i == 1)
 		{
@@ -986,7 +986,7 @@ int main(int argc,char *argv[])
 	ListNode*kth=list.ReverseList(pListHead);
 	while(kth)
 	{
-		cout<<"val: "<<kth->val<<endl;
+		cout<<"label: "<<kth->label<<endl;
 		kth=kth->next;
 	}
 	*/
@@ -1040,27 +1040,109 @@ int main(int argc,char *argv[])
 		cout<<TestQueue.front()<<endl;
 		TestQueue.pop();
 	}
-*/
+
 	// int *pBinaryTree=new int(10);
     // for(int i=0;i<10;i++)
 	// 	*(pBinaryTree+i)=i;
-	// TreeSolution<int,int> tree(pBinaryTree,10);
 	
+	int i,j;
+	TreeSolution<int,int> tree(NULL,0);
+	vector<vector<int>> Road;
 	vector<int> TreeSeq;
 	TreeSeq.clear();
-	TreeSeq.push_back(4);
-	TreeSeq.push_back(8);
-	TreeSeq.push_back(6);
+	TreeSeq.push_back(10);
+	TreeSeq.push_back(5);
 	TreeSeq.push_back(12);
-	TreeSeq.push_back(16);
-	TreeSeq.push_back(14);
-	TreeSeq.push_back(10); 
-	bool IsBst=VerifySquenceOfBST(TreeSeq);	 
-	if(IsBst)
-		cout<<"Is Bst"<<endl;
-	else
-		cout<<"Not Bst"<<endl;
+	TreeSeq.push_back(4);
+	TreeSeq.push_back(7);
+	Road=tree.FindPath(tree.CreateTree(TreeSeq),22);
+	for(i=0;i<Road.size();i++)
+		for(j=0;j<Road[i].size();j++)
+		    cout<<Road[i][j]<<" ";
+	    cout<<endl;
+*/
 	
+
+	//
+	//contruct the randomlist
+	//			
+	int i;
+	struct RandomListNode *pHead=NULL,*pRear=NULL,*p;
+	for(i=1;i<=5;i++)
+	{
+		p=(struct RandomListNode*)malloc(sizeof(struct RandomListNode));
+		p->label=i;
+		p->next=NULL;
+		if(!pHead)
+		{
+			pRear=p;
+			pHead=p;
+		}
+		else
+		{
+			pRear->next=p;
+			pRear=p;
+		}
+	}
+	p=pHead;
+	pRear=pHead;
+	i=2;
+	while(i)
+	{
+		p=p->next;
+		i--;
+	}
+	pRear->random=p;
+
+	pRear=pHead->next;
+	p=pRear;
+	i=3;
+	while(i)
+	{
+		p=p->next;
+		i--;
+	}
+	pRear->random=p;
+
+	p=pHead->next;
+	pRear=p;
+	i=2;
+	while(i)
+	{
+		pRear=pRear->next;
+		i--;
+	}
+	pRear->random=p;
+
+	//test the original data
+	p=pHead;
+	cout<<"the original data"<<endl;
+	while(p)
+	{
+		cout<<"label "<<p->label<<" ";
+		if(p->random)
+			cout<<"random "<<p->random->label;
+		cout<<endl;
+		p=p->next;
+	}
+	struct RandomListNode *pHeadNew;
+	RandomListSolution randlistsolu;
+	pHeadNew=randlistsolu.Clone(pHead);
+
+	//test the clone result
+	cout<<"after desperate the data"<<endl;
+	p=pHeadNew;
+	while(p)
+	{
+		cout<<"label "<<p->label<<" ";
+		if(p->random)
+			cout<<"random "<<p->random->label;
+		cout<<endl;
+		p=p->next;
+	}
+	
+
+
 	return 0;
 }
 
