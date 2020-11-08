@@ -18,8 +18,8 @@
 #include<unistd.h>
 #include<sys/types.h>
 #include<queue>
-#include "ev.h"
-#include "ev++.h"
+// #include "ev.h"
+// #include "ev++.h"
 #include "Function.h"
 using namespace std;
 using std::cin;
@@ -38,11 +38,13 @@ using std::numeric_limits;
 using std::streamsize;
 
 using namespace alg;
+/*
 static void timeout_cb(EV_P_ ev_timer *w, int revents)
 {
 	puts("timeout\n");
 	ev_break(EV_A_ EVBREAK_ONE);
 }
+*/
 //using std:algorthm
 singleton *singleton::pInstance = NULL;
 #define Test_Define( a, b) do {			\
@@ -50,6 +52,17 @@ singleton *singleton::pInstance = NULL;
 	*b=990;					\
  					\
 } while (0)
+
+int main(int argc,char *argv[])
+{
+	array<int,10> MyArray;
+	for(int i=0;i<10;i++)
+		MyArray[i]=i;
+
+	printf("hello\n");
+	return 0;
+}
+#if 0
 int main(int argc,char *argv[])
 {
 #if 0
@@ -100,15 +113,16 @@ int main(int argc,char *argv[])
 	/*
 	*
 	*/
-	//log("plcace push_front");
-	//auto iter0 = names.cbegin();
-	//string word;
-	//while (cin>>word)
-	//{
-	//	iter0 = names.insert(iter0, word);
-	//}
-	//print(oldstyle);
-
+	/*
+	log("plcace push_front");
+	auto iter0 = names.cbegin();
+	string word;
+	while (cin>>word)
+	{
+		iter0 = names.insert(iter0, word);
+	}
+	print(oldstyle);
+	*/
 
 	/*
 	*emplace_back,emplace_front, emplace
@@ -163,18 +177,19 @@ int main(int argc,char *argv[])
 	/*
 	*
 	*/
-	//log("write into till difference");
-	//int i = 1;
-	//float f = 2.1;
-	//printf("%d\n", i);
-	//printf("%f\n", f);
-	//printf("%s\n", "c++");
-	//while (cin >> i)
-	//{
-	//	cout << "enter into success\n" << endl;
-	//}
-	//cout << i << endl;
-
+	/*
+	log("write into till difference");
+	int i = 1;
+	float f = 2.1;
+	printf("%d\n", i);
+	printf("%f\n", f);
+	printf("%s\n", "c++");
+	while (cin >> i)
+	{
+		cout << "enter into success\n" << endl;
+	}
+	cout << i << endl;
+	*/
 
 	 /*
 	* cpp primer 9.18
@@ -521,17 +536,19 @@ int main(int argc,char *argv[])
 	/*
 	* ???
 	*/
-	//istream_iterator<Sale_Data> item_iter(cin),eof1;
-	////istream_iterator<Sale_Data>eof;
-	//ostream_iterator<Sale_Data> out_iter(cout,"\n");
-	//Sale_Data sum = *item_iter++;
-	//while (item_iter!=eof1)
-	//{
-	//	if (item_iter->isbn()==sum.isbn())
-	//	{ 
-	//		cout << endl;
-	//	}
-	//}
+	/*
+	istream_iterator<Sale_Data> item_iter(cin),eof1;
+	//istream_iterator<Sale_Data>eof;
+	ostream_iterator<Sale_Data> out_iter(cout,"\n");
+	Sale_Data sum = *item_iter++;
+	while (item_iter!=eof1)
+	{
+		if (item_iter->isbn()==sum.isbn())
+		{ 
+			cout << endl;
+		}
+	}
+	*/
 
 	/*
 	*
@@ -540,14 +557,15 @@ int main(int argc,char *argv[])
 	std::cin.clear();
 	cin.ignore(numeric_limits<streamsize>::max(),'\n');
 	log("Enter a series string into a vector");
-	
-	//istream_iterator<string> FileCin(cin), eof2;
-	//while (FileCin != eof2)
-	//{
-	//	//copy(strname.begin(),strname.end(),FileCin);
-	//	log("The istream_iterator<string>,Enter into while");
-	//	strname.push_back(*FileCin);
-	//}
+	/*
+	istream_iterator<string> FileCin(cin), eof2;
+	while (FileCin != eof2)
+	{
+		//copy(strname.begin(),strname.end(),FileCin);
+		log("The istream_iterator<string>,Enter into while");
+		strname.push_back(*FileCin);
+	}
+	*/
 	std::ifstream ifs("test.txt");
 	istream_iterator<string> in(ifs), eof3;
 	
@@ -1063,6 +1081,8 @@ int main(int argc,char *argv[])
 */
 	
 
+	#if 0
+
 	//
 	//contruct the randomlist
 	//			
@@ -1141,9 +1161,10 @@ int main(int argc,char *argv[])
 		p=p->next;
 	}
 	
-
+	#endif
 
 	return 0;
 }
+#endif	
 
 

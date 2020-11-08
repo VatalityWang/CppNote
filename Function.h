@@ -1,4 +1,5 @@
 #include <vector>
+#include<array>
 #include <map>
 #include <iostream>
 #include <stdio.h>
@@ -39,6 +40,55 @@ using std::string;
 using std::uninitialized_copy;
 using std::vector;
 using std::swap;
+
+
+
+/*
+* use list
+*/
+void UserList()
+{
+		list<int> TestList;
+	for(int i=0;i<10;i++)
+		TestList.push_back(i);
+	list<int>::iterator it;
+	for(it=TestList.begin();it!=TestList.end();it++)
+		cout<<*it<<endl;
+}
+
+/*
+*  getline
+*/
+void UseGetline()
+{
+	string line;
+	while (getline(cin, line))
+	{
+		cout << line << endl;
+	}
+}
+
+/***********
+ * sizeof 
+ * **************/
+
+void SizeofNum()
+{
+	int x[10];
+	int *p=x;
+	cout<<sizeof(x)/sizeof(*x)<<endl; //10
+	cout<<sizeof(p)/sizeof(*p)<<endl; //2
+}
+
+void UseSizeofNoBracket()
+{
+	int x,y;
+	cout<<y<<endl;
+	// x=1,y=1;
+	cout<<sizeof x+y <<endl;
+	cout<<sizeof(x)<<endl;
+}
+
 int ForkNum=0;
 template <typename TYPE>
 void print(const TYPE &p);
@@ -332,16 +382,17 @@ auto f = [] {
 /*
 * 
 */
+/*
+void biggies(vector<string> &words, vector<string>::size_type sz)
+{
+	for (auto it : words)
+	{
+		if (it.size() > sz)
+			it = words.erase(it);
+	}
 
-//void biggies(vector<string> &words, vector<string>::size_type sz)
-//{
-//	for (auto it : words)
-//	{
-//		if (it.size() > sz)
-//			it = words.erase(it);
-//	}
-//
-//}
+}
+*/
 
 /*
 * lambda test
@@ -759,14 +810,16 @@ class Solution
 				//TempVector.push_back(*it / (*next));
 				//	TempIter[numerator].push_back(denominator);
 			}
-		// for(auto row=TempIter.begin(),numerator=1;row!=TempIter.end();row++,numerator++)
-		// 	for(vector<int>::iterator col=TempIter[row],denominator=1;col!=TempIter[row].end();col++,denominator++)
-		// 		if(*(TempVector.begin()+k)==numerator/denominator)
-		// 		{
-		// 			Answer.push_back(numerator);
-		// 			Answer.push_back(denominator);
-		// 		}
-		// return Answer;
+			/*
+		for(auto row=TempIter.begin(),numerator=1;row!=TempIter.end();row++,numerator++)
+			for(vector<int>::iterator col=TempIter[row],denominator=1;col!=TempIter[row].end();col++,denominator++)
+				if(*(TempVector.begin()+k)==numerator/denominator)
+				{
+					Answer.push_back(numerator);
+					Answer.push_back(denominator);
+				}
+		return Answer;
+		*/
 	}
 
   private:
@@ -778,16 +831,17 @@ class Solution
 *	拷贝构造函数
 */
 
-// class numbered
-// {
-// 	public:
-// 		void f(numbered s)
-// 		{
-// 			cout<<s.mysn<<endl;
-// 		}
-// 	private:
-
-// }
+/*
+class numbered
+{
+	public:
+		void f(numbered s)
+		{
+			cout<<s.mysn<<endl;
+		}
+	private:
+}
+*/
 
 /*
 *  类vector
@@ -1000,7 +1054,7 @@ ownstring::ownstring(const char *s)
 	if(s==NULL)//初始串不存在，为m_data申请一个空间存放'\0'
 	{
 		m_data=new char(1);
-		m_data='\0';
+		*m_data='\0';
 	}
 	else 
 	{
@@ -2123,7 +2177,7 @@ namespace alg
 			{
 				m_size=0;
 			}
-			void Count(){return m_size;}
+			int Count(){return m_size;}
 
 			/*
 			*  test the heap is empty
