@@ -10,7 +10,9 @@ public:
     vector<int> FindNumbersWithSum(vector<int> array, int sum)
     {        
         vector<vector<int>> TotalResult;
+        TotalResult.clear();
         vector<int> Result;
+        Result.clear();
         int i,start,end,Temp1,Temp2,Mid,Remainder;
         end=array.size()-1;
          for(i=0;i<array.size();i++)
@@ -18,7 +20,7 @@ public:
             start=i+1;
             // printf("handle the index %d\n ",i);
             Remainder=sum-array[i];
-            while(start<end)
+            while(start<=end)
             {
                 
                 Mid=(start+end)/2;
@@ -43,7 +45,7 @@ public:
         }
         if (TotalResult.size() == 1)
             return TotalResult[0];
-        else
+        else if(TotalResult.size()>1)
         {
             Mid = TotalResult[0][0] + TotalResult[0][1];
             int MinIndex = 0;
@@ -54,6 +56,11 @@ public:
             }
             return TotalResult[MinIndex];
         }
+        else
+        {
+            return Result;
+        }
+        
     }
     /*
 *1-1  输出所有和为S的连续正数序列。序列内按照从小至大的顺序，序列间按照开始数字从小到大的顺序 
@@ -99,11 +106,15 @@ int main()
     //  1-1
     //
 
-    vector<int> array={1,2,3,4,5,6,7};
+    vector<int> array={1,2,4,7,11,16};
     Solution solu;
-    vector<int> Result=solu.FindNumbersWithSum(array,9);
-    for(auto im:Result)
-        cout<<im<<endl;
+    vector<int> Result=solu.FindNumbersWithSum(array,17);
+    if(Result.size())
+    {
+        for(auto im:Result)
+                cout<<im<<endl;
+    }
+   
 
     #if 0
     vector<vector<int>> res;
