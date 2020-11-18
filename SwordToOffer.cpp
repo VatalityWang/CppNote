@@ -1,5 +1,6 @@
 #include<vector>
 #include <iostream>
+#include<string>
 using namespace ::std;
 using std::cout;
 using std::endl;
@@ -7,10 +8,26 @@ using std::vector;
 
 class Solution {
 public:
+  
+    /**
+    * 左旋转字符串
+    **/
+     
+   string LeftRotateString(string str, int n)
+    {
+        if(str.size()==0)
+            return  str;
+        if(n==str.size())     
+            return str;
+        else if(n>str.size())
+            n=n-str.size();
+        string TempStr1=str.substr(0,n);
+        string TempStr2=str.substr(n,str.size()-n);
+        return TempStr2+TempStr1;
+    }
     /**
     *   输入一个递增排序的数组和一个数字S，在数组中查找两个数，使得他们的和正好是S，如果有多对数字的和等于S，输出两个数的乘积最小的。
     * */
-
     vector<int> FindNumbersWithSum(vector<int> array, int sum)
     {        
         vector<vector<int>> TotalResult;
@@ -67,8 +84,8 @@ public:
         
     }
     /*
-*1-1  输出所有和为S的连续正数序列。序列内按照从小至大的顺序，序列间按照开始数字从小到大的顺序 
-*/
+    *   1-1  输出所有和为S的连续正数序列。序列内按照从小至大的顺序，序列间按照开始数字从小到大的顺序 
+    */
 
     vector<vector<int>> FindContinuousSequence(int sum)
     {
