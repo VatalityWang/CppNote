@@ -1,6 +1,7 @@
 #include<vector>
 #include <iostream>
 #include<string>
+#include<stack>
 using namespace ::std;
 using std::cout;
 using std::endl;
@@ -8,11 +9,37 @@ using std::vector;
 
 class Solution {
 public:
-  
+    /**
+     *  翻转单词顺序列
+     **/
+      string ReverseSentence(string str) {
+        stack <string> InternalWords;
+        string delimiter=" ";
+        string ResStr="";
+        string token;
+        size_t pos=0;
+        while ((pos=str.find(delimiter))!=string::npos)
+        {
+            token=str.substr(0,pos);
+            cout<<token<<endl;
+            InternalWords.push(token);
+            str.erase(0,pos+delimiter.length());
+        }
+        cout<<str<<endl;
+        InternalWords.push(str);
+        while(!InternalWords.empty())
+        {
+            ResStr+=InternalWords.top();
+            InternalWords.pop();
+            if(!InternalWords.empty())
+                ResStr+=" ";
+        }
+        return ResStr;
+    }
+
     /**
     * 左旋转字符串
     **/
-     
    string LeftRotateString(string str, int n)
     {
         if(str.size()==0)
@@ -127,6 +154,14 @@ int main()
     //  1-1
     //
 
+    Solution solu;
+    string words="student a am i";
+    string ReverseWords=solu.ReverseSentence(words);
+    cout<<ReverseWords<<endl;
+
+
+    #if 0
+
     vector<int> array={1,2,4,7,11,16};
     Solution solu;
     vector<int> Result=solu.FindNumbersWithSum(array,17);
@@ -135,9 +170,8 @@ int main()
         for(auto im:Result)
                 cout<<im<<endl;
     }
-   
 
-    #if 0
+
     vector<vector<int>> res;
     res=solu.FindContinuousSequence(9);
     for(auto it:res)
