@@ -2,6 +2,8 @@
 #include <iostream>
 #include<string>
 #include<stack>
+#include<algorithm>
+#include<numeric>
 using namespace ::std;
 using std::cout;
 using std::endl;
@@ -9,6 +11,42 @@ using std::vector;
 
 class Solution {
 public:
+    /**
+    * 扑克牌顺子
+    * */
+    bool IsContinuous( vector<int> numbers ) {
+        if (numbers.size()==0)
+            return false;
+        vector<int> SubNum;
+        SubNum.clear();
+        int ZeroNum=0;
+        int i;
+        sort(numbers.begin(),numbers.end());
+        vector<int>::iterator im;
+        for(i=0;i!=numbers.size();i++)
+        {
+            if (numbers[i]==0)
+                ZeroNum++;
+            else if(i>1&&numbers[i-1])
+            {
+               SubNum.push_back(numbers[i]-numbers[i-1]);
+            }
+        }
+        if(ZeroNum==4)
+            return true;
+        else
+        {
+            if(accumulate(SubNum.begin(),SubNum.end(),0)-SubNum.size()==ZeroNum)
+                return true;
+            else
+            {
+                    return false;
+            }
+            
+        }
+        
+    }
+
     /**
      *  翻转单词顺序列
      **/
@@ -156,8 +194,11 @@ int main()
 
     Solution solu;
     string words="student a am i";
-    string ReverseWords=solu.ReverseSentence(words);
-    cout<<ReverseWords<<endl;
+    vector<int> Cards={0,0,1,4,6};
+    bool res=solu.IsContinuous(Cards);
+    cout<<res<<endl;
+    // string ReverseWords=solu.ReverseSentence(words);
+    // cout<<ReverseWords<<endl;
 
 
     #if 0
