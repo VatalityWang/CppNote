@@ -11,6 +11,59 @@ using std::vector;
 
 class Solution {
 public:
+
+
+    /*
+    *
+    */
+    int LastRemaining_Solution(int n, int m)  //n个人，从第一个开始，第m个出列。返回最后一个剩下的人
+    {
+        if (n==1)
+            return 0;
+        if(n==0)
+            return -1;
+        vector<int> People;
+        int i,WorkIndex;
+        for(i=0;i<n;i++)
+            People.push_back(1);
+        int start=0,countnum,j;
+        while(count(People.begin(),People.end(),1)!=1)
+        {
+            printf("remain count :%ld\n",count(People.begin(),People.end(),1));
+            j=start;
+            countnum=0;
+            while( countnum<m)
+            {
+                if(People[j])
+                {
+                    countnum++;
+                    if(countnum==m)
+                    {
+                        People[j]=0;
+                        printf("label %d to zero\n",j);
+                    }
+                    else
+                        j++;
+                }
+                else
+                {
+                    j++;
+                }
+                if(j==People.size())
+                    j=0;
+            }
+            while (!People[(j+1)%n])
+            {
+                j=(j+1)%n;
+            }
+            start=(j+1)%n;
+            printf(" the new start is %d\n",start);
+        }
+        WorkIndex=find(People.begin(),People.end(),1)-People.begin();
+        
+        return WorkIndex;
+    }
+
     /**
     * 扑克牌顺子
     * */
@@ -193,15 +246,17 @@ int main()
     //
 
     Solution solu;
-    string words="student a am i";
-    vector<int> Cards={0,0,1,4,6};
-    bool res=solu.IsContinuous(Cards);
+    int res=solu.LastRemaining_Solution(0,8);
     cout<<res<<endl;
     // string ReverseWords=solu.ReverseSentence(words);
     // cout<<ReverseWords<<endl;
 
 
     #if 0
+
+     string words="student a am i";
+    vector<int> Cards={0,0,1,4,6};
+    bool res=solu.IsContinuous(Cards);
 
     vector<int> array={1,2,4,7,11,16};
     Solution solu;
