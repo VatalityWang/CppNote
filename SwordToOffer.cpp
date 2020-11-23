@@ -14,7 +14,32 @@ public:
 
 
     /*
-    *
+    * 写一个函数，求两个整数之和，要求在函数体内不得使用+、-、*、/四则运算符号。
+    * */
+    int Add(int num1, int num2)
+    {
+        while ()
+        {
+            
+        }
+        
+    }
+    /*
+    *  求1+2+3+...+n 要求不能使用乘除法、for、while、if、else、switch、case等关键字及条件判断语句（A?B:C）
+    * */
+
+    int Sum_Solution(int n) {
+        if(n==1)
+         return  1;
+        else
+        {
+            return n+Sum_Solution(n-1);
+        }
+        
+    }
+
+    /*
+    *  圆圈中最后剩下的数
     */
     int LastRemaining_Solution(int n, int m)  //n个人，从第一个开始，第m个出列。返回最后一个剩下的人
     {
@@ -60,7 +85,6 @@ public:
             printf(" the new start is %d\n",start);
         }
         WorkIndex=find(People.begin(),People.end(),1)-People.begin();
-        
         return WorkIndex;
     }
 
