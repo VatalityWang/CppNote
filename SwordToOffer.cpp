@@ -18,11 +18,17 @@ public:
     * */
     int Add(int num1, int num2)
     {
-        while ()
+        int Add=num1^num2;  //异或 相当于按位相加
+        int Carry=(num1&num2)<<1; //进位
+        while (Carry)
         {
-            
+             num2=Add;
+             num1=Carry;
+             Add=num1^num2;
+             Carry=(num1&num2)<<1;
+
         }
-        
+        return Add;
     }
     /*
     *  求1+2+3+...+n 要求不能使用乘除法、for、while、if、else、switch、case等关键字及条件判断语句（A?B:C）
