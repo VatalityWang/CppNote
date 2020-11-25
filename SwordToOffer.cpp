@@ -14,6 +14,51 @@ public:
 
 
     /*
+    * 把字符串转换成整数；输入一个字符串,包括数字字母符号,可以为空；如果是合法的数值表达则返回该数字，否则返回0。
+    * **/
+   int StrToInt(string str) 
+   {
+       int i,res=0,carrynum,carry,j;
+       carry=1;
+       if(str[0]=='+'||str[0]=='-'||(str[0]>='0'&&str[0]<='9'))
+       {
+           for(i=str.size()-1;i>=0;i--)
+           {
+               carrynum=str.size()-1-i;
+               while(carrynum)
+               {
+                   carry*=10;
+                   carrynum--;
+               }
+               
+               if(str[i]>='0'&&str[i]<='9')
+               {
+                   res+=(str[i]-48)*carry;
+               }
+               else if(i!=0)
+               {
+                   return 0;
+               }
+               else 
+               {
+                   if(str[i]=='+')
+                        return res;
+                    else if(str[i]=='-')
+                        return -res;
+               }
+            //    printf("handle %c,carry %d res %d\n",str[i],carry,res);
+               carry=1;
+           }
+           return res;
+       }
+       else
+       {
+           return 0;
+       }
+       
+    }
+
+    /*
     * 写一个函数，求两个整数之和，要求在函数体内不得使用+、-、*、/四则运算符号。
     * */
     int Add(int num1, int num2)
@@ -274,10 +319,11 @@ int main()
     //
     //  1-1
     //
-
+    string str="123";
     Solution solu;
-    int res=solu.LastRemaining_Solution(0,8);
+    int res=solu.StrToInt(str);
     cout<<res<<endl;
+    cout<<'0'-48<<endl;
     // string ReverseWords=solu.ReverseSentence(words);
     // cout<<ReverseWords<<endl;
 
