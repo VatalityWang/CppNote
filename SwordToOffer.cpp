@@ -4,14 +4,44 @@
 #include<stack>
 #include<algorithm>
 #include<numeric>
+#include<map>
 using namespace ::std;
 using std::cout;
 using std::endl;
 using std::vector;
-
+using std:map;
 class Solution {
 public:
 
+    /*
+    * 数组中重复的数字
+    * **/
+   // Parameters:
+    //        numbers:     an array of integers
+    //        length:      the length of array numbers
+    //        duplication: (Output) the duplicated number in the array number
+    // Return value:       true if the input is valid, and there are some duplications in the array number
+    //                     otherwise false
+    bool duplicate(int numbers[], int length, int* duplication) {
+        if(length<=1)
+            return false;
+        map<int,int>NumCount;
+        int i=0;
+        for(i=0;i<length;i++)
+            if(NumCount.find(numbers[i])==NumCount.end())
+                NumCount.insert({numbers[i],1});
+            else
+            {
+                NumCount[numbers[i]]++;
+            }
+           for(i=0;i<length;i++)
+                if(NumCount[numbers[i]]>1)
+                {
+                    *duplication=numbers[i];
+                    return true;
+                }
+        return false;
+    }
 
     /*
     * 把字符串转换成整数；输入一个字符串,包括数字字母符号,可以为空；如果是合法的数值表达则返回该数字，否则返回0。
