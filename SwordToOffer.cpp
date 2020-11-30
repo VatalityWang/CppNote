@@ -14,6 +14,33 @@ class Solution {
 public:
 
     /*
+    * 构建乘积数组
+    **/
+     vector<int> multiply(const vector<int>& A)
+    {
+        vector<int> res;
+        res.clear();
+        if(A.size()<=1)
+            return res;
+        int MultiplySum=1;
+        int i;
+        for(i=0;i<A.size();i++)
+        if(i==0)
+            res.push_back(MultiplySum);
+        else
+            res.push_back(MultiplySum*=A[i-1]);
+        for(i=A.size()-1;i>=0;i--)
+        if(i==A.size()-1)
+            MultiplySum=1;
+        else
+        {
+            MultiplySum*=A[i+1];
+            res[i]*=MultiplySum;
+        }
+        return res;
+    }
+
+    /*
     * 数组中重复的数字
     * **/
    // Parameters:
