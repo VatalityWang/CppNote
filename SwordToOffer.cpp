@@ -5,6 +5,7 @@
 #include<algorithm>
 #include<numeric>
 #include<map>
+#include<cstring>
 using namespace ::std;
 using std::cout;
 using std::endl;
@@ -13,6 +14,39 @@ using std:map;
 class Solution {
 public:
 
+    
+    
+    /*
+    * 正则表达式匹配
+    * */
+     bool match(char* str, char* pattern)
+    {
+        int i=0,j=0;
+        int len1=strlen(str);
+        int len2=strlen(pattern);
+        if(len2==0)
+        {
+            if(!len1)
+                return true;
+            else
+                return false;
+        }
+        if(pattern[1]=='*')
+        {
+            if((str[0]!='\0'&&pattern[0]=='.')||str[0]==pattern[0])
+                return match(str,pattern+2)||match(str+1,pattern);
+            else
+                return match(str,pattern+2);
+        }
+        else
+        {
+            if((str[0]!='\0'&&pattern[0]=='.')||str[0]==pattern[0])
+                return match(str+1,pattern+1);
+            else
+                return false;
+            
+        }
+    }
     /*
     * 构建乘积数组
     **/
