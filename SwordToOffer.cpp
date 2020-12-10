@@ -10,11 +10,98 @@ using namespace ::std;
 using std::cout;
 using std::endl;
 using std::vector;
-using std:map;
+using std::map;
+using std::string;
 class Solution {
 public:
 
-    
+    /*
+    * 表示数值的字符串
+    **/
+     bool isNumeric(char* string)
+    {
+        /*
+        
+        只有一个e/E;
+        不能出现除E/e以外的任何字符；
+        e/E后面跟数字，数字可以有符号,但不能有小数点；
+        只有一个小数点；
+        正负号只能出现在e/E后面或者首位
+
+        */
+        char *pstr=string;
+        if(!pstr)
+            return false;
+        if(!strlen(pstr))
+            return false;
+        int i,j;
+        int decimal_point=0;
+        int character_e=0;
+        int sign=0;
+        for(i=0;i<strlen(pstr);i++)
+        {
+            if(pstr[i]=='+'||pstr[i]=='-')
+            {
+                sign++;
+
+                if(sign>2)
+                    return false;
+                if(character_e==1)
+                {
+                    if(i!=0&&(pstr[i-1]!='e'&&pstr[i-1]!='E'))
+                        return false;
+                }
+                else
+                {
+                    if(i!=0)//不出现在首位又没有e/E
+                        return false;
+                }
+                
+              
+                
+                
+            }
+            else if(pstr[i]=='e'||pstr[i]=='E')
+            {
+                character_e++;
+                if(character_e>1)
+                    return false;
+                if(i==0)  //出现在首位
+                    return false;
+                else
+                {
+                    if(!(pstr[i-1]>='0'&&pstr[i-1]<='9'))
+                        return false;
+                    if(i+1==strlen(pstr))  //出现在末位
+                        return false;
+                }
+            }
+            else if(pstr[i]=='.')
+            {
+                decimal_point++;
+                if(decimal_point>1)
+                    return false;
+                if(i==0)
+                    return false;
+                else
+                {
+                    if(i+1==strlen(pstr))
+                        return false;
+                    if(!(pstr[i+1]>='0'&&pstr[i+1]<='9'))
+                        return false;
+                    if (character_e==1)
+                        return false;
+                }
+            }
+            else if(pstr[i]>='0'&&pstr[i]<='9')
+                continue;
+            else 
+                return false;
+        }
+        return true;
+    }
+
+
     
     /*
     * 正则表达式匹配
@@ -410,9 +497,9 @@ int main()
     //
     //  1-1
     //
-    string str="123";
+    char str[]="1+23";
     Solution solu;
-    int res=solu.StrToInt(str);
+    int res=solu.isNumeric(str);
     cout<<res<<endl;
     cout<<'0'-48<<endl;
     // string ReverseWords=solu.ReverseSentence(words);
