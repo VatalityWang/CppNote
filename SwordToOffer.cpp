@@ -16,13 +16,44 @@ class Solution {
 public:
 
     /*
+    * 字符流中第一个不重复的字符
+    * **/
+
+   //Insert one char from stringstream
+    void Insert(char ch)
+    {
+        vector<char>::iterator it=find(char_set.begin(),char_set.end(),ch);
+        if(it==char_set.end())
+            char_set.push_back(ch);
+        if(static_count.find(ch)!=static_count.end())
+        {
+            static_count.insert({ch,1});   
+        }
+        else
+        {
+            static_count[ch]++;
+        }
+    }
+  //return the first appearence once char in current stringstream
+    char FirstAppearingOnce()
+    {
+        // vector<int>::iterator it;
+        for(auto &it:char_set)
+            if(static_count[it]==1)
+                return it;
+        return '#';
+    }
+
+
+
+    /*
     * 表示数值的字符串
     **/
      bool isNumeric(char* string)
     {
         /*
         
-        只有一个e/E;
+        只有一个e/E;                 
         不能出现除E/e以外的任何字符；
         e/E后面跟数字，数字可以有符号,但不能有小数点；
         只有一个小数点；
@@ -488,6 +519,10 @@ public:
         }
         return result;
     }
+
+private:
+    map<char,int> static_count;
+    vector<char> char_set;
 };
 
 
