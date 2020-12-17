@@ -6,14 +6,50 @@
 #include<numeric>
 #include<map>
 #include<cstring>
+#include<set>
 using namespace ::std;
 using std::cout;
 using std::endl;
 using std::vector;
 using std::map;
 using std::string;
+
+struct ListNode {
+    int val;
+    struct ListNode *next;
+    ListNode(int x) :
+        val(x), next(NULL) {
+    }
+};
+
 class Solution {
 public:
+
+    /*
+    * 链表中环的入口地址
+    * */
+     ListNode* EntryNodeOfLoop(ListNode* pHead)
+    {
+        ListNode*p=pHead;
+        if(!pHead)
+            return NULL;
+        set<ListNode*> node_list;
+        set<ListNode*>::iterator it;
+        while(p)
+        {
+            node_list.insert(p);
+            it=node_list.find(p->next);
+            if(it!=node_list.end())
+            {
+                return p->next;
+            }
+            else
+            {
+                p=p->next;
+            }
+        }
+        return NULL;
+    }
 
     /*
     * 字符流中第一个不重复的字符
@@ -25,7 +61,7 @@ public:
         vector<char>::iterator it=find(char_set.begin(),char_set.end(),ch);
         if(it==char_set.end())
             char_set.push_back(ch);
-        if(static_count.find(ch)!=static_count.end())
+        if(static_count.find(ch)==static_count.end())
         {
             static_count.insert({ch,1});   
         }
