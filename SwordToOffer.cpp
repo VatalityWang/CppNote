@@ -26,6 +26,42 @@ class Solution {
 public:
 
     /*
+    * 删除链表重复结点
+    **/
+     ListNode* deleteDuplication(ListNode* pHead)
+    {
+       if(!pHead||pHead->next==NULL)
+            return pHead;
+       ListNode*ppre,*pre,*pwork,*pnext;
+       ppre= (struct ListNode *)malloc(sizeof(struct ListNode));
+       ppre->next=pHead;
+       pre=ppre;
+       pnext=NULL;
+       pwork=pHead;
+       while (pwork&&pwork->next)
+       {
+           pnext=pwork->next;
+           if(pwork->val==pnext->val)
+           {
+
+           while(pnext&&pnext->val==pwork->val)
+                pnext=pnext->next;
+            pre->next=pnext;
+            pwork=pnext;
+           }
+           else
+           {
+               pre=pwork;
+               pwork=pwork->next;
+           }
+            
+       }
+
+       return ppre->next;
+      
+    }
+
+    /*
     * 链表中环的入口地址
     * */
      ListNode* EntryNodeOfLoop(ListNode* pHead)
@@ -568,6 +604,42 @@ int main()
     //
     //  1-1
     //
+    int list_node_val[8]={1,2,3,3,4,4,5};
+    struct ListNode *ptemp,*ptail,*pHead;
+    for(int i=0;i<7;i++)
+    {
+        ptemp=(struct ListNode*)malloc(sizeof(struct ListNode));
+        ptemp->val=list_node_val[i];
+        ptemp->next=nullptr;
+        if(i==0)
+        {
+            pHead=ptemp;
+            ptail=pHead;
+        }
+        else
+        {
+            ptail->next=ptemp;
+            ptail=ptemp;
+        }
+    }
+    Solution solu;
+    pHead=solu.deleteDuplication(pHead);
+    ptemp=pHead;
+    while (ptemp)
+    {
+        cout<<ptemp->val<<endl;
+        ptemp=ptemp->next;
+    }
+    return 0;
+    
+    
+
+
+
+
+    #if 0
+
+    printf("hello world\n");
     char str[]="1+23";
     Solution solu;
     int res=solu.isNumeric(str);
@@ -577,7 +649,6 @@ int main()
     // cout<<ReverseWords<<endl;
 
 
-    #if 0
 
      string words="student a am i";
     vector<int> Cards={0,0,1,4,6};
