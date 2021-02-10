@@ -49,6 +49,7 @@ public:
             pre->next=pnext;
             pwork=pnext;
            }
+           
            else
            {
                pre=pwork;
