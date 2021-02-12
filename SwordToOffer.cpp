@@ -22,8 +22,56 @@ struct ListNode {
     }
 };
 
+
+struct TreeLinkNode {
+    int val;
+    struct TreeLinkNode *left;
+    struct TreeLinkNode *right;
+    struct TreeLinkNode *next;
+    TreeLinkNode(int x) :val(x), left(NULL), right(NULL), next(NULL) {
+        
+    }
+};
+
+
 class Solution {
 public:
+
+    /*
+    * 找出中序遍历的下一个节点并返回
+    * */
+    TreeLinkNode* GetNext(TreeLinkNode* pNode)
+    {
+        TreeLinkNode *pTemp, *pparent;
+        if (!pNode)
+            return NULL;
+        else if (pNode->right) //右节点不空 ---> 右子树的最左节点
+        {
+            pTemp = pNode->right;
+            while (pTemp->left)
+                pTemp = pTemp->left;
+            return pTemp;
+        }
+        else if (pNode->next) //右节点空，父节点不空 ---> 返回父节点
+        {
+            pTemp = pNode->next;
+            if (pTemp->left == pNode) //左子树
+                return pTemp;
+            else if (pTemp->right == pNode) //右子树
+            {
+                pparent = pTemp->next;
+                if (pparent->right == pTemp)
+                    return NULL;
+                else
+                    return pparent;
+            }
+            else 
+                return NULL;
+            
+        }
+        else
+            return NULL;
+    }
 
     /*
     * 删除链表重复结点
