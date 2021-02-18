@@ -7,12 +7,17 @@
 #include<map>
 #include<cstring>
 #include<set>
+#include<queue>
+#include<deque>
 using namespace ::std;
 using std::cout;
 using std::endl;
 using std::vector;
 using std::map;
 using std::string;
+
+static int list_node_val[]={8,6,5,-1,-1,7,-1,-1,6,7,-1,-1,5,-1,-1};
+static int counter=0;
 
 struct ListNode {
     int val;
@@ -23,19 +28,97 @@ struct ListNode {
 };
 
 
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+    TreeNode(int x) :
+            val(x), left(NULL), right(NULL) {
+    }
+};
+
+
+
 struct TreeLinkNode {
     int val;
     struct TreeLinkNode *left;
     struct TreeLinkNode *right;
     struct TreeLinkNode *next;
     TreeLinkNode(int x) :val(x), left(NULL), right(NULL), next(NULL) {
-        
     }
 };
 
 
 class Solution {
 public:
+
+    /*
+    * 
+    * */
+
+   bool isSymmetrical(TreeNode *pRoot) {
+		if (pRoot == NULL) 
+			return true;
+
+		return f(pRoot->left,pRoot->right);
+	}
+	
+	bool f(TreeNode *t1, TreeNode *t2) {
+		if (t1 == NULL && t2 == NULL) 
+			return true;
+		
+		if (t1 != NULL && t2 != NULL) 
+			return t1->val == t2->val && f(t1->left,t2->right) && f(t1->right, t2->left);
+		
+		return false;
+	}
+
+
+
+    bool isSymmetrical_(TreeNode* pRoot)
+    {
+        TreeNode*pTemp,*pLeft,*pRight;
+        deque<TreeNode*> tree_queue;
+        deque<TreeNode*> tree_queue_copy;
+        tree_queue.clear();
+        tree_queue_copy.clear();
+        // deque<TreeNode*> tree_temp;
+        if(!pRoot)
+            return true;
+        if(!pRoot->left&&!pRoot->right)
+            return true;
+        tree_queue.push_front(pRoot);
+        while(!tree_queue.empty())
+        {
+            while(!tree_queue.empty())
+            {
+                pTemp=tree_queue.front();
+                tree_queue.pop_front();
+                if(pTemp->left)
+                    tree_queue_copy.push_front(pTemp->left);
+                if(pTemp->right)
+                    tree_queue_copy.push_front(pTemp->right);
+            }
+            if(!tree_queue_copy.empty())
+            std::copy(tree_queue_copy.begin(),tree_queue_copy.end(),std::back_inserter(tree_queue));
+            // tree_queue.clear();
+            while(!tree_queue_copy.empty())
+            {
+                pLeft=tree_queue_copy.front();
+                pRight=tree_queue_copy.back();
+                if(pLeft->val==pRight->val)
+                {
+                    tree_queue_copy.pop_back();
+                    tree_queue_copy.pop_front();
+                    continue;
+                }
+                else
+                    return false;
+            }
+        }
+        return true;
+    }
+
 
     /*
     * 找出中序遍历的下一个节点并返回
@@ -646,13 +729,89 @@ private:
     vector<char> char_set;
 };
 
+/*
+* 输入序列建立二叉树
+**/
+TreeNode* CreateBTree(TreeNode *bt)
+{
+    int val=list_node_val[counter++];
+    printf("counter %d\n",counter);
+    if(counter>16)
+        return NULL;
+    // fflush(stdin);
+    // printf("please input val:\n");
+    // scanf("%d",&val);
+    // fflush(stdin);
+    if(val!=-1)
+    {
+      
+        bt=new TreeNode(val);
+        bt->left=CreateBTree(bt->left);
+        bt->right=CreateBTree(bt->right);
+        return bt;
+    }
+    else
+    // cout<<"current node pointer "<<bt<<endl;
+        return NULL;
+}
+
+void travserse_tree(TreeNode *root)
+{
+    if(root)
+    {
+        printf("%d\n",root->val);
+        travserse_tree(root->left);
+        travserse_tree(root->right);
+    }
+    else
+        return;
+    
+}
 
 #if 1
+
 int main()
 {
-    //
-    //  1-1
-    //
+
+    /*
+    * 创建二叉树
+    ***/
+    // int list_node_val[7]={8,6,9,5,7,7,5};
+    // TreeNode *root=NULL;
+    // root=CreateBTree(root);
+    // travserse_tree(root);
+
+  
+
+    // Solution solu;
+    // bool res=solu.isSymmetrical(root);
+    // cout<<"isSymmetrical "<<res<<endl; 
+
+    // int i=0,j=0;
+    // while(j<20)
+    // {
+    //     j++;
+    //     cout<<"j "<<j<<endl;
+    //     while(i<10)
+    //     {
+    //         i++;
+    //         if(i<5)
+    //             continue;
+    //         cout<<"i "<<i<<endl;
+    //     }
+    // }
+
+    return 0;
+    
+    
+
+
+
+
+    #if 0
+    /*
+    * 创建链表
+    * */
     int list_node_val[8]={1,2,3,3,4,4,5};
     struct ListNode *ptemp,*ptail,*pHead;
     for(int i=0;i<7;i++)
@@ -671,22 +830,21 @@ int main()
             ptail=ptemp;
         }
     }
-    Solution solu;
+
+    /*
+    * 调用方法
+    * */
     pHead=solu.deleteDuplication(pHead);
+
+    /*
+    * 打印链表
+    * */
     ptemp=pHead;
     while (ptemp)
     {
         cout<<ptemp->val<<endl;
         ptemp=ptemp->next;
     }
-    return 0;
-    
-    
-
-
-
-
-    #if 0
 
     printf("hello world\n");
     char str[]="1+23";
@@ -719,6 +877,6 @@ int main()
         for (auto im:it)
             cout<<im<<endl;
     #endif
-    return 0;
+    
 }
 #endif
