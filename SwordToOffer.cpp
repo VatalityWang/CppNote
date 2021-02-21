@@ -52,8 +52,66 @@ struct TreeLinkNode {
 class Solution {
 public:
 
+
     /*
-    * 
+    * 按之字顺序打印二叉树
+    * */
+    vector<vector<int>> Print(TreeNode *pRoot)
+    {
+
+        vector<vector<int>> res;
+        res.clear();
+        if (!pRoot)
+            return res;
+        bool from_left = true;
+        stack<TreeNode *> travserse_tree;
+        stack<TreeNode *> aid_tree;
+        travserse_tree.push(pRoot);
+        while (!travserse_tree.empty() || !aid_tree.empty())
+        {
+            vector<int> temp;
+            temp.clear();
+            if (from_left)
+            {
+
+                while (!travserse_tree.empty())
+                {
+
+                    TreeNode *tempnode = travserse_tree.top();
+                    travserse_tree.pop();
+                    temp.push_back(tempnode->val);
+                    if (tempnode->left)
+                        aid_tree.push(tempnode->left);
+                    if (tempnode->right)
+                        aid_tree.push(tempnode->right);
+                }
+                from_left = false;
+            }
+            else
+            {
+                vector<int> temp;
+                temp.clear();
+                while (!aid_tree.empty())
+                {
+
+                    TreeNode *tempnode = aid_tree.top();
+                    aid_tree.pop();
+                    temp.push_back(tempnode->val);
+                    if (tempnode->right)
+                        travserse_tree.push(tempnode->right);
+                    if (tempnode->left)
+                        travserse_tree.push(tempnode->left);
+                }
+                from_left = true;
+            }
+            if (!temp.empty())
+                res.push_back(temp);
+        }
+        return res;
+    }
+
+    /*
+    *  判断而产生误会是否镜像对称
     * */
 
    bool isSymmetrical(TreeNode *pRoot) {
