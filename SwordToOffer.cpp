@@ -53,6 +53,65 @@ class Solution {
 public:
 
 
+
+
+
+
+    /*
+    * 按行打印二叉树
+    * */
+    vector<vector<int> > Print(TreeNode* pRoot) 
+    {
+        vector<vector<int>> res;
+        res.clear();
+        if (!pRoot)
+            return res;
+        bool new_floor = true;
+        queue<TreeNode *> travserse_tree;
+        queue<TreeNode *> aid_tree;
+        travserse_tree.push(pRoot);
+        while (!travserse_tree.empty() || !aid_tree.empty())
+        {
+            vector<int> temp;
+            temp.clear();
+            if (new_floor)
+            {
+
+                while (!travserse_tree.empty())
+                {
+
+                    TreeNode *tempnode = travserse_tree.front();
+                    travserse_tree.pop();
+                    temp.push_back(tempnode->val);
+                    if (tempnode->left)
+                        aid_tree.push(tempnode->right);
+                    if (tempnode->right)
+                        aid_tree.push(tempnode->right);
+                }
+                new_floor = false;
+            }
+            else
+            {
+              
+                while (!aid_tree.empty())
+                {
+
+                    TreeNode *tempnode = aid_tree.front();
+                    aid_tree.pop();
+                    temp.push_back(tempnode->val);
+                    if (tempnode->left)
+                        travserse_tree.push(tempnode->left);
+                    if (tempnode->right)
+                        travserse_tree.push(tempnode->right);
+                }
+                new_floor = true;
+            }
+            if (!temp.empty())
+                res.push_back(temp);
+        }
+        return res;
+    }
+
     /*
     * 按之字顺序打印二叉树
     * */
@@ -89,18 +148,17 @@ public:
             }
             else
             {
-                vector<int> temp;
-                temp.clear();
+               
                 while (!aid_tree.empty())
                 {
 
                     TreeNode *tempnode = aid_tree.top();
                     aid_tree.pop();
                     temp.push_back(tempnode->val);
-                    if (tempnode->right)
-                        travserse_tree.push(tempnode->right);
                     if (tempnode->left)
                         travserse_tree.push(tempnode->left);
+                    if (tempnode->right)
+                        travserse_tree.push(tempnode->right);
                 }
                 from_left = true;
             }
