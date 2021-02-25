@@ -52,6 +52,35 @@ struct TreeLinkNode {
 class Solution {
 public:
 
+    /*
+    * 求二叉搜索树第k小的节点
+    * **/
+    TreeNode* midorder(TreeNode*pRoot,int k,int *num)
+    {
+        if(!pRoot)
+            return NULL;
+        TreeNode*left=NULL;
+        TreeNode*right=NULL;
+        left=midorder(pRoot->left,k,num);
+        if(left)
+            return left;
+        (*num)++;
+        if((*num)==k)
+            return pRoot;
+        right=midorder(pRoot->right,k,num);
+        if(right)
+            return right;
+        else 
+            return NULL;
+    }
+
+     TreeNode* KthNode(TreeNode* pRoot, int k)
+    {
+        int m=0;
+        return midorder(pRoot,k,&m);
+        
+    }
+
 
     /*
     * 序列化二叉树
