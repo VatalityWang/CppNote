@@ -53,7 +53,74 @@ class Solution {
 public:
 
 
+    /*
+    * 序列化二叉树
+    **/
 
+   void preorder(TreeNode*root,string&str)
+   {
+       if(!root)
+       {
+            str+='#';
+            return;
+       }
+       str+=to_string(root->val);
+       str+=',';
+       preorder(root->left,str);
+       preorder(root->right,str);
+
+   }
+
+   char* Serialize(TreeNode *root) 
+    {    
+        if(!root)
+            return NULL;
+        string str;
+        preorder(root,str);
+        char * serialize_res=new char[str.size()+1];
+        int i=0;
+        while(i<str.size())
+        {
+            serialize_res[i]=str[i];
+            i++;
+        }
+        serialize_res[i]='\0';
+        return serialize_res;
+    }
+
+
+    TreeNode* deserialize(char **str)
+    {
+        TreeNode*root=NULL;
+        if(**str=='#')
+        {
+            (*str)++;
+            return root;
+        }
+        int num=0;
+        while(**str!='\0'&&**str!=',')
+        {
+            num=num*10+((**str)-'0');
+            (*str)++;
+        }
+        root=new TreeNode(num);
+        if(**str=='\0')
+            return root;
+        else
+            (*str)++;
+        root->left=deserialize(str);
+        root->right=deserialize(str);
+        return root;
+    }
+
+    TreeNode* Deserialize(char *str) 
+    {
+        TreeNode*root=NULL;
+        if(!str)
+            return root;
+        root= deserialize(&str);
+        return root;
+    }
 
 
 
