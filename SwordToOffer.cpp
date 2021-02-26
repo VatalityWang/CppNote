@@ -52,6 +52,26 @@ struct TreeLinkNode {
 class Solution {
 public:
 
+
+    /*
+    * 数据流中的中位数
+    */
+    void Insert(int num) 
+    {
+        data.push_back(num);
+    }
+
+    double GetMedian() 
+    { 
+        sort(data.begin(),data.end());
+        int length=data.size();
+        if(length%2)
+            return data[length/2];
+        else
+            return (data[length/2]+data[length/2-1])/2.0;
+    }
+
+
     /*
     * 求二叉搜索树第k小的节点
     * **/
@@ -939,6 +959,7 @@ public:
 private:
     map<char,int> static_count;
     vector<char> char_set;
+    vector<int> data;
 };
 
 /*
