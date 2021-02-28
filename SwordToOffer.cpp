@@ -54,6 +54,88 @@ public:
 
 
     /*
+    * 矩阵中的路径
+    * */
+    void  matrix(string )
+    {
+
+    }
+
+    bool hasPath(string matrix, int rows, int cols, string str) 
+    {
+        int i,j,k,next;
+        int direction[4]={1,2,3,4};   //1,2,3,4分别代表左，上，右，下。
+        string path;
+      
+        for(k=0;k<matrix.size();k++)
+        {
+            if(matrix[k]==str[0])
+            {
+
+                i=k/cols;   //行
+                j=k%cols;   //列
+                path+=matrix[k];
+                for(int m=0;m<4;m++)
+                {
+                    
+                    switch (direction[m])
+                    {
+                    case 1:
+                        next=(--j)+i*cols;
+                        if(matrix[next]==str[path.size()])
+                            path+=matrix[next];
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    default:
+                        break;
+                    }
+                }
+            }
+            else
+                continue;
+            
+
+            
+        }
+        
+                
+    }
+
+    /*
+    *  滑动窗口最大值 
+    */
+    vector<int> maxInWindows(const vector<int>& num, unsigned int size) 
+    {
+        int start,end,i;
+        vector<int> res;
+        vector<int> temp;
+        temp.clear();
+        res.clear();
+        start=0;
+        end=start+size-1;
+        while(end<num.size())
+        {
+            i=start;
+            while(i<=end)
+            {
+                temp.push_back(num[i]);
+                i++;
+            }
+            sort(temp.begin(),temp.end());
+            res.push_back(temp[temp.size()-1]);
+            temp.clear();
+            start++;
+            end++;
+        }
+        return res;
+    }
+
+    /*
     * 数据流中的中位数
     */
     void Insert(int num) 
