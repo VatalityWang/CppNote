@@ -52,6 +52,57 @@ struct TreeLinkNode {
 class Solution {
 public:
 
+    /*
+    * 机器人的运动范围
+    * */
+   int getnumsum(int num)
+   {
+       int sum=0;
+       while (num)
+       {
+           sum+=num%10;
+           num/=10;
+       }
+       return sum;
+   }
+
+    bool judge(int threshold,int row,int col)
+    {
+        if(getnumsum(row)+getnumsum(col)>threshold)
+            return false;
+        else
+            return true;
+    }
+    void through_path(int threshold,int *memory,int i,int j,int rows,int cols)
+    {
+        if(i<0||j<0||i>rows-1||j>cols-1)//越界
+            return;
+        int index=i*cols+j;
+        if(!judge(threshold,i,j)) //不能走
+            return;
+        if(memory[index]) //能走但已走过
+            return;
+        else
+            memory[index]=1;
+        through_path(threshold,memory,i-1,j,rows,cols);
+        through_path(threshold,memory,i+1,j,rows,cols);
+        through_path(threshold,memory,i,j+1,rows,cols);
+        through_path(threshold,memory,i,j-1,rows,cols);
+    }
+
+    int movingCount(int threshold, int rows, int cols) 
+    {
+        int count=0;
+        int i,j;
+        int total=rows*cols;
+        int* memory=new int[total];
+        through_path(threshold,memory,0,0,rows,cols);
+        for(i=0;i<total;i++)
+            if(memory[i])
+                count++;
+        return count;
+    }
+
 
     /*
     * 矩阵中的路径
