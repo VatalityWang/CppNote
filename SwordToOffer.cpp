@@ -110,15 +110,27 @@ public:
     bool matrix_path(string matrix, string str, int rows, int cols, int order, int i, int j, int *memory)
     {
         if (order > str.size() - 1) //超过范围
+        {
+            // printf("order oversize\n");
             return false;
-        if (i > cols - 1 || j > rows - 1 || i < 0 || j < 0)
+        }
+        if (i > rows - 1 || j > cols - 1 || i < 0 || j < 0)
+        {
+            // printf("axis oversize\n");
             return false;
-        int pos = i * rows + j;
-        if (memory[pos]) //已走过
+        }
+        // printf("before judge wether through\n");
+        // print_memory(memory,8,40);
+        int pos = i * cols + j;
+        if (memory[pos]==1) //已走过
+        {
+            // printf("pos %d already through\n",pos);
             return false;
+        }
         //没有走过
         if (str[order] == matrix[pos])
         {
+            // printf("current pos %d,oerder %d,match char %c\n",pos,order,str[order]);
             memory[pos] = 1;
             if (order == str.size() - 1)
                 return true;
@@ -153,9 +165,20 @@ public:
             return false;
     }
 
+    void print_memory(int *memory,int cols,int size)
+    {
+        for(int i=0;i<size;i++)
+        {
+            printf("%d ",memory[i]);
+            if((i+1)%cols==0)
+                printf("\n");
+
+        }
+    }
+
     bool hasPath(string matrix, int rows, int cols, string str)
     {
-        int i, j, k, next;
+        int i, j, k;
         bool res = false;
         int *memory = new int[matrix.size()]();
 
@@ -166,11 +189,13 @@ public:
         {
             i = k / cols; //行
             j = k % cols; //列
+            // printf("k %d\n",k);
+            // print_memory(memory,8,40);
             res = matrix_path(matrix, str, rows, cols, 0, i, j, memory);
             if (res)
                 return res;
             else
-                memset(memory,0,sizeof(memory));
+                memset(memory,0,sizeof(int)*matrix.size());
         }
         return res;
     }
@@ -1163,10 +1188,18 @@ void travserse_tree(TreeNode *root)
 
 int main()
 {
-    string martix="ABCESFCSADEE";
-    string str="ABCCED";
+    /*
+    ABCEHJIG
+    SFCSLOPQ
+    ADEEMNOE
+    ADIDEJFM
+    VCEIFGGS
+    */
+
+    string martix="ABCEHJIGSFCSLOPQADEEMNOEADIDEJFMVCEIFGGS";
+    string str="SGGFIECVAASABCEHJIGQEM";
     Solution solu;
-    bool res=solu.hasPath(martix,3,4,str);
+    bool res=solu.hasPath(martix,5,8,str);
     cout<<"res:"<<res<<endl;
     // int *p=new int[10]();
     // for(int i=0;i<10;i++)
