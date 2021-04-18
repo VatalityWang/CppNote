@@ -51,9 +51,69 @@ struct TreeLinkNode
     }
 };
 
+ // Definition for an interval.
+  struct Interval
+  {
+      int start;
+      int end;
+      Interval() : start(0), end(0) {}
+      Interval(int s, int e) : start(s), end(e) {}
+  };
+
+ bool static compare(const Interval &v1,const Interval &v2){
+       if(v1.start>v2.start) return false;
+       else return true;
+   }
+
 class Solution
 {
 public:
+
+
+    /**
+     * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
+     * 链表奇偶节点重排
+     * 
+     * @param head ListNode类 
+     * @return ListNode类
+     */
+    ListNode* oddEvenList(ListNode* head) {
+        // write code here
+        
+    }
+
+
+    /*
+    * 合并区间  给出一组区间，请合并所有重叠的区间。请保证合并后的区间按区间起点升序排列。
+    * input:[[10,30],[20,60],[80,100],[150,180]]
+    * output:[[10,60],[80,100],[150,180]]
+    * **/
+
+   //template<typename T>
+    vector<Interval> merge(vector<Interval> &intervals)
+    {
+        sort(intervals.begin(), intervals.end(), compare);
+        vector<Interval>::iterator it, next;
+        for (it = intervals.begin(); it < intervals.end(); it++){
+            next = it + 1;
+            if (next < intervals.end()){
+                //区间内部
+                if((*next).start>=(*it).start&&(*next).end<=(*it).end){                  
+                    intervals.erase(next);
+                    it--;
+                }
+                //区间重叠
+                else{
+                    if ((*next).start <=(*it).end){
+                        (*it).end = (*next).end;
+                         intervals.erase(next);
+                         it--;
+                    }
+                }
+            }
+        }
+        return intervals;
+    }
 
     /*
     * 剪绳子
