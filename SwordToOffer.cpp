@@ -79,7 +79,36 @@ public:
      */
     ListNode* oddEvenList(ListNode* head) {
         // write code here
-        
+        if(!head||!head->next)
+            return head;
+        ListNode*odd,*even,*temp,*work,*evenstart,*oddstart;
+        int i=1;
+        work=head;
+        while(work){
+            temp=work->next;
+            if(i%2){
+                if(i==1)
+                    oddstart=work;
+                odd=work;
+                if(work->next&&work->next->next)
+                    odd->next=work->next->next;
+                else
+                    odd->next=nullptr;
+            }
+            else{
+                if(i==2)
+                    evenstart=work;
+                even=work;
+                if(work->next&&work->next->next)
+                    even->next=work->next->next;
+                else
+                    even->next=nullptr;
+            }
+            work=temp;
+            i++;
+        }
+        odd->next=evenstart;
+        return oddstart;
     }
 
 
@@ -1273,57 +1302,15 @@ void travserse_tree(TreeNode *root)
 
 int main()
 {
-    /*
-    ABCEHJIG
-    SFCSLOPQ
-    ADEEMNOE
-    ADIDEJFM
-    VCEIFGGS
-    */
+   
+   
+   
 
-    string martix="ABCEHJIGSFCSLOPQADEEMNOEADIDEJFMVCEIFGGS";
-    string str="SGGFIECVAASABCEHJIGQEM";
-    Solution solu;
-    bool res=solu.hasPath(martix,5,8,str);
-    cout<<"res:"<<res<<endl;
-    // int *p=new int[10]();
-    // for(int i=0;i<10;i++)
-    //     cout<<p[i]<<endl;
-    // cout<<"hello world"<<endl;
 
-    /*
-    * 创建二叉树
-    ***/
-    // int list_node_val[7]={8,6,9,5,7,7,5};
-    // TreeNode *root=NULL;
-    // root=CreateBTree(root);
-    // travserse_tree(root);
-
-    // Solution solu;
-    // bool res=solu.isSymmetrical(root);
-    // cout<<"isSymmetrical "<<res<<endl;
-
-    // int i=0,j=0;
-    // while(j<20)
-    // {
-    //     j++;
-    //     cout<<"j "<<j<<endl;
-    //     while(i<10)
-    //     {
-    //         i++;
-    //         if(i<5)
-    //             continue;
-    //         cout<<"i "<<i<<endl;
-    //     }
-    // }
-
-    return 0;
-
-#if 0
     /*
     * 创建链表
     * */
-    int list_node_val[8]={1,2,3,3,4,4,5};
+    int list_node_val[7]={2,1,3,5,6,4,7};
     struct ListNode *ptemp,*ptail,*pHead;
     for(int i=0;i<7;i++)
     {
@@ -1339,6 +1326,62 @@ int main()
         {
             ptail->next=ptemp;
             ptail=ptemp;
+        }
+    }
+
+    Solution slu;
+    pHead=slu.oddEvenList(pHead);
+    ptemp=pHead;
+    while (ptemp)
+    {
+        cout<<ptemp->val<<endl;
+        ptemp=ptemp->next;
+    }
+
+    return 0;
+
+#if 0
+
+     /*
+    ABCEHJIG
+    SFCSLOPQ
+    ADEEMNOE
+    ADIDEJFM
+    VCEIFGGS
+    */
+
+   
+
+    string martix="ABCEHJIGSFCSLOPQADEEMNOEADIDEJFMVCEIFGGS";
+    string str="SGGFIECVAASABCEHJIGQEM";
+    Solution solu;
+    bool res=solu.hasPath(martix,5,8,str);
+    cout<<"res:"<<res<<endl;
+
+
+     /*
+    * 创建二叉树
+    ***/
+    int list_node_val[7]={8,6,9,5,7,7,5};
+    TreeNode *root=NULL;
+    root=CreateBTree(root);
+    travserse_tree(root);
+
+    Solution solu;
+    bool res=solu.isSymmetrical(root);
+    cout<<"isSymmetrical "<<res<<endl;
+
+    int i=0,j=0;
+    while(j<20)
+    {
+        j++;
+        cout<<"j "<<j<<endl;
+        while(i<10)
+        {
+            i++;
+            if(i<5)
+                continue;
+            cout<<"i "<<i<<endl;
         }
     }
 
