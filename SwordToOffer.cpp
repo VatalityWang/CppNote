@@ -11,6 +11,7 @@
 #include <queue>
 #include <deque>
 #include<cmath>
+#include<sstream>
 using namespace ::std;
 using std::cout;
 using std::endl;
@@ -65,10 +66,72 @@ struct TreeLinkNode
        else return true;
    }
 
+template <typename T>
+bool static compare_int( T v1, T v2) {
+    stack<int> decompose1,decompose2;
+    if(v1==0){
+        decompose1.push(0);
+    }
+    else{
+        while(v1){
+            decompose1.push(v1%10);
+            v1/=10;
+        }
+    }
+    if(v2==0){
+        decompose2.push(0);
+    }
+    else{
+        while (v2){
+            decompose2.push(v2%10);
+            v2/=10;
+        }
+    }
+    while(decompose1.size()&&decompose2.size()){
+        int temp1=decompose1.top();
+        int temp2=decompose2.top();
+        decompose1.pop();
+        decompose2.pop();
+        if(temp1>temp2)
+            return true;
+        else if(temp1<temp2)
+            return false;
+    }
+     //剩下的元素都为零
+    if(decompose1.size())
+        return false;
+    else
+        return true;
+}
+
 class Solution
 {
 public:
 
+    /**
+     * 
+     * 给定一个数组由一些非负整数组成，现需要将他们进行排列并拼接，使得最后的结果最大，返回值需要是string类型 否则可能会溢出。
+     * input:[30,1]
+     * output:"301"
+     * 最大数
+     * @param nums int整型vector 
+     * @return string字符串
+     */
+    string solve(vector<int>& nums) {
+        // write code here
+        string res="";
+        int num;
+        sort(nums.begin(),nums.end(),compare_int<int>);
+        for(int i=0;i<nums.size();i++){
+            res+=std::to_string(nums[i]);
+        }
+        stringstream ss;
+        ss<<res;
+        ss>>num;
+        if(num==0)
+            return string("0");
+        return res;
+    }
 
     /**
      * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
@@ -117,7 +180,6 @@ public:
     * input:[[10,30],[20,60],[80,100],[150,180]]
     * output:[[10,60],[80,100],[150,180]]
     * **/
-
    //template<typename T>
     vector<Interval> merge(vector<Interval> &intervals)
     {
@@ -1302,12 +1364,15 @@ void travserse_tree(TreeNode *root)
 
 int main()
 {
-   
-   
-   
+    vector<int> input={30,0};
+    Solution slu;
+    string res=slu.solve(input);
+    cout<<res<<endl;
+    return 0;
 
+#if 0
 
-    /*
+     /*
     * 创建链表
     * */
     int list_node_val[7]={2,1,3,5,6,4,7};
@@ -1328,8 +1393,6 @@ int main()
             ptail=ptemp;
         }
     }
-
-    Solution slu;
     pHead=slu.oddEvenList(pHead);
     ptemp=pHead;
     while (ptemp)
@@ -1338,10 +1401,6 @@ int main()
         ptemp=ptemp->next;
     }
 
-    return 0;
-
-#if 0
-
      /*
     ABCEHJIG
     SFCSLOPQ
@@ -1349,9 +1408,6 @@ int main()
     ADIDEJFM
     VCEIFGGS
     */
-
-   
-
     string martix="ABCEHJIGSFCSLOPQADEEMNOEADIDEJFMVCEIFGGS";
     string str="SGGFIECVAASABCEHJIGQEM";
     Solution solu;
