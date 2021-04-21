@@ -109,6 +109,24 @@ class Solution
 public:
 
     /**
+     * 奇怪的排序问题
+     * 操场上有n个人排成一队，这n个人身高互不相同，可将他们的身高视为一个1到n的排列。
+     * 这时需要把队伍变成升序，也就是从矮到高排序。 
+     * 每次可以选择一个人，让这个人和在他身后的人比高矮，如果比对方高，则交换位置并继续下一次比较，直到比对方矮或者已经在队尾。
+     * 现在给出数n和一个1到n的排列，求最少的选择次数，使队伍变为升序。
+     * **/
+    int wwork(int n, vector<int>& a) {
+        // write code here
+        int i,count=0,order=n;
+        for(i=n-1;i>=0;i--){
+            if(a[i]>order)
+                count++;
+            order=min(a[i],order);
+        }
+        return count;
+    }
+
+    /**
      * 栈排序
      * @param a int整型一维数组 描述入栈顺序
      * @param aLen int a数组长度
@@ -117,9 +135,7 @@ public:
     vector<int> solve(int* a, int aLen) {
         // write code here
         vector<int> res;
-       
         stack<int> aux;
-   
         int i=0;
         aux.push(a[i++]);
         while (aux.size()||i<=aLen){
