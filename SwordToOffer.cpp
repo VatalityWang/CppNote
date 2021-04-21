@@ -109,6 +109,47 @@ class Solution
 public:
 
     /**
+     * 栈排序
+     * @param a int整型一维数组 描述入栈顺序
+     * @param aLen int a数组长度
+     * @return int整型vector
+     */
+    vector<int> solve(int* a, int aLen) {
+        // write code here
+        vector<int> res;
+       
+        stack<int> aux;
+   
+        int i=0;
+        aux.push(a[i++]);
+        while (aux.size()||i<=aLen){
+            if(i==aLen){
+                while(aux.size()){
+                    res.push_back(aux.top());
+                    aux.pop();
+                }
+                i++;
+            }
+            else{
+                if(aux.size()){
+                    int top=aux.top();
+                    int next_max=*(std::max_element(a+i,a+aLen));
+                    while(top>next_max){
+                        aux.pop();
+                        res.push_back(top);
+                        if(aux.size())
+                            top=aux.top();
+                        else
+                            break;
+                    }
+                }
+                aux.push(a[i++]);
+            }
+        }
+        return res;
+    }
+
+    /**
      * 
      * 给定一个数组由一些非负整数组成，现需要将他们进行排列并拼接，使得最后的结果最大，返回值需要是string类型 否则可能会溢出。
      * input:[30,1]
@@ -1364,10 +1405,13 @@ void travserse_tree(TreeNode *root)
 
 int main()
 {
-    vector<int> input={30,0};
+    // vector<int> input={30,0};
+    int a[9]={5,8,9,6,7,1,3,2,4};
     Solution slu;
-    string res=slu.solve(input);
-    cout<<res<<endl;
+    vector<int> res=slu.solve(a,9);
+    cout<<"result:"<<endl;
+    for(auto &it:res)
+        cout<<it<<endl;
     return 0;
 
 #if 0
