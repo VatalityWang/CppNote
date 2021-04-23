@@ -107,6 +107,23 @@ bool static compare_int( T v1, T v2) {
 class Solution
 {
 public:
+    /**
+     * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
+     *
+     * 返回符合牛牛希望的分法中最小的差值是多少
+     * @param n int整型 代表共有多少数
+     * @param a int整型vector 代表每个数的大小
+     * @return int整型
+     */
+    int splitArray(int n, vector<int>& a) {
+        // write code here
+        sort(a.begin(),a.end());
+        vector<int> diff;
+        for(int i=0;i<a.size();i++)
+            if(i<a.size()-1)
+                diff.push_back(a[i+1]-a[i]);
+        return *std::min_element(diff.begin(),diff.end());
+    }
 
     /**
      * 奇怪的排序问题
@@ -1467,12 +1484,14 @@ int main()
     ADEEMNOE
     ADIDEJFM
     VCEIFGGS
+    
     */
     string martix="ABCEHJIGSFCSLOPQADEEMNOEADIDEJFMVCEIFGGS";
     string str="SGGFIECVAASABCEHJIGQEM";
     Solution solu;
     bool res=solu.hasPath(martix,5,8,str);
     cout<<"res:"<<res<<endl;
+    cout<<"hello world"<<endl;
 
 
      /*
