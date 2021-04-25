@@ -1,4 +1,3 @@
-
 #include <vector>
 #include <iostream>
 #include <string>
@@ -61,7 +60,7 @@ struct TreeLinkNode
       Interval(int s, int e) : start(s), end(e) {}
   };
 
- bool static compare(const Interval &v1,const Interval &v2){
+ bool static compare_Interval(const Interval &v1,const Interval &v2){
        if(v1.start>v2.start) return false;
        else return true;
    }
@@ -104,9 +103,47 @@ bool static compare_int( T v1, T v2) {
         return true;
 }
 
+
+template <typename T>
+bool static compare(const T &v1,const T &v2){
+   if(v1>v2)
+    return false;
+   else
+    return true;
+}
+
+
+bool static compare_string_by_number(const string &v1,const string &v2){
+   return v1+v2>v2+v1;
+}
+    
+
+
+
 class Solution
 {
 public:
+
+
+     /**
+     * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
+     * 牛牛拼数
+     * 返回这n个数能够组成的最大的数字是多少
+     * @param s string字符串vector 
+     * @return string字符串
+     */
+    string formMaxNumber(vector<string>& s) {
+        // write code here
+        sort(s.begin(),s.end(),compare_string_by_number);
+        string res="";
+        for(auto &it:s)
+            res+=it;
+        return res;
+
+    }
+
+
+
     /**
      * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
      *
@@ -257,7 +294,7 @@ public:
    //template<typename T>
     vector<Interval> merge(vector<Interval> &intervals)
     {
-        sort(intervals.begin(), intervals.end(), compare);
+        sort(intervals.begin(), intervals.end(), compare_Interval);
         vector<Interval>::iterator it, next;
         for (it = intervals.begin(); it < intervals.end(); it++){
             next = it + 1;
@@ -1434,20 +1471,37 @@ void travserse_tree(TreeNode *root)
         return;
 }
 
+
+void print_variable_name(){
+    string a("hello");
+    cout<<typeid(a).name()<<endl;
+}
+
 #if 1
 
 int main()
 {
+
+   
     // vector<int> input={30,0};
     int a[9]={5,8,9,6,7,1,3,2,4};
     Solution slu;
+    vector<string> input{"321","32","321"};
+    string res=slu.formMaxNumber(input);
+    cout<<res<<endl;
+    return 0;
+
+#if 0
+
+    /*
+    *
+    */
     vector<int> res=slu.solve(a,9);
     cout<<"result:"<<endl;
     for(auto &it:res)
         cout<<it<<endl;
-    return 0;
-
-#if 0
+    cout<<typeid(res).name()<<endl;
+    cout<<res.at[10]<<endl;  //at 如果越界会抛出 out_of_range 异常。
 
      /*
     * 创建链表
