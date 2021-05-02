@@ -180,7 +180,7 @@ public:
         for(i=0;i<n;i++){
             min+=abs(p[i].y-p[y_].y)*p[i].w;
         }
-
+        delete []p;
         return min;
 
      }
