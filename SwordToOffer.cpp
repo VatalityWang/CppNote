@@ -125,10 +125,40 @@ class Solution
 public:
 
 
+    /**
+     * 牛牛，牛妹仍骰子 抛n次m面的骰子
+     * **/
+
+    string Throwdice(int n, int m, vector<int>& a, vector<int>& b) {
+        // write code here
+        // write code here
+        sort(a.begin(),a.end());
+        sort(b.begin(),b.end());
+        int sum1=0,sum2=0;
+        bool flag1=true,flag2=true;
+        for(int i=0;i<n &&(flag1||flag2);i++){
+            if(a[i]<=sum1+1){
+                sum1+=a[i];
+            }else{
+                flag1=false;
+                sum1+=1;
+            }
+             
+            if(b[i]<=sum2+1){
+                sum2+=b[i];
+            }else{
+                sum2+=1;
+                flag2=false;
+            }
+        }
+        return sum1>sum2 ? "Happy" : "Sad";
+
+    }
+
      /**
      * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
      * 牛牛拼数
-     * 返回这n个数能够组成的最大的数字是多少
+     * 返回这n个数能够组成的最大的数字是多少    
      * @param s string字符串vector 
      * @return string字符串
      */
