@@ -116,7 +116,10 @@ bool static compare(const T &v1,const T &v2){
 bool static compare_string_by_number(const string &v1,const string &v2){
    return v1+v2>v2+v1;
 }
-    
+
+struct point{
+    int x,y,w;
+};
 
 
 
@@ -124,6 +127,63 @@ class Solution
 {
 public:
 
+
+    bool static comparex(point p1,point p2){
+        return p1.x<p2.x;
+    }
+    bool static comparey(point p1,point p2){
+        return p1.y<p2.y;
+    }
+
+    /**
+     * 带权最小曼哈顿距离
+     * n:点个数
+     * x:x坐标
+     * y:y坐标
+     * w:每个点的权值
+     * **/
+     long long MinimumDistance(int n, vector<int>& x, vector<int>& y, vector<int>& w) {
+        // write code here
+        long long min=0;
+        int i=0,W=0,s=0,x_=0,y_=0;
+        // point *p=(point*)malloc(n*sizeof(point));
+        point *p=(point*)new point[n];
+        for(i=0;i<n;i++){
+            p[i].x=x[i];
+            p[i].y=y[i];
+            p[i].w=w[i];
+            W+=w[i];
+        }
+        W/=2;
+
+        sort(p,p+n,comparex);
+        for(i=0;i<n;i++){
+            s+=p[i].w;
+            if(s>W){
+                x_=i;
+                break;
+            }
+        }
+        for(i=0;i<n;i++){
+            min+=abs(p[i].x-p[x_].x)*p[i].w;
+        }
+
+        s=0;
+        sort(p,p+n,comparey);
+        for(i=0;i<n;i++){
+            s+=p[i].w;
+            if(s>W){
+                y_=i;
+                break;
+            }
+        }
+        for(i=0;i<n;i++){
+            min+=abs(p[i].y-p[y_].y)*p[i].w;
+        }
+
+        return min;
+
+     }
 
     /**
      * 牛牛，牛妹仍骰子 抛n次m面的骰子
@@ -1515,6 +1575,10 @@ int main()
    
     // vector<int> input={30,0};
     int a[9]={5,8,9,6,7,1,3,2,4};
+    int b[9]={1,2,3,4,5,6,7,8,9};
+   
+
+
     Solution slu;
     vector<string> input{"321","32","321"};
     string res=slu.formMaxNumber(input);
@@ -1522,6 +1586,16 @@ int main()
     return 0;
 
 #if 0
+
+
+     //map 插入元素自带排序
+    int a[9]={5,8,9,6,7,1,3,2,4};
+    int b[9]={1,2,3,4,5,6,7,8,9};
+    map<int,int> elements;
+    for(int i=0;i<9;i++)
+        elements.insert({a[i],b[i]});
+    for(auto &it:elements)
+        cout<<it.first<<endl;
 
     /*
     *
