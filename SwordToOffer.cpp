@@ -128,6 +128,55 @@ class Solution
 public:
 
 
+    /**
+     * 股票(无限次交易)
+     * @param prices int整型vector 股票每一天的价格
+     * @return int整型
+     * 买找最低价,卖找最高价 找波峰和波谷，波谷买入，波峰卖出。
+     **/
+     int maxProfit(vector<int>& prices) {
+        // write code here
+
+        int profit=0;
+        if(prices.size()<=1)
+            return profit;
+        bool descend;
+        vector<int>::iterator min_index=prices.begin();
+        vector<int>::iterator max_index=prices.begin();
+        if(prices[1]>prices[0]){
+            descend=false;
+            max_index=min_index+1;
+        }
+        else{
+            descend=true;
+            min_index=max_index+1;
+        }
+        vector<int>::iterator it;
+        for(it=prices.begin()+2;it!=prices.end();it++){
+            if(*it>*(it-1)){
+                //由下降转上升，波谷
+                if(descend){
+                    min_index=it-1;
+                }
+                descend=false;
+            }
+            else{
+                //由上升转下降,波峰
+                if(!descend){
+                    max_index=it-1;
+                    if(max_index>min_index){
+                        profit+=*max_index-*min_index; 
+                    }
+                }
+                descend=true;
+            }
+        }
+        if(!descend)
+            return profit+*(it-1)-*min_index;
+        else
+            return profit;
+    }
+
     bool static comparex(point p1,point p2){
         return p1.x<p2.x;
     }
@@ -1573,20 +1622,20 @@ int main()
 {
 
    
-    // vector<int> input={30,0};
-    int a[9]={5,8,9,6,7,1,3,2,4};
-    int b[9]={1,2,3,4,5,6,7,8,9};
-   
-
-
+    vector<int> input={2,4,10,57,30,82,90,12,5,13};
     Solution slu;
-    vector<string> input{"321","32","321"};
-    string res=slu.formMaxNumber(input);
-    cout<<res<<endl;
+    int profit=slu.maxProfit(input);
+    cout<<profit<<endl;
     return 0;
 
 #if 0
 
+    int a[9]={5,8,9,6,7,1,3,2,4};
+    int b[9]={1,2,3,4,5,6,7,8,9};
+   
+    vector<string> input{"321","32","321"};
+    string res=slu.formMaxNumber(input);
+    cout<<res<<endl;
 
      //map 插入元素自带排序
     int a[9]={5,8,9,6,7,1,3,2,4};
