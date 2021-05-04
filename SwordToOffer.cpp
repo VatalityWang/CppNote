@@ -129,6 +129,22 @@ public:
 
 
     /**
+     * 子数组的最大累加和 
+     * **/
+     int maxsumofSubarray(vector<int>& arr) {
+        // write code here
+        if(arr.size()==1)
+            return arr[0];
+        int i=0;
+        int pre=0,max=arr[0];
+        for(i=0;i<arr.size();i++){
+            pre=std::max(pre+arr[i],arr[i]);
+            max=std::max(pre,max);
+        }
+        return max;
+    }
+
+    /**
      * 股票(无限次交易)
      * @param prices int整型vector 股票每一天的价格
      * @return int整型
