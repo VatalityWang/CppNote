@@ -127,6 +127,39 @@ class Solution
 {
 public:
 
+    bool valid(string &char_str){
+        if(char_str[char_str.size()-1])==
+    }
+    
+    void add_bracket(vector<string>&res,string &single_res,int n){
+        single_res+="(";
+        
+        if(single_res.size()==n*2){
+            return;
+        }
+        if(n==0)
+            return;
+        add_bracket(res,single_res,n)
+        
+    }
+
+    /**
+     * 括号生成
+     * **/
+     vector<string> generateParenthesis(int n) {
+        // write code here
+        //stack<char> bracket_combination;
+        vector<string> res;
+        res.clear();
+
+        string single_res="";
+        for(int i=0;i<n;i++){
+            for(int j=0;j<2;j++){
+                
+            }
+        }
+    }
+
 
     /**
      * 子数组的最大累加和 
@@ -1642,6 +1675,9 @@ int main()
     Solution slu;
     int profit=slu.maxProfit(input);
     cout<<profit<<endl;
+
+    // char c='(';
+    // cout<<c<<endl;
     return 0;
 
 #if 0
