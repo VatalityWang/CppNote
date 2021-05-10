@@ -128,10 +128,14 @@ class Solution
 public:
 
     bool valid(string &char_str){
+
         if(char_str[char_str.size()-1])==
+        {}
+
     }
     
     void add_bracket(vector<string>&res,string &single_res,int n){
+
         single_res+="(";
         
         if(single_res.size()==n*2){
@@ -139,7 +143,8 @@ public:
         }
         if(n==0)
             return;
-        add_bracket(res,single_res,n)
+        
+        add_bracket(res,single_res,n);
         
     }
 
