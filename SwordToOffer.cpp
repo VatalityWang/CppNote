@@ -126,22 +126,50 @@ struct point{
 class Solution
 {
 public:
+    /**
+     * 删除并获得点数
+     * **/
 
-    bool valid(string &char_str){
-        if(char_str[char_str.size()-1])==
-    }
-    
-    void add_bracket(vector<string>&res,string &single_res,int n){
-        single_res+="(";
-        
-        if(single_res.size()==n*2){
-            return;
+    int rob(vector<int>&sum_nums){
+        int size=sum_nums.size();
+        int first=sum_nums[0],second=max(sum_nums[0],sum_nums[1]);
+        for(int i=2;i<size;i++){
+            int temp=second;
+            second=max(first+sum_nums[i],second);
+            first=temp;
         }
-        if(n==0)
-            return;
-        add_bracket(res,single_res,n)
-        
+        return second;
     }
+
+    int deleteAndEarn(vector<int>& nums) {
+        if(nums.size()==1)
+            return nums[0];
+        
+        int max_value=*std::max_element(nums.begin(),nums.end());
+        vector<int> sum_nums(max_value+1);
+        for(int it:nums){
+            cout<<it<<endl;
+            sum_nums[it]+=it;
+        }
+        return rob(sum_nums);
+    }
+    // bool valid(string &char_str){
+    //     if(char_str[char_str.size()-1])==
+    // }
+    
+    // void add_bracket(vector<string>&res,string &single_res,int n){
+    //     single_res+="(";
+        
+    //     if(single_res.size()==n*2){
+    //         return;
+    //     }
+    //     if(n==0)
+    //         return;
+    //     add_bracket(res,single_res,n)
+        
+    // }
+
+
 
     /**
      * 括号生成
@@ -1673,7 +1701,7 @@ int main()
    
     vector<int> input={2,4,10,57,30,82,90,12,5,13};
     Solution slu;
-    int profit=slu.maxProfit(input);
+    int profit=slu.deleteAndEarn(input);
     cout<<profit<<endl;
 
     // char c='(';
