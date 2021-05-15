@@ -127,6 +127,7 @@ class Solution
 {
 public:
 
+<<<<<<< HEAD
     void add_element(vector<vector<int>>&res,vector<int>&cur_res,
     vector<int>&nums,vector<int>&use,int pos,int current_size){
         if(current_size==0)
@@ -159,10 +160,11 @@ public:
 
     }
 
+=======
+>>>>>>> 897f7e830e0bd04fe9c6f1cb29aec90baedb6368
     /**
      * 删除并获得点数
      * **/
-
     int rob(vector<int>&sum_nums){
         int size=sum_nums.size();
         int first=sum_nums[0],second=max(sum_nums[0],sum_nums[1]);
@@ -177,7 +179,6 @@ public:
     int deleteAndEarn(vector<int>& nums) {
         if(nums.size()==1)
             return nums[0];
-        
         int max_value=*std::max_element(nums.begin(),nums.end());
         vector<int> sum_nums(max_value+1);
         for(int it:nums){
@@ -186,21 +187,42 @@ public:
         }
         return rob(sum_nums);
     }
-    // bool valid(string &char_str){
-    //     if(char_str[char_str.size()-1])==
-    // }
+
+
+
+
+    bool valid(string &char_str){
+        int i,balance=0;
+        for(i=0;i<char_str.size();i++){
+            if(char_str[i]=='('){
+                balance++;
+            }
+            else
+                balance--;
+            //中间过程不满足就返回
+            if(balance<0)
+                return false;
+        }
+        return balance==0;
+    }
     
-    // void add_bracket(vector<string>&res,string &single_res,int n){
-    //     single_res+="(";
-        
-    //     if(single_res.size()==n*2){
-    //         return;
-    //     }
-    //     if(n==0)
-    //         return;
-    //     add_bracket(res,single_res,n)
-        
-    // }
+
+    void add_bracket(vector<string>&res,string &single_res,int n){
+
+        if(single_res.size()==n*2){
+            if(valid(single_res)){
+                res.push_back(single_res);
+            }
+            return;
+        }
+
+        single_res+='(';
+        add_bracket(res,single_res,n);
+        single_res.pop_back();
+        single_res+=')';
+        add_bracket(res,single_res,n);
+        single_res.pop_back();  
+    }
 
 
 
@@ -208,17 +230,12 @@ public:
      * 括号生成
      * **/
      vector<string> generateParenthesis(int n) {
-        // write code here
-        //stack<char> bracket_combination;
+        //write code here
         vector<string> res;
         res.clear();
-
         string single_res="";
-        for(int i=0;i<n;i++){
-            for(int j=0;j<2;j++){
-                
-            }
-        }
+        add_bracket(res,single_res,n);
+        return res;
     }
 
 
