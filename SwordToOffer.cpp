@@ -11,6 +11,7 @@
 #include <deque>
 #include<cmath>
 #include<sstream>
+// #include<math>
 using namespace ::std;
 using std::cout;
 using std::endl;
@@ -127,22 +128,7 @@ class Solution
 {
 public:
 
-<<<<<<< HEAD
-    void add_element(vector<vector<int>>&res,vector<int>&cur_res,
-    vector<int>&nums,vector<int>&use,int pos,int current_size){
-        if(current_size==0)
-            return;
-        if(use[pos])
-            add_element(res,cur_res,nums,use,pos+1,current_size);
-        else{
-            cur_res.push_back(nums[pos]);
-            use[pos]=1;
-            if(cur_res.size()==current_size)
-                res.push_back(cur_res);
-            
-        }
-    }
-
+    
     /**
      * 子集 给你一个整数数组 nums ，数组中的元素 互不相同 。返回该数组所有可能的子集（幂集）。
      * **/
@@ -150,18 +136,19 @@ public:
         vector<vector<int>> res;
         res.clear();
         int total=nums.size();
-        vector<int> use(total,0);
-        for(int i=0;i<total;i++){
+        int auxiliary=pow(2,total)-1;
+        for(int i=0;i<=auxiliary;i++){
             vector<int> cur_res;
             cur_res.clear();
-            
+            for(int j=0;j<total;j++){
+                if(i&&(1<<j))
+                    cur_res.push_back(nums[j]);
+            }
+            res.push_back(cur_res);
         }
-        
-
+        return res;
     }
 
-=======
->>>>>>> 897f7e830e0bd04fe9c6f1cb29aec90baedb6368
     /**
      * 删除并获得点数
      * **/
