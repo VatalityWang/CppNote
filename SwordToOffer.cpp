@@ -1,4 +1,4 @@
-#include <vector>
+#include<vector>
 #include <iostream>
 #include <string>
 #include <stack>
@@ -126,6 +126,39 @@ struct point{
 class Solution
 {
 public:
+
+    void add_element(vector<vector<int>>&res,vector<int>&cur_res,
+    vector<int>&nums,vector<int>&use,int pos,int current_size){
+        if(current_size==0)
+            return;
+        if(use[pos])
+            add_element(res,cur_res,nums,use,pos+1,current_size);
+        else{
+            cur_res.push_back(nums[pos]);
+            use[pos]=1;
+            if(cur_res.size()==current_size)
+                res.push_back(cur_res);
+            
+        }
+    }
+
+    /**
+     * 子集 给你一个整数数组 nums ，数组中的元素 互不相同 。返回该数组所有可能的子集（幂集）。
+     * **/
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<vector<int>> res;
+        res.clear();
+        int total=nums.size();
+        vector<int> use(total,0);
+        for(int i=0;i<total;i++){
+            vector<int> cur_res;
+            cur_res.clear();
+            
+        }
+        
+
+    }
+
     /**
      * 删除并获得点数
      * **/
