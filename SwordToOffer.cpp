@@ -128,6 +128,25 @@ class Solution
 {
 public:
 
+    /*
+    * 两数之和  哈希
+    */
+    vector<int> twoSum(vector<int>& nums, int target) {
+        map<int,int> statistic;
+      
+        for(int i=0;i<nums.size();i++){
+            map<int,int>::iterator it;
+            it=statistic.find(target-nums[i]);
+            if(it!=statistic.end()){
+                return {it->second,i};
+            }
+            statistic[nums[i]]=i;
+        }
+        return {};
+       
+      
+    }
+
     /**
      * 只出现一次的数字
      * **/
