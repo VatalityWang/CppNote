@@ -145,6 +145,16 @@ public:
         }
         return i;
     }
+    /*
+    * 基于异或的方法
+    */
+    int singleNumber_(vector<int>& nums){
+        for(int i=1;i<nums.size();i++){
+            nums[0]^=nums[i];
+        }
+        return nums[0];
+    }
+
 
     
     /**
