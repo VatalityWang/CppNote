@@ -1,4 +1,4 @@
-#include<vector>
+#include <vector>
 #include <iostream>
 #include <string>
 #include <stack>
@@ -127,6 +127,24 @@ struct point{
 class Solution
 {
 public:
+
+    /**
+     * 只出现一次的数字
+     * **/
+    int singleNumber(vector<int>& nums) {
+
+        int i=0;
+        map<int,int> statistic;
+        for(i=0;i<nums.size();i++){
+            statistic[nums[i]]++;
+        }
+        map<int,int>::iterator it;
+        for(it=statistic.begin();it!=statistic.end();it++){
+            if(it->second==1)
+                return it->first;
+        }
+        return i;
+    }
 
     
     /**
