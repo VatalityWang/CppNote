@@ -36,9 +36,7 @@ struct TreeNode
     int val;
     struct TreeNode *left;
     struct TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL)
-    {
-    }
+    TreeNode(int x) : val(x), left(NULL), right(NULL){}
 };
 
 struct TreeLinkNode
@@ -127,6 +125,58 @@ struct point{
 class Solution
 {
 public:
+
+    /**
+     * 二叉树的堂兄弟节点
+     * **/
+
+    bool isCousins(TreeNode* root, int x, int y) {
+        TreeNode *rLeft=root->left;
+        TreeNode *rRight=root->right;
+        //保存上一层的节点数
+        TreeNode *PxNode=new TreeNode(x);
+        TreeNode *PyNode=new TreeNode(y);
+        deque<TreeNode*> elements;
+        elements.push_back(root);
+        while(!elements.empty()){
+            int Level_size=elements.size();
+            if(Level_size>2){
+                deque<TreeNode*>::iterator im=std::find_if(elements.begin(),elements.end(),[&](auto & e){return e->val==PxNode->val;});
+                deque<TreeNode*>::iterator in=std::find_if(elements.begin(),elements.end(),[&](auto & e){return e->val==PyNode->val;});
+                if(im!=elements.end()&&in!=elements.end() &&abs(im-in)>=1){
+                    if(abs(im-in)==1){
+                        int distance;
+                        if(im>in)
+                            distance=im-elements.begin();
+                        else
+                            distance=in-elements.begin();    
+                        if(!(distance%2))
+                            return true;
+                        else
+                            return false;
+                    }
+                    else
+                        return true;
+                }
+            }
+            int i=0;
+            while(i<Level_size){
+                TreeNode * pNode=elements.front();
+                if(pNode->left)
+                    elements.push_back(pNode->left);
+                else if(pNode->right)
+                    elements.push_back(new TreeNode(0));
+                if(pNode->right)
+                    elements.push_back(pNode->right);
+                else if(pNode->left)
+                    elements.push_back(new TreeNode(0));
+                elements.pop_front();
+                i++;
+            }
+        }
+        return false;
+    }
+
 
     /*
     * 两数之和  哈希
@@ -1782,11 +1832,20 @@ void print_variable_name(){
 int main()
 {
 
-   
+
+    deque<int> que;
     vector<int> input={2,4,10,57,30,82,90,12,5,13};
-    Solution slu;
-    int profit=slu.deleteAndEarn(input);
-    cout<<profit<<endl;
+    for(int i=0;i<input.size();i++){
+        que.push_back(input[i]);
+    }
+    deque<int>::iterator im=find(que.begin(),que.end(),10);
+    int distance=im-que.begin();
+    cout<<distance<<endl;
+
+
+    // Solution slu;
+    // int profit=slu.deleteAndEarn(input);
+    // cout<<profit<<endl;
 
     // char c='(';
     // cout<<c<<endl;
