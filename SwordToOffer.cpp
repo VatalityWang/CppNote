@@ -126,6 +126,38 @@ class Solution
 {
 public:
 
+    void collection(vector<vector<int>> &res,vector<int>&cur,vector<int>&nums,int n,vector<int> &used){
+        if(cur.size()==n){
+            res.push_back(cur);
+            return;
+        }
+        for(int i=0;i<used.size();i++){
+            if(used[i]==0){
+                cur.push_back(nums[i]);
+                used[i]=1;
+                collection(res,cur,nums,n,used);
+                cur.pop_back();
+                used[i]=0;
+            }
+        }
+     
+    }
+    
+    /**
+     * 全排列
+     * **/
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>> res;
+        int len=nums.size();
+        vector<int> used(len,0);
+        vector<int> cur;
+        cur.clear();
+        res.clear();
+        int pos=-1;
+        collection(res,cur,nums,len,used);
+        return res;
+    }
+
     /**
      * 二叉树的堂兄弟节点
      * **/
@@ -1834,17 +1866,18 @@ int main()
 
 
     deque<int> que;
-    vector<int> input={2,4,10,57,30,82,90,12,5,13};
-    for(int i=0;i<input.size();i++){
-        que.push_back(input[i]);
-    }
-    deque<int>::iterator im=find(que.begin(),que.end(),10);
-    int distance=im-que.begin();
-    cout<<distance<<endl;
+    vector<int> input={2,4};
+    // for(int i=0;i<input.size();i++){
+    //     que.push_back(input[i]);
+    // }
+    // deque<int>::iterator im=find(que.begin(),que.end(),10);
+    // int distance=im-que.begin();
+    // cout<<distance<<endl;
 
 
-    // Solution slu;
-    // int profit=slu.deleteAndEarn(input);
+    Solution slu;
+    vector<vector<int>> res=slu.permute(input);
+    cout<<res.size()<<endl;
     // cout<<profit<<endl;
 
     // char c='(';
