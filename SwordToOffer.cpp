@@ -126,6 +126,23 @@ class Solution
 {
 public:
 
+    /**
+     * 存在重复元素
+     **/
+    bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
+      
+        for(int i=0;i<nums.size();i++){
+            for(int j=i+1;j<nums.size();j++)
+            if(abs((long)nums[j]-nums[i])<=t&&abs(i-j)<=k){
+                            return true;
+                  
+                }
+                
+            }
+        
+        return false;
+    }
+
     void collection(vector<vector<int>> &res,vector<int>&cur,vector<int>&nums,int n,vector<int> &used){
         if(cur.size()==n){
             res.push_back(cur);
