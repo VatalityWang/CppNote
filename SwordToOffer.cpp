@@ -130,16 +130,19 @@ public:
      * 存在重复元素
      **/
     bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
-      
-        for(int i=0;i<nums.size();i++){
-            for(int j=i+1;j<nums.size();j++)
-            if(abs((long)nums[j]-nums[i])<=t&&abs(i-j)<=k){
-                            return true;
-                  
-                }
-                
+         vector<pair<long,long>> statis;
+        int i;
+        for(i=0;i<nums.size();i++){
+            statis.push_back(make_pair(nums[i],i));
+        }
+        sort(statis.begin(),statis.end());
+        for(int i=0;i<statis.size();i++)
+            for(int j=i+1;j<statis.size();j++){
+                if(abs(statis[j].first-statis[i].first)<=t&&abs(statis[j].second-statis[i].second)<=k)
+                    return true;
+                if(abs(statis[j].first-statis[i].first)>t)
+                    break;
             }
-        
         return false;
     }
 
