@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <numeric>
 #include <map>
+#include<unordered_map>
 #include <cstring>
 #include <set>
 #include <queue>
@@ -18,6 +19,7 @@ using std::endl;
 using std::map;
 using std::string;
 using std::vector;
+using std::ordered_map;
 
 static int list_node_val[] = {8, 6, 5, -1, -1, 7, -1, -1, 6, 7, -1, -1, 5, -1, -1};
 static int counter = 0;
@@ -129,6 +131,37 @@ public:
     /**
      * 存在重复元素
      **/
+    int getID(int x, long w) {
+        return x < 0 ? (x + 1ll) / w - 1 : x / w;
+    }
+    /**
+     * 官方题解
+     * **/
+    bool containsNearbyAlmostDuplicate_(vector<int>& nums, int k, int t) {
+        unordered_map<int, int> mp;
+        int n = nums.size();
+        for (int i = 0; i < n; i++) {
+            long x = nums[i];
+            int id = getID(x, t + 1ll); //long long 整型的1
+            if (mp.count(id)) {
+                return true;
+            }
+            if (mp.count(id - 1) && abs(x - mp[id - 1]) <= t) {
+                return true;
+            }
+            if (mp.count(id + 1) && abs(x - mp[id + 1]) <= t) {
+                return true;
+            }
+            mp[id] = x;
+            if (i >= k) {
+                mp.erase(getID(nums[i - k], t + 1ll));
+            }
+        }
+        return false;
+    }
+
+
+
     bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
          vector<pair<long,long>> statis;
         int i;
