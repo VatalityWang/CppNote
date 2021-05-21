@@ -19,7 +19,6 @@ using std::endl;
 using std::map;
 using std::string;
 using std::vector;
-using std::ordered_map;
 
 static int list_node_val[] = {8, 6, 5, -1, -1, 7, -1, -1, 6, 7, -1, -1, 5, -1, -1};
 static int counter = 0;
@@ -127,6 +126,69 @@ struct point{
 class Solution
 {
 public:
+
+    /**
+     * 链表 两数相加
+     * **/
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode *pwork1=l1;
+        ListNode *pwork2=l2;
+        ListNode *newlist=new ListNode(-1);
+        ListNode *ptail=newlist;
+        ListNode*p;
+        int carry=0;
+        int temp=0;
+        while(pwork1||pwork2){
+            if(pwork2&&pwork1){
+                temp=pwork1->val+pwork2->val+carry;
+                carry=temp/10;
+                if(temp<10){
+                    p=new ListNode(temp);
+                }
+                else{
+                    p=new ListNode(temp%10);
+                }
+                ptail->next=p;
+                ptail=p;
+                pwork1=pwork1->next;
+                pwork2=pwork2->next;
+            }
+            else{
+                if(pwork1){
+                    temp=pwork1->val+carry;
+                    carry=temp/10;
+                    if(temp<10){
+                        p=new ListNode(temp);
+                    }
+                    else{
+                        p=new ListNode(temp%10);
+                    }
+                    ptail->next=p;
+                    ptail=p;
+                    pwork1=pwork1->next;
+                } 
+                if(pwork2){
+                    temp=pwork2->val+carry;
+                    carry=temp/10;
+                    if(temp<10){
+                        p=new ListNode(temp);
+                    }
+                    else{
+                        p=new ListNode(temp%10);
+                    }
+                    ptail->next=p;
+                    ptail=p;
+                    pwork2=pwork2->next;
+                }
+            }   
+        }
+        if(carry){
+            p=new ListNode(carry);
+            ptail->next=p;
+            ptail=p;
+        }
+        return newlist->next;
+    }
 
     /**
      * 存在重复元素
@@ -1918,19 +1980,22 @@ int main()
 {
 
 
-    deque<int> que;
-    vector<int> input={2,4};
-    // for(int i=0;i<input.size();i++){
-    //     que.push_back(input[i]);
-    // }
+    unordered_map<int,int> que;
+    vector<int> input={2,4,3,1,5,8,9,10,11,34,56};
+    for(int i=0;i<input.size();i++){
+        que[input[i]]=i;
+    }
+    for(auto &it:que){
+        cout<<it.first<<"->"<<it.second<<endl;
+    }
     // deque<int>::iterator im=find(que.begin(),que.end(),10);
     // int distance=im-que.begin();
     // cout<<distance<<endl;
 
 
-    Solution slu;
-    vector<vector<int>> res=slu.permute(input);
-    cout<<res.size()<<endl;
+    // Solution slu;
+    // vector<vector<int>> res=slu.permute(input);
+    // cout<<res.size()<<endl;
     // cout<<profit<<endl;
 
     // char c='(';
