@@ -127,6 +127,37 @@ class Solution
 {
 public:
 
+
+    /**
+     * 交换一次的先前排列 从第二位开始找比最高位数字小的数中的最大者与最高位(处理位)进行交换
+     * **/
+    vector<int> prevPermOpt1(vector<int>& arr) {
+        int i,j,flag,max_index,size=arr.size();
+        for(i=size-1;i>=0;i--){
+            flag=i;
+            max_index=-1;
+            for(j=i-1;j>=0;j--){
+                if(arr[j]>arr[flag]){
+                    if(max_index==-1)
+                        max_index=j;
+                    if(arr[j]>arr[max_index])
+                        max_index=j;
+                    // int temp=arr[i];
+                    // arr[i]=arr[flag];
+                    // arr[flag]=temp;
+                    // return arr;
+                }
+            }
+            if(max_index!=-1){
+                int temp=arr[i];
+                arr[i]=arr[max_index];
+                arr[max_index]=temp;
+                return arr;
+            }
+        }
+        return arr;
+    }
+
     /**
      * 链表 两数相加
      * **/
