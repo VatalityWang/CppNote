@@ -129,6 +129,23 @@ public:
 
 
     /**
+     * 删除有序数组中的重复项
+     * **/
+    int removeDuplicates(vector<int>& nums) {
+        vector<int>::iterator it,im;
+        for(it=nums.begin();it!=nums.end();it++){
+            for(im=it+1;im!=nums.end();){
+                if(*im==*it){
+                    im=nums.erase(im);
+                }
+                else
+                    im++;
+            }
+        }
+        return nums.size();
+    }
+
+    /**
      * 交换一次的先前排列 从第二位开始找比最高位数字小的数中的最大者与最高位(处理位)进行交换
      * **/
     vector<int> prevPermOpt1(vector<int>& arr) {
