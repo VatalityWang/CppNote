@@ -133,25 +133,21 @@ public:
      * **/
     vector<int> prevPermOpt1(vector<int>& arr) {
         int i,j,flag,max_index,size=arr.size();
-        for(i=size-1;i>=0;i--){
+        for(i=size-2;i>=0;i--){
             flag=i;
             max_index=-1;
-            for(j=i-1;j>=0;j--){
-                if(arr[j]>arr[flag]){
+            for(j=i+1;j<size;j++){
+                if(arr[j]<arr[flag]){
                     if(max_index==-1)
                         max_index=j;
-                    if(arr[j]>arr[max_index])
-                        max_index=j;
-                    // int temp=arr[i];
-                    // arr[i]=arr[flag];
-                    // arr[flag]=temp;
-                    // return arr;
+                    else{
+                        if(arr[j]>arr[max_index])
+                            max_index=j;
+                    }
                 }
             }
             if(max_index!=-1){
-                int temp=arr[i];
-                arr[i]=arr[max_index];
-                arr[max_index]=temp;
+                swap(arr[flag],arr[max_index]);
                 return arr;
             }
         }
