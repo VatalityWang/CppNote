@@ -126,6 +126,21 @@ struct point{
 class Solution
 {
 public:
+    /**
+     * 移除元素
+     * **/
+    int removeElement(vector<int>& nums, int val) {
+        int i,slow=0,fast=0,size=nums.size();
+        while(fast<size){
+            if(nums[fast]!=val){
+                nums[slow++]=nums[fast++];
+            }
+            else{
+                fast++;
+            }
+        }
+        return slow;
+    }
 
 
     /**
