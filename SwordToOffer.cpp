@@ -126,6 +126,31 @@ struct point{
 class Solution
 {
 public:
+
+    /**
+    * 删除链表中倒数第n个节点 
+    **/
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        ListNode *pwork1=head,*pwork2=head,*pre=nullptr;
+        int i=0;
+        while(i<n-1){
+            pwork2=pwork2->next;
+            i++;
+        }
+        while(pwork2&&pwork2->next!=nullptr){
+            pre=pwork1;
+            pwork1=pwork1->next;
+            pwork2=pwork2->next;
+        }
+        if(pre){
+            pre->next=pwork1->next;
+            pwork1->next=nullptr;
+            return head;
+        }
+        else
+            return pwork1->next;
+    }
+
     /**
      * 移除元素
      * **/
@@ -141,7 +166,6 @@ public:
         }
         return slow;
     }
-
 
     /**
      * 删除有序数组中的重复项
