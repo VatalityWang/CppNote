@@ -128,6 +128,53 @@ class Solution
 public:
 
     /**
+     * 合并两个有序链表
+     **/
+    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+        ListNode *head=l1->val>l2->val?l1:l2;
+        ListNode *pwork1=l1,*after1=l1->next,*pwork2=l2,*after2=l2->next;
+        while (l1||l2){
+            if(l1->val<l2->val){
+                
+            }
+        }
+        
+        
+    }
+
+    /**
+     * 四数之和
+     * **/
+    
+    void judge_sum(vector<int>&cur,vector<vector<int>>&res, vector<int>&used,vector<int>&nums, int target,int num){
+        if(cur.size()==num&&std::accumulate(cur.begin(),cur.end(),0)==target){
+            res.push_back(cur);
+            return;
+        }
+        for(int i=0;i<used.size();i++){
+            if(used[i]==0){
+                cur.push_back(nums[i]);
+                used[i]=1;
+                judge_sum(cur,res,used,nums,target,num);
+                cur.pop_back();
+                used[i]=0;
+            }
+        }
+    }
+
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        vector<int> used(0,nums.size());
+        vector<int> cur;
+        vector<vector<int>> res;
+        cur.clear();
+        res.clear();
+        int num=4;
+        judge_sum(cur,res,used,nums,target,num);
+        return res;
+    }
+
+
+    /**
     * 删除链表中倒数第n个节点 
     **/
     ListNode* removeNthFromEnd(ListNode* head, int n) {
@@ -308,7 +355,7 @@ public:
 
 
     bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
-         vector<pair<long,long>> statis;
+        vector<pair<long,long>> statis;
         int i;
         for(i=0;i<nums.size();i++){
             statis.push_back(make_pair(nums[i],i));
