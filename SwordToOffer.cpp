@@ -131,15 +131,46 @@ public:
      * 合并两个有序链表
      **/
     ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
-        ListNode *head=l1->val>l2->val?l1:l2;
-        ListNode *pwork1=l1,*after1=l1->next,*pwork2=l2,*after2=l2->next;
-        while (l1||l2){
-            if(l1->val<l2->val){
+        if(!(l1&&l2)){
+            if(!l1&&!l2)
+                return l1;
+            else
+                return l1?l1:l2;
+        }
+        ListNode *newhead=new ListNode(0);
+        ListNode *pwork=newhead;
+        ListNode *pwork1=l1,*pwork2=l2;
+        while (pwork1||pwork2){
+            if(pwork1&&pwork2){
+
+                if(pwork1->val<pwork2->val){
                 
+                    pwork->next=pwork1;
+                    pwork=pwork1;
+                    pwork1=pwork1->next;
+                }
+                else{
+                
+                    pwork->next=pwork2;
+                    pwork=pwork2;
+                    pwork2=pwork2->next;
+                }
+            }
+            else{
+                if(pwork1){
+                    
+                    pwork->next=pwork1;
+                    pwork=pwork1;
+                    pwork1=pwork1->next;
+                }
+                if(pwork2){
+                    pwork->next=pwork2;
+                    pwork=pwork2;
+                    pwork2=pwork2->next;
+                }
             }
         }
-        
-        
+        return newhead->next;
     }
 
     /**
