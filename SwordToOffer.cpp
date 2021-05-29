@@ -128,6 +128,20 @@ class Solution
 public:
 
     /**
+     * 三角形的最大周长
+     * **/
+    int largestPerimeter(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        for(int i=nums.size()-1;i>=0;i-=3){
+            if(i>=2&&nums[i-1]+nums[i-2]>nums[i])
+                return nums[i-1]+nums[i-2]+nums[i];
+           
+
+        }
+        return 0;
+    }
+
+    /**
      * 合并两个有序链表
      **/
     ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
