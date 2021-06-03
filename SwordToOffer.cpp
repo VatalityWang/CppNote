@@ -128,6 +128,73 @@ class Solution
 public:
 
     /**
+    * 
+    **/
+   void memory(){
+       
+   }
+
+
+
+    /**
+     * 二叉树的坡度
+     * **/
+    int get_node_sum(TreeNode *root){
+        if(!root)
+            return 0;
+        return root->val+get_node_sum(root->left)+get_node_sum(root->right);
+    }
+
+    void calucate_gradient(TreeNode *root,int&total_grad){
+        if(!root)
+            return;
+        int left=0,right=0;
+        if(root->left){
+            left=get_node_sum(root->left);
+            calucate_gradient(root->left,total_grad);
+        }
+        if(root->right){
+            right=get_node_sum(root->right);
+            calucate_gradient(root->right,total_grad);
+        }
+        total_grad+=abs(left-right);
+    }
+
+    int findTilt(TreeNode* root) {
+        int total_grad=0;
+        calucate_gradient(root,total_grad);
+        return total_grad;
+    }
+
+    /**
+     * 三数之和等于0
+     ***/
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>> res;
+        res.clear();
+        int i,j,k;
+        sort(nums.begin(),nums.end());
+        for( i=0;i<nums.size();i++){
+            if(i>0&&nums[i]==nums[i-1])
+                continue;
+            k=nums.size()-1;
+            for( j=i+1;j<nums.size();j++){
+                if(j>i+1&&nums[j]==nums[j-1])
+                    continue;
+                while(j<k&&nums[j]+nums[k]>-nums[i])
+                    k--;
+                if(k==j)
+                    break;
+                if(nums[j]+nums[k]==-nums[i]){
+                    res.push_back({nums[i],nums[j],nums[k]});
+                }
+            }
+            
+        }
+        return res;
+    }   
+
+    /**
      * 三角形的最大周长
      * **/
     int largestPerimeter(vector<int>& nums) {
@@ -2156,21 +2223,21 @@ int main()
 
 
     unordered_map<int,int> que;
-    vector<int> input={2,4,3,1,5,8,9,10,11,34,56};
-    for(int i=0;i<input.size();i++){
-        que[input[i]]=i;
-    }
-    for(auto &it:que){
-        cout<<it.first<<"->"<<it.second<<endl;
-    }
+    vector<int> input={-1,0,1,2,-1,-4};
+    // for(int i=0;i<input.size();i++){
+    //     que[input[i]]=i;
+    // }
+    // for(auto &it:que){
+    //     cout<<it.first<<"->"<<it.second<<endl;
+    // }
     // deque<int>::iterator im=find(que.begin(),que.end(),10);
     // int distance=im-que.begin();
     // cout<<distance<<endl;
 
 
-    // Solution slu;
-    // vector<vector<int>> res=slu.permute(input);
-    // cout<<res.size()<<endl;
+    Solution slu;
+    vector<vector<int>> res=slu.threeSum(input);
+    cout<<res.size()<<endl;
     // cout<<profit<<endl;
 
     // char c='(';
