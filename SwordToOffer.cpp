@@ -256,11 +256,13 @@ public:
 
     /**
      * 四数之和
-     * **/
-    
+     ***/
+
+    //此种方法包含重复元素重复组合
     void judge_sum(vector<int>&cur,vector<vector<int>>&res, vector<int>&used,vector<int>&nums, int target,int num){
-        if(cur.size()==num&&std::accumulate(cur.begin(),cur.end(),0)==target){
-            res.push_back(cur);
+        if(cur.size()==num){
+            if(std::accumulate(cur.begin(),cur.end(),0)==target)
+                res.push_back(cur);
             return;
         }
         for(int i=0;i<used.size();i++){
@@ -274,8 +276,8 @@ public:
         }
     }
 
-    vector<vector<int>> fourSum(vector<int>& nums, int target) {
-        vector<int> used(0,nums.size());
+    vector<vector<int>> fourSum_(vector<int>& nums, int target) {
+        vector<int> used(nums.size(),0);
         vector<int> cur;
         vector<vector<int>> res;
         cur.clear();
@@ -285,6 +287,32 @@ public:
         return res;
     }
 
+    vector<vector<int>> fourSum(vector<int>& nums, int target){
+        int first,second,third,four,total;
+        total=nums.size()-1;
+        vector<vector<int>> res;
+        sort(nums.begin(),nums.end());
+        for(first=0;first<nums.size();first++){
+            if(first>0&&nums[first]==nums[first-1])
+                continue;
+            for(second=first+1;second<nums.size();second++){
+                if(second>first+1&&nums[second-1]==nums[second])
+                    continue;
+                for(third=second+1;third<nums.size();third++){
+                    if(third>second+1&&nums[third-1]==nums[third])
+                        continue;
+                    four=total;
+                    while(four>third&&nums[four]>target-(nums[first]+nums[second]+nums[third]))
+                        four--;
+                    if(four==third)
+                        break;
+                    if(nums[four]=target-(nums[first]+nums[second]+nums[third]))
+                        res.push_back({nums[first],nums[second],nums[third],nums[four]});
+                }
+            }
+        }
+        return res;
+    }
 
     /**
     * 删除链表中倒数第n个节点 
@@ -2223,7 +2251,7 @@ int main()
 
 
     unordered_map<int,int> que;
-    vector<int> input={-1,0,1,2,-1,-4};
+    vector<int> input={2,2,2,2};
     // for(int i=0;i<input.size();i++){
     //     que[input[i]]=i;
     // }
@@ -2236,7 +2264,7 @@ int main()
 
 
     Solution slu;
-    vector<vector<int>> res=slu.threeSum(input);
+    vector<vector<int>> res=slu.fourSum(input,8);
     cout<<res.size()<<endl;
     // cout<<profit<<endl;
 
