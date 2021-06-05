@@ -134,7 +134,25 @@ public:
        
    }
 
-
+    /**
+     * 删除链表节点
+     * **/
+    ListNode* removeElements(ListNode* head, int val) {
+        ListNode *newHead=new ListNode(0);
+        newHead->next=head;
+        ListNode *pwork=head,*pre=newHead;
+        for(;pwork;pwork=pwork->next){
+            if(pwork->val==val){
+                pre->next=pwork->next;
+               
+            }
+            else{
+                pre=pwork;
+              
+            }
+        }
+        return newHead->next;
+    }
 
     /**
      * 二叉树的坡度
