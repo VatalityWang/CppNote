@@ -128,11 +128,73 @@ class Solution
 public:
 
     /**
-    * 
+    * 最后一块石头的重量
     **/
-   void memory(){
-       
-   }
+    int lastStoneWeight(vector<int>& stones) {
+        int a,b;
+        priority_queue<int> total_stones;
+        for(int i=0;i<stones.size();i++){
+            total_stones.push(stones[i]);
+        }
+        while(total_stones.size()>=2){
+            a=total_stones.top();
+            total_stones.pop();    
+            b=total_stones.top();
+            total_stones.pop();
+            if(a>b)
+                total_stones.push(a-b);
+        }
+        if(total_stones.size()==1)
+            return total_stones.top();
+        else    
+            return 0;
+        
+    }
+
+    /**
+     * 最长回文子串
+     * **/
+    int longestPalindrome(string s) {
+        map<char,int> statistic;
+        int i;
+        int odd_max=0;
+        int total=0;
+        bool hasSingle=false;
+        for(i=0;i<s.size();i++){
+            statistic[s[i]]++;
+        }
+        map<char,int>::iterator it=statistic.begin();
+        while(it!=statistic.end()){
+            if(it->second)
+                total+=it->second/2*2;
+            if(it->second%2&&!hasSingle){
+                hasSingle=true;
+                total++;   
+            }
+            it++;
+        }
+        return total;
+    }
+
+    void inorderTree(TreeNode*root,vector<int>&res){
+        if(!root)
+            return;
+        if(root->left)
+            inorderTree(root->left,res);
+        res.push_back(root->val);
+        if(root->right)
+            inorderTree(root->right,res);
+    }
+
+   /**
+    * 二叉树的中序遍历
+    * **/
+   vector<int> inorderTraversal(TreeNode* root){
+       vector<int> res;
+        inorderTree(root,res);
+        return res;
+
+    }
 
     /**
      * 删除链表节点
@@ -144,11 +206,11 @@ public:
         for(;pwork;pwork=pwork->next){
             if(pwork->val==val){
                 pre->next=pwork->next;
-               
+                
             }
             else{
                 pre=pwork;
-              
+                
             }
         }
         return newHead->next;
@@ -2270,6 +2332,7 @@ int main()
 
     unordered_map<int,int> que;
     vector<int> input={2,2,2,2};
+    string input_str("ccc");
     // for(int i=0;i<input.size();i++){
     //     que[input[i]]=i;
     // }
@@ -2282,8 +2345,9 @@ int main()
 
 
     Solution slu;
-    vector<vector<int>> res=slu.fourSum(input,8);
-    cout<<res.size()<<endl;
+    // vector<vector<int>> res=slu.fourSum(input,8);
+    int len=slu.longestPalindrome(input_str);
+    cout<<len<<endl;
     // cout<<profit<<endl;
 
     // char c='(';
