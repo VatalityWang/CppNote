@@ -121,11 +121,15 @@ struct point{
     int x,y,w;
 };
 
-
+ template<typename T> 
+    bool compare_inter_vector(const T &v1,const T &v2){
+        return v1[0]<v2[0]?true:false;
+    }
 
 class Solution
 {
 public:
+   
 
     /**
     * 最后一块石头的重量
@@ -1139,6 +1143,22 @@ public:
     * output:[[10,60],[80,100],[150,180]]
     * **/
    //template<typename T>
+    //leetcode版
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        sort(intervals.begin(),intervals.end(),compare_inter_vector<vector<int>>);//传参数的时候，初始化模板实际类型。
+        vector<vector<int>>::iterator it,next;
+        vector<vector<int>> merged;
+        for(it=intervals.begin();it<intervals.end();it++){
+            int L=(*it)[0],R=(*it)[1];
+            if(!merged.size()||merged.back()[1]<L)
+                merged.push_back({L,R});
+            else
+                merged.back()[1]=max(R,merged.back()[1]);
+        }
+        return merged;
+    }
+
+    //牛客版
     vector<Interval> merge(vector<Interval> &intervals)
     {
         sort(intervals.begin(), intervals.end(), compare_Interval);
