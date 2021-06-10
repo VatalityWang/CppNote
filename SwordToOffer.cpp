@@ -168,7 +168,41 @@ public:
 class Solution
 {
 public:
-   
+
+    /**
+     * 无重复字符的最长字串
+     * **/
+    int lengthOfLongestSubstring(string s) {
+        if(s.size()<=1)
+            return s.size();
+        string sub="";
+        unordered_map<char,int> characters;
+        unordered_map<char,int>::iterator it,im;
+        int max_length=0;
+        for(int i=0;i<s.size();i++){
+            int index=sub.find(s[i]);
+            if(index==string::npos){
+                sub+=s[i];
+                max_length=sub.size()>max_length?sub.size():max_length;
+            }
+            else{
+                int temp=sub.size()-1-index;
+                i-=temp+1;
+                
+                sub.clear();
+            }
+        }
+        return max_length;
+    }
+
+   /**
+    * 最小的k个数
+    * **/
+    vector<int> getLeastNumbers(vector<int>& arr, int k) {
+        sort(arr.begin(),arr.end());
+        vector<int> res(arr.begin(),arr.begin()+k);
+        return res;
+    }
 
     /**
     * 最后一块石头的重量
@@ -2389,23 +2423,26 @@ int main()
 {
 
 
-    unordered_map<int,int> que;
-    vector<int> input={2,2,2,2};
-    string input_str("ccc");
+    // unordered_map<int,int> que;
+    // vector<int> input={2,3,4,5,7,6};
+    string input_str("aab");
     // for(int i=0;i<input.size();i++){
-    //     que[input[i]]=i;
+    //     que[input[i]]=i*2;
     // }
     // for(auto &it:que){
     //     cout<<it.first<<"->"<<it.second<<endl;
     // }
+    // unordered_map<int,int>::iterator im=que.find(3);
+
     // deque<int>::iterator im=find(que.begin(),que.end(),10);
-    // int distance=im-que.begin();
+
+    // int distance=std::distance(que.begin(),im);
     // cout<<distance<<endl;
 
 
     Solution slu;
     // vector<vector<int>> res=slu.fourSum(input,8);
-    int len=slu.longestPalindrome(input_str);
+    int len=slu.lengthOfLongestSubstring(input_str);
     cout<<len<<endl;
     // cout<<profit<<endl;
 
