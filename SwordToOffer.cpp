@@ -170,6 +170,23 @@ class Solution
 public:
 
     /**
+     * 判断链表中是否有环
+     * **/
+    bool hasCycle(ListNode *head) {
+        set<ListNode*> ListNodes;
+        ListNode* pwork=head;
+        while (pwork){
+            if(!ListNodes.count(pwork))
+                ListNodes.insert(pwork);
+            else
+                return true;
+            pwork=pwork->next;
+        }
+        return false;
+        
+    }
+
+    /**
      * 无重复字符的最长字串
      * **/
     int lengthOfLongestSubstring(string s) {
@@ -1850,6 +1867,28 @@ public:
     /*
     * 链表中环的入口地址
     * */
+
+    //leetcode 空间复杂度o(1)版本
+    ListNode *detectCycle(ListNode *head) {
+        ListNode*slow=head,*fast=head,*ptr=head;
+        if(!fast)
+            return nullptr;
+        while(fast){
+            slow=slow->next;
+            if(!fast->next)
+                return nullptr;
+            fast=fast->next->next;
+            if(slow==fast){
+                while(ptr!=slow){
+                    slow=slow->next;
+                    ptr=ptr->next;
+                }
+                return ptr;
+            }
+        }
+        return nullptr;
+    }
+
     ListNode *EntryNodeOfLoop(ListNode *pHead)
     {
         ListNode *p = pHead;
