@@ -168,6 +168,23 @@ public:
 class Solution
 {
 public:
+    /**
+     * 数据流的中位数
+     * **/
+    
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        vector<int> nums(nums1.size()+nums2.size());
+        std::copy(nums1.begin(),nums1.end(),nums.begin());
+        std::copy(nums2.begin(),nums2.end(),nums.begin()+nums1.size());
+        sort(nums.begin(),nums.end());
+        int length=nums.size();
+        int mid=length/2;
+        if(length%2)
+            return nums[mid];
+        else
+            return (nums[mid]+nums[mid-1])/2.0;
+    }
+
 
     /**
      * 不同的二叉搜索树
