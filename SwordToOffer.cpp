@@ -170,6 +170,25 @@ class Solution
 public:
 
     /**
+     * 不同的二叉搜索树
+     * **/
+    int numTrees(int n) {
+        //长度为n的连续自然数序列能构成的二叉搜索树的种数。
+        vector<int> G(n+1,0);
+        G[0]=1;
+        G[1]=1;
+        //长度为n的序列，分别每个节点作根节点。
+        for(int i=2;i<=n;i++){
+            //以根节点为分割点，分别求左右子树构成的二叉搜索树个数
+            for(int j=1;j<=i;j++){
+                G[i]+=G[i-1]*G[i-j];
+            }
+        }
+        return G[n];
+    }
+
+
+    /**
      * 判断链表中是否有环
      * **/
     bool hasCycle(ListNode *head) {
@@ -2460,17 +2479,23 @@ void print_variable_name(){
 
 int main()
 {
-
-
-    // unordered_map<int,int> que;
-    // vector<int> input={2,3,4,5,7,6};
+    map<int,int> statistics;
+    unordered_map<int,int> que;
+    vector<int> input={2,3,4,5,7,6};
     string input_str("aab");
     // for(int i=0;i<input.size();i++){
     //     que[input[i]]=i*2;
+    //     statistics[input[i]]=i*2;
     // }
+
     // for(auto &it:que){
     //     cout<<it.first<<"->"<<it.second<<endl;
     // }
+
+    // for(auto &it:statistics){
+    //     cout<<it.first<<"->"<<it.second<<endl;
+    // }
+
     // unordered_map<int,int>::iterator im=que.find(3);
 
     // deque<int>::iterator im=find(que.begin(),que.end(),10);
@@ -2480,7 +2505,7 @@ int main()
 
 
     Solution slu;
-    // vector<vector<int>> res=slu.fourSum(input,8);
+    vector<vector<int>> res=slu.fourSum(input,8);
     int len=slu.lengthOfLongestSubstring(input_str);
     cout<<len<<endl;
     // cout<<profit<<endl;
