@@ -168,6 +168,59 @@ public:
 class Solution
 {
 public:
+
+    /**
+     * 相交链表的第一个节点
+     * **/
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        int len1=0,len2=0;
+        ListNode*pwork1=headA,*pwork2=headB;
+        while(pwork1){
+            len1++;
+            pwork1=pwork1->next;
+        }
+        while (pwork2){
+            len2++;
+            pwork2=pwork2->next;
+        }
+        pwork1=headA;
+        pwork2=headB;
+        if (len1>len2){
+            while(len1>len2){
+                pwork1=pwork1->next;
+                len1--;
+            }
+        }
+        else {
+            while(len1<len2){
+                pwork2=pwork2->next;
+                len1++;
+            }
+        }
+        while(pwork1&&pwork2){
+            if(pwork1==pwork2)
+                return pwork1;
+            else{
+                pwork2=pwork2->next;
+                pwork1=pwork1->next;
+            }
+        }
+        return nullptr;
+    }
+
+    /**
+     * 爬楼梯
+     * **/
+    int climbStairs(int n) {
+        int p=0,q=0,r=1;
+        for(int i=1;i<=n;i++){
+            p=q;
+            q=r;
+            r=p+q;
+        }
+        return r;
+    }
+
     /**
      * 数据流的中位数
      * **/
@@ -179,7 +232,7 @@ public:
         sort(nums.begin(),nums.end());
         int length=nums.size();
         int mid=length/2;
-        if(length%2)
+        if(length%2) 
             return nums[mid];
         else
             return (nums[mid]+nums[mid-1])/2.0;
