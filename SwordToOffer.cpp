@@ -169,6 +169,75 @@ class Solution
 {
 public:
 
+    void sortColors(vector<int>& nums) {
+        int left=0,right=0;
+        for(int i=0;i<nums.size();i++){
+            if(nums[i]==0){
+                swap(nums[i],nums[left]);
+                left++;
+                if(left<right){
+                    swap(nums[i],nums[right]);
+                    right++;
+                }
+            }
+            else if(nums[i]==1){
+                swap(nums[i],nums[right]);
+                right++;
+            }
+        }
+    }
+
+    /**
+     * 最长回文子串
+     * **/
+    pair<int,int> expand(string &s,int left,int right){
+        while(right<s.size()&&left>=0&&s[left]==s[right]){
+            --left;
+            ++right;
+        }
+        return {left+1,right-1};
+    }
+
+    string longestPalindrome(string s) {
+        int start=0,end=0;
+        for(int i=0;i<s.size();i++){
+             pair<int,int> res1=expand(s,i,i);
+             pair<int,int> res2=expand(s,i,i+1);
+            if(res1.second-res1.first>end-start){
+                start=res1.first;
+                end=res1.second;
+            }
+            if(res2.second-res2.first>end-start){
+                start=res2.first;
+                end=res2.second;
+            }
+        }
+        return s.substr(start,end-start+1);
+    }
+
+    /**
+     * 多数元素
+     * **/
+    int majorityElement(vector<int>& nums) {
+        if(nums.size()==1)
+            return nums[0];
+        int majority;
+        int count=0;
+        for(int i=0;i<nums.size();i++){
+            if(count==0){
+                majority=nums[i];
+                count++;
+            }
+            else{
+                if(nums[i]==majority)
+                    count++;
+                else
+                    count--;
+            }
+        }
+        return majority;
+    }
+
     /**
      * 相交链表的第一个节点
      * **/
@@ -337,7 +406,7 @@ public:
     /**
      * 最长回文子串
      * **/
-    int longestPalindrome(string s) {
+    int longestPalindrome_(string s) {
         map<char,int> statistic;
         int i;
         int odd_max=0;
