@@ -169,6 +169,57 @@ class Solution
 {
 public:
 
+    /**
+     * 二叉树的最大深度
+     * **/
+    int maxDepth(TreeNode* root) {
+        if(!root)
+            return 0;
+        int left=maxDepth(root->left);
+        int right=maxDepth(root->right);
+        return left>right?left+1:right+1;
+    }
+
+    /**
+     * 有效的括号
+     * **/
+    bool isValid(string s) {
+        stack<char> statistics;
+        for(int i=0;i<s.size();i++){
+            if(s[i]=='('||s[i]=='['||s[i]=='{'){
+                statistics.push(s[i]);
+            }
+            else{
+                    if(s[i]==')'){
+                        if(statistics.size()&&statistics.top()=='(')
+                            statistics.pop();
+                        else
+                            return false;
+                    }
+                    else if(s[i]==']'){
+                        if(statistics.size()&&statistics.top()=='[')
+                            statistics.pop();
+                        else
+                            return false;
+                    } 
+                    else if(s[i]=='}'){
+                        if(statistics.size()&&statistics.top()=='{')
+                            statistics.pop();
+                        else
+                            return false;
+                    }
+                }
+        }
+        if(statistics.size())
+            return false;
+        else 
+            return true;
+    }
+
+    
+    /**
+     * 三色问题
+     * **/
     void sortColors(vector<int>& nums) {
         int left=0,right=0;
         for(int i=0;i<nums.size();i++){
