@@ -170,6 +170,23 @@ class Solution
 public:
 
     /**
+     * 反转链表
+     * **/
+    ListNode* reverseList(ListNode* head) {
+        if(!head)
+            return nullptr;
+        ListNode * newHead=new ListNode(0);
+        ListNode * pwork=head,*temp;
+        while(pwork){
+            temp=pwork->next;
+            pwork->next=newHead->next;
+            newHead->next=pwork;
+            pwork=temp;
+        }
+        return newHead->next;
+    }
+
+    /**
      * 二叉树的最大深度
      * **/
     int maxDepth(TreeNode* root) {
