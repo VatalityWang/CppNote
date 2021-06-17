@@ -170,6 +170,42 @@ class Solution
 public:
 
     /**
+     * 课程表
+     * **/
+    //超时算法
+    void vectorDfs(int start,int next_course,vector<vector<int>>&prerequisites,vector<bool>visited,bool &res){
+        if(start==next_course)
+            res&=false;
+        if(!res)
+            return;
+        for(int i=0;i<prerequisites.size();i++){
+            if(!visited[i]&&prerequisites[i][1]==next_course){
+                visited[i]=true;
+                if(prerequisites[i][0]==start)
+                    res&=false;
+                else{
+                    // printf("start %d,%d->%d\n",start,prerequisites[i][1],prerequisites[i][0]);
+                    vectorDfs(start,prerequisites[i][0],prerequisites,visited,res);
+                }
+                visited[i]=false;
+            }
+        }
+    }
+
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        bool res=true;
+        vector<bool> visited;
+        visited.resize(prerequisites.size());
+        for(int i=0;i<prerequisites.size();i++){
+            // printf("start %d,%d->%d\n",prerequisites[i][1],prerequisites[i][1],prerequisites[i][0]);
+            visited[i]=true;
+            vectorDfs(prerequisites[i][1],prerequisites[i][0],prerequisites,visited,res);
+            visited[i]=false;
+        }
+        return res;
+    }
+
+    /**
      * 反转链表
      * **/
     ListNode* reverseList(ListNode* head) {
@@ -2689,6 +2725,14 @@ int main()
     map<int,int> statistics;
     unordered_map<int,int> que;
     vector<int> input={2,3,4,5,7,6};
+    vector<vector<int>> courses;
+   
+    courses.push_back({1,0});
+    courses.push_back({0,2});
+    courses.push_back({2,1});
+
+
+    
     string input_str("aab");
     // for(int i=0;i<input.size();i++){
     //     que[input[i]]=i*2;
@@ -2712,9 +2756,9 @@ int main()
 
 
     Solution slu;
-    vector<vector<int>> res=slu.fourSum(input,8);
-    int len=slu.lengthOfLongestSubstring(input_str);
-    cout<<len<<endl;
+    bool res=slu.canFinish(3,courses);
+    // int len=slu.lengthOfLongestSubstring(input_str);
+    cout<<res<<endl;
     // cout<<profit<<endl;
 
     // char c='(';
