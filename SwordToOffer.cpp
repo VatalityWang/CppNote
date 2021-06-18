@@ -126,6 +126,47 @@ struct point{
         return v1[0]<v2[0]?true:false;
     }
 
+
+/********************************************栈**********************************************************/
+/**
+ * 用栈实现两个队列
+ * **/
+class CQueue {
+public:
+    CQueue() {
+       
+    }
+    
+    void appendTail(int value) {
+        input.push(value);
+    }
+    
+    int deleteHead() {
+        int res;
+        if(output.size()){
+            res=output.top();
+            output.pop();
+        }
+        else{     
+            while(input.size()){
+                int top_=input.top();
+                output.push(top_);
+                input.pop();
+            }
+            if(output.size()){
+                res=output.top();
+                output.pop();
+            }
+            else
+                return -1;
+        }
+        return res;
+    }
+private:
+    stack<int> input;
+    stack<int> output;
+};
+
 /**
  * 
  * **/
@@ -168,6 +209,29 @@ public:
 class Solution
 {
 public:
+    /**
+     * 下一个排列
+     * **/
+    void nextPermutation(vector<int>& nums) {
+        if(nums.size()==1)  
+            return;
+        int i=0,j=0;
+        bool find=false;
+
+        for(i=nums.size()-1;i>=0&&!find;i--){
+            for(j=i-1;j>=0&&!find;j--){
+                if(nums[j]<nums[i]){
+                    find=true;
+                    swap(nums[j],nums[i]);
+                    
+                }
+            }
+        }
+        if(!find)
+            sort(nums.begin(),nums.end());
+    }
+    
+    
 
     /**
      * 盛最多水的容器
