@@ -173,34 +173,39 @@ public:
      * 课程表
      * **/
     //超时算法
-    void vectorDfs(int start,int next_course,vector<vector<int>>&prerequisites,vector<bool>visited,bool &res){
-        if(start==next_course)
-            res&=false;
-        if(!res)
-            return;
-        for(int i=0;i<prerequisites.size();i++){
-            if(!visited[i]&&prerequisites[i][1]==next_course){
-                visited[i]=true;
-                if(prerequisites[i][0]==start)
-                    res&=false;
-                else{
-                    // printf("start %d,%d->%d\n",start,prerequisites[i][1],prerequisites[i][0]);
-                    vectorDfs(start,prerequisites[i][0],prerequisites,visited,res);
-                }
-                visited[i]=false;
+    void vectorDfs(int start,vector<vector<int>>&edges,vector<int> &visited,bool &res){
+        visited[start]=1;
+        for(auto v:edges[start]){
+            if(visited[v]==0){
+              vectorDfs(v,edges,visited,res);
+              if(!res)
+                    return;
+                
             }
+            else if(visited[v]==1){
+                res=false;
+                return;
+            } 
         }
+        visited[start]=2;
     }
+    
 
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
         bool res=true;
-        vector<bool> visited;
-        visited.resize(prerequisites.size());
+        vector<int> visited;
+        vector<vector<int>> edges;
+        edges.resize(numCourses);
+        visited.resize(numCourses);
+        //统计边
         for(int i=0;i<prerequisites.size();i++){
+            edges[prerequisites[i][1]].push_back(prerequisites[i][0]);//起点，终点。
+        }
+
+        for(int i=0;i<numCourses&&res;i++){
             // printf("start %d,%d->%d\n",prerequisites[i][1],prerequisites[i][1],prerequisites[i][0]);
-            visited[i]=true;
-            vectorDfs(prerequisites[i][1],prerequisites[i][0],prerequisites,visited,res);
-            visited[i]=false;
+            if(!visited[i])
+                vectorDfs(i,edges,visited,res);
         }
         return res;
     }
