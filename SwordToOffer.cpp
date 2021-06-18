@@ -170,6 +170,26 @@ class Solution
 public:
 
     /**
+     * 盛最多水的容器
+     * **/
+    int maxArea(vector<int>& height) {
+        int water_volume=0;
+        int high,width,i,j;
+        for(i=0,j=height.size()-1;i<height.size()&&j>=0&&i!=j;){
+        
+            high=min(height[i],height[j]);
+            width=j-i;
+            water_volume=water_volume<high*width?high*width:water_volume;
+            
+            if(height[i]<height[j])
+                i++;
+            else
+                j--;
+        }
+        return water_volume;
+    }
+
+    /**
      * 课程表
      * **/
     //超时算法
