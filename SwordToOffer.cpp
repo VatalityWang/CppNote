@@ -168,7 +168,7 @@ private:
 };
 
 /**
- * 
+ * 返回最小值的栈
  * **/
 class MinStack {
 public:
@@ -196,7 +196,6 @@ public:
         return *std::min_element(elements.begin(),elements.end());
     }
 };
-
 /**
  * Your MinStack object will be instantiated and called as such:
  * MinStack* obj = new MinStack();
@@ -205,6 +204,55 @@ public:
  * int param_3 = obj->top();
  * int param_4 = obj->getMin();
  */
+/*
+* 返回队列最大值
+*/
+class MaxQueue {
+public:
+
+    queue<int> elements;
+    deque<int> max_elements;
+    MaxQueue() {
+        
+       
+    }
+    
+    int max_value() {
+        if(max_elements.size()){
+            int max=max_elements.front();
+            //max_elements.pop_front();
+            return max;
+        }
+        else 
+            return -1;
+    }
+    
+    void push_back(int value) {
+        elements.push(value);
+        if(!max_elements.size()){
+            max_elements.push_back(value);
+        }
+        else{
+            while(max_elements.size()&&max_elements.back()<value){
+                max_elements.pop_back();
+            }
+            max_elements.push_back(value);
+        }
+    }
+    
+    int pop_front() {
+        if(elements.size()){
+            int element=elements.front();
+            elements.pop();
+            if(max_elements.size()&&element==max_elements.front())
+                max_elements.pop_front();
+            return element;
+        }
+        else
+            return -1;
+    }
+};
+
 
 class Solution
 {
