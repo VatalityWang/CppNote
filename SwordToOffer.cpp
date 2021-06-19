@@ -257,6 +257,71 @@ public:
 class Solution
 {
 public:
+      /**
+       * 排序链表
+       * **/
+      ListNode* mergeList(ListNode *head1,ListNode *head2){
+        
+        ListNode*pwork1=head1,*pwork2=head2,*tail=nullptr,*head=nullptr;
+        while(pwork1&&pwork2){
+            if(pwork1->val<pwork2->val){
+                if(!tail){
+                    tail=pwork1;
+                    head=tail;
+                }
+                else{
+                    tail->next=pwork1;
+                    tail=pwork1;
+                }
+                pwork1=pwork1->next;
+            }
+            else{
+                if(!tail){
+                    tail=pwork2;
+                    head=tail;
+                }
+                else{
+                    tail->next=pwork2;
+                    tail=pwork2;
+                }
+                pwork2=pwork2->next;
+            }
+          
+        }
+        if(!tail){
+            return head1?head1:head2;
+        }
+        else if(pwork1)
+           tail->next=pwork1;
+        
+        else if(pwork2)
+            tail->next=pwork2;
+       
+        return head;
+    }
+    ListNode* mergeSortList(ListNode *head){
+        if(!head)
+            return head;
+        if(head->next==nullptr){
+            return head;
+        }
+        ListNode *slow=head,*fast=head;
+        while(fast->next&&fast->next->next){
+           slow=slow->next;
+           fast=fast->next->next;
+        }
+        ListNode *mid=slow;
+        slow=slow->next;
+        mid->next=nullptr;
+       
+        return mergeList(mergeSortList(head),mergeSortList(slow));
+      
+    }
+    ListNode* sortList(ListNode* head) {
+        return mergeSortList(head);
+    }
+
+
     /**
      * 下一个排列
      * **/
