@@ -259,6 +259,26 @@ class Solution
 public:
 
     /**
+     * 比特位计数
+     * **/
+     vector<int> countBits(int n) {
+        vector<int> res;
+        int cur;
+        for(int i=0;i<=n;i++){
+            if(i==0)
+                res.push_back(0);
+            else if((i&(i-1))==0){
+                cur=i;
+                res.push_back(1);
+            }
+            else{
+                res.push_back(res[i-cur]+1);
+            }
+        }
+        return res;
+    }
+
+    /**
      * 翻转二叉树
      * **/
     TreeNode* invertTree(TreeNode* root) {
