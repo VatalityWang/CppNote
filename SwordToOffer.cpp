@@ -257,6 +257,20 @@ public:
 class Solution
 {
 public:
+
+    /**
+     * 翻转二叉树
+     * **/
+    TreeNode* invertTree(TreeNode* root) {
+        if(!root)
+            return root;
+        invertTree(root->left);
+        invertTree(root->right);
+        if(root->left||root->right)
+            swap(root->left,root->right);
+        return root;
+    }
+
       /**
        * 排序链表
        * **/
