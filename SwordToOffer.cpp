@@ -1409,6 +1409,20 @@ public:
     }
 
     /**
+     * 买卖股票的最佳时期
+     * **/
+    int maxProfit_(vector<int>& prices) {
+        int minprice=INT_MAX;
+        int max_profit=0;
+        int i;
+        for(i=0;i<prices.size();i++){
+            minprice=minprice<prices[i]?minprice:prices[i];
+            max_profit=max(max_profit,prices[i]-minprice);
+        }
+        return max_profit;
+    }
+
+    /**
      * 股票(无限次交易)
      * @param prices int整型vector 股票每一天的价格
      * @return int整型
