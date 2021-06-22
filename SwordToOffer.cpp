@@ -259,6 +259,31 @@ class Solution
 public:
 
     /**
+     * 最长回文子串
+     * **/
+    void judge_circle_str(string &s,int left,int right,int &num){
+        while(left>=0&&right<s.size()&&s[left]==s[right]){
+            left--;
+            right++;
+            num++;
+        }
+    }
+    int countSubstrings(string s) {
+        int i;
+        int num=0;
+        for(i=0;i<s.size();i++){
+            judge_circle_str(s,i,i,num);
+            judge_circle_str(s,i,i+1,num);
+        }
+        return num;
+    }
+
+    /**
+     * 二叉搜索树与双向链表
+     * **/
+    
+
+    /**
      * 数组中出现超过一半的数字
      * **/
     int majorityElement(vector<int>& nums) {
