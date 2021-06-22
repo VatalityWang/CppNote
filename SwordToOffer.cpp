@@ -258,6 +258,48 @@ class Solution
 {
 public:
 
+    //非动态规划
+     void throughPath(vector<vector<int>>&grid,int i,int j,vector<int>&path_sum,int&cur_path){
+        if(i>grid.size())
+            return;
+        if(j>grid[0].size())
+            return;
+        cur_path+=grid[i][j];
+        if(i==grid.size()-1&&j==grid[0].size()-1){
+            path_sum.push_back(cur_path);
+            cur_path-=grid[i][j];
+            return;
+        }
+        throughPath(grid,i+1,j,path_sum,cur_path);
+        throughPath(grid,i,j+1,path_sum,cur_path);
+        cur_path-=grid[i][j];
+    }
+    int minPathSum(vector<vector<int>>& grid) {
+        vector<int> path_sum;
+        path_sum.clear();
+        int cur_path=0;
+        throughPath(grid,0,0,path_sum,cur_path);
+        return *std::min_element(path_sum.begin(),path_sum.end());
+    }
+    //动态规划
+    int minPathSumDp(vector<vector<int>>& grid) {
+         int m=grid.size();
+        int n=grid[0].size();
+        vector<vector<int>> path_sum(m,vector<int>(n));
+        int i,j;
+        path_sum[0][0]=grid[0][0];
+        for(i=1;i<m;i++)
+            path_sum[i][0]=path_sum[i-1][0]+grid[i][0];
+        for(j=1;j<n;j++)
+            path_sum[0][j]=path_sum[0][j-1]+grid[0][j];
+        for(i=1;i<m;i++){
+            for(j=1;j<n;j++){
+                path_sum[i][j]=min(path_sum[i-1][j],path_sum[i][j-1])+grid[i][j];
+            }
+        }
+        return path_sum[m-1][n-1];
+    }
+
     /**
      * 比特位计数
      * **/
