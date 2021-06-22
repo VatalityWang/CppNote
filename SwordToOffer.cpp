@@ -259,8 +259,26 @@ class Solution
 public:
 
     /**
-     * 连续子数组的最大和
+     * 数组中出现超过一半的数字
      * **/
+    int majorityElement(vector<int>& nums) {
+        int count=0;
+        int majority;
+        for(int i=0;i<nums.size();i++){
+            if(count==0)
+                majority=nums[i];
+            if(nums[i]==majority)   
+                count++;
+            else{
+                count--;
+            }
+        }
+        return majority;
+    }
+
+    /**
+     * 连续子数组的最大和
+     ***/
      int maxSubArray(vector<int>& nums) {
         vector<int> dp(nums.size());
         int max_=INT_MIN;
