@@ -258,6 +258,23 @@ class Solution
 {
 public:
 
+    /**
+     * 连续子数组的最大和
+     * **/
+     int maxSubArray(vector<int>& nums) {
+        vector<int> dp(nums.size());
+        int max_=INT_MIN;
+        for(int i=0;i<nums.size();i++){
+            if(i==0){
+                dp[i]=nums[i];
+            }
+            if(i>0)
+                dp[i]=dp[i-1]>0?dp[i-1]+nums[i]:nums[i];
+            max_=max(dp[i],max_);
+        }
+        return max_;
+    }
+
     //非动态规划
      void throughPath(vector<vector<int>>&grid,int i,int j,vector<int>&path_sum,int&cur_path){
         if(i>grid.size())
