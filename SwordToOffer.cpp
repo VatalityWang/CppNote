@@ -259,6 +259,25 @@ class Solution
 public:
 
     /**
+     * 找到所有数组中消失的数字
+     * **/
+     vector<int> findDisappearedNumbers(vector<int>& nums) {
+        vector<int> res;
+        res.clear();
+        int n=nums.size();
+        int temp;
+        for(int i=0;i<nums.size();i++){
+            temp=(nums[i]%n)?(nums[i]%n):n;
+            nums[temp-1]+=n;
+        }
+       
+        for(int i=0;i<nums.size();i++)
+            if(nums[i]<=n)
+                res.push_back(i+1);
+        return res;
+    }
+
+    /**
      * 最长回文子串
      * **/
     void judge_circle_str(string &s,int left,int right,int &num){
