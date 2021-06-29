@@ -257,6 +257,123 @@ public:
 class Solution
 {
 public:
+    
+    /**
+     * 最近公共祖先节点
+     * **/
+     vector<TreeNode*> road_path1;
+    vector<TreeNode*> road_path2;
+    vector<TreeNode*> road_path;
+    void TraverseTree(TreeNode * root,TreeNode* p, TreeNode* q){
+        if(!root){
+          
+            return;
+        }
+        road_path.push_back(root);
+        if(root==p&&road_path1.empty()){
+            std::copy(road_path.begin(),road_path.end(),std::back_inserter(road_path1));
+        }
+        if(root==q&&road_path2.empty()){
+            std::copy(road_path.begin(),road_path.end(),std::back_inserter(road_path2));
+        }
+        TraverseTree(root->left,p,q);
+        TraverseTree(root->right,p,q);
+        if(root)
+            road_path.pop_back();
+     
+    }
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        TraverseTree(root,p,q);
+        int i=0,j=0;
+        int min_len=min(road_path1.size(),road_path2.size());
+     
+        for(i=0;i<min_len;i++){
+            if(road_path1[i]==road_path2[i])
+                j=i;
+        }
+        return road_path1[j];
+    }
+
+    /**
+     * 二叉树展开为链表
+     * **/
+    void preorder(TreeNode*root,vector<TreeNode*>&elements){
+        if(root)
+            elements.push_back(root);
+        else 
+            return;
+        preorder(root->left,elements);
+        preorder(root->right,elements);
+    }
+    void flatten(TreeNode* root) {
+        if(!root)
+            return;
+        vector<TreeNode*> elements;
+        preorder(root,elements);
+        for(int i=0;i<elements.size()-1;i++){
+            elements[i]->right=elements[i+1];
+            elements[i]->left=nullptr;
+            if(i==elements.size()-1)
+                elements[i]->right=nullptr;
+        }
+    }
+
+    /**
+     * 二叉树的直径
+     * **/
+    int height(TreeNode*root,int &diameter){
+        if(!root)
+            return 0;
+        int left=height(root->left,diameter);
+        int right=height(root->right,diameter);
+        diameter=max(diameter,left+right);
+        return left>right?left+1:right+1;
+    }
+
+   
+
+    int diameterOfBinaryTree(TreeNode* root) {
+        int diameter=0;
+        height(root,diameter);
+        return diameter;
+    }
+
+
+
+    /**
+     * 回文链表
+     * **/
+    //非递归
+    bool isPalindrome(ListNode* head) {
+        vector<int> elements;
+        ListNode *pwork=head;
+        while(pwork){
+            elements.push_back(pwork->val);
+            pwork=pwork->next;
+        }
+        for(int i=0,j=elements.size()-1;i<=j;i++,j--)
+            if(elements[i]==elements[j])
+                continue;
+            else
+                return false;
+        return true;
+    }
+    //递归
+    bool check(ListNode *Node){
+        if(Node){
+            if(!check(Node->next))
+                return false;
+            if(frontpointer->val!=Node->val)
+                return false;
+         
+            frontpointer=frontpointer->next;
+        } 
+        return true;
+    }
+    bool isPalindrome_(ListNode* head) {
+        frontpointer=head;
+        return check(head);
+    }
 
     /**
      * 找到所有数组中消失的数字
@@ -305,7 +422,7 @@ public:
     /**
      * 数组中出现超过一半的数字
      * **/
-    int majorityElement(vector<int>& nums) {
+    int majorityElement_(vector<int>& nums) {
         int count=0;
         int majority;
         for(int i=0;i<nums.size();i++){
@@ -3043,6 +3160,7 @@ private:
     map<char, int> static_count;
     vector<char> char_set;
     vector<int> data;
+    ListNode * frontpointer;
 };
 
 /*
