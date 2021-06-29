@@ -259,12 +259,35 @@ class Solution
 public:
     
     /**
+     * 打家截舍 
+     **/
+    struct selectStatus{
+        int selected;
+        int notSelected;
+    };
+
+    struct selectStatus Dfs(TreeNode *root){
+        if(!root)    
+            return {0,0};
+        struct selectStatus left=Dfs(root->left);
+        struct selectStatus right=Dfs(root->right);
+        int selected=root->val+left.notSelected+right.notSelected;
+        int notSelected=max(left.notSelected,left.selected)+max(right.selected,right.notSelected);  
+        return {selected,notSelected};
+    }
+
+    int rob(TreeNode* root) { 
+       struct selectStatus res=Dfs(root);
+       return max(res.selected,res.notSelected);
+    }
+
+    /**
      * 最近公共祖先节点
      * **/
      vector<TreeNode*> road_path1;
     vector<TreeNode*> road_path2;
     vector<TreeNode*> road_path;
-    
+
     void TraverseTree(TreeNode * root,TreeNode* p, TreeNode* q){
         if(!root){
           
