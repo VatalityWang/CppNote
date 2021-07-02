@@ -259,6 +259,31 @@ class Solution
 public:
 
     /**
+     *  最短无序连续子数组
+     * **/
+        int findUnsortedSubarray(vector<int>& nums) {
+        if(nums.size()==1)
+            return 0;
+        int start=-1,end=-1;
+        vector<int> nums_;
+        std::copy(nums.begin(),nums.end(),std::back_inserter(nums_));
+        sort(nums.begin(),nums.end());
+        for(int i=0;i<nums.size();i++)
+            if(nums[i]!=nums_[i]){
+                    start=i;
+                    break;
+                }
+        for(int i=nums.size()-1;i>=0;i--)
+            if(nums[i]!=nums_[i]){
+                end=i;
+                break;
+            }
+        if(start!=-1&&end!=-1)
+            return end-start+1;
+        return 0;
+    }
+
+    /**
      * 字符串解码
      **/
     string GetNum(int &i,string &s){
