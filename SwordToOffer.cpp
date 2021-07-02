@@ -257,7 +257,137 @@ public:
 class Solution
 {
 public:
-    
+
+    /**
+     * 字符串解码
+     **/
+    string GetNum(int &i,string &s){
+        string ret="";
+        while(isdigit(s[i]))
+            ret+=s[i++];
+        return ret;
+    }
+
+    string GetString(vector<string> &elements){
+        string ret="";
+        for(int i=0;i<elements.size();i++){
+            ret+=elements[i];
+        }
+        return ret;
+    }
+
+    string decodeString(string s) {
+        string res="";
+        vector<string> temp_str;
+        stack<string> elements;
+        for(int i=0;i<s.size();i++){
+            if(isdigit(s[i])){
+                elements.push(GetNum(i,s));
+                i--;
+            }
+            else if(s[i]=='[')
+                elements.push(string(1,s[i]));
+            else if((s[i]>='a'&&s[i]<='z')||(s[i]>='A'&&s[i]<='Z')){
+                elements.push(string(1,s[i]));
+            }
+            else{
+                while(elements.top()!="["){
+                    temp_str.push_back(elements.top());
+                    elements.pop();
+                }
+                elements.pop();//出'['
+                int num=std::stoi(elements.top());//出重复次数
+                elements.pop();
+                std::reverse(temp_str.begin(),temp_str.end());
+                //重复num次组合成字符串
+                string cur=GetString(temp_str);
+                string temp="";
+                while(num){
+                    temp+=cur;
+                    num--;
+                }
+                temp_str.clear();
+                elements.push(temp);
+            }    
+        }
+        while(!elements.empty()){
+            temp_str.push_back(elements.top());
+            elements.pop();
+        }
+        std::reverse(temp_str.begin(),temp_str.end());
+        return GetString(temp_str);
+    }
+
+
+    /**
+     * 除法求值(待修正)
+     * **/
+    unordered_map<string,string> edges_forward;
+    unordered_map<string,int> edges_forward_index;
+    unordered_map<string,string> edges_backward;
+    unordered_map<string,int> edges_backward_index;
+    double get_query(vector<double>& values,vector<string> &single_query){
+        double res=1.0;
+
+        if(single_query[0]==single_query[1]&&edges_forward.find(single_query[0])!=edges_forward.end())
+            return res;
+         if(single_query[0]==single_query[1]&&edges_backward.find(single_query[0])!=edges_backward.end())
+            return res;
+        unordered_map<string,string>::iterator it=edges_forward.find(single_query[0]);
+        
+        while(it!=edges_forward.end()){
+            int index=edges_forward_index[it->first];
+            // printf("index:%d,%s->%s: %f\n",index,it->first.c_str(),it->second.c_str(),values[index]);
+            res*=values[index];
+            // printf("single query 1 %s\n",single_query[1].c_str());
+            if(it->second==single_query[1]){
+                // printf("return 1\n");
+                return res;
+            }
+            it=edges_forward.find(it->second);
+            // if(it==edges_forward.end()){
+            //     // printf("return 2\n");
+            //     return -1.0;
+            // }
+        }
+        res=1.0;
+        it=edges_backward.find(single_query[0]);
+        while(it!=edges_backward.end()){
+            int index=edges_backward_index[it->first];
+            // printf("%s->%s\n",it->first.c_str(),it->second.c_str());
+            res*=values[index];
+            if(it->second==single_query[1])
+                return 1/res;
+            it=edges_forward.find(it->second);
+            if(it==edges_forward.end())
+                return -1.0;
+        }
+        // printf("return 3\n");
+        return -1.0;
+    }
+
+    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values,vector<vector<string>>& queries) {
+       
+        vector<double> res;
+        int i=0,j=0;
+        for(i=0;i<equations.size();i++){
+            // printf("push %s->%s\n",equations[i][0].c_str(),equations[i][1].c_str());
+            edges_forward[equations[i][0]]=equations[i][1];
+            edges_backward[equations[i][1]]=equations[i][0];
+            edges_forward_index[equations[i][0]]=i;
+            edges_backward_index[equations[i][1]]=i;
+        }
+        // unordered_map<string,string>::iterator it;
+        //  for(it=edges_forward.begin();it!=edges_forward.end();it++){
+        //      printf("%s->%s\n",it->first.c_str(),it->second.c_str());
+        //  }
+        for(j=0;j<queries.size();j++){
+            res.push_back(get_query(values,queries[j]));
+            // break;
+        }
+        return res;
+    }
+
     /**
      * 打家截舍 
      **/
@@ -3247,14 +3377,14 @@ int main()
 
     
     string input_str("aab");
-    // for(int i=0;i<input.size();i++){
-    //     que[input[i]]=i*2;
-    //     statistics[input[i]]=i*2;
-    // }
+    for(int i=0;i<input.size();i++){
+        que[input[i]]=i*2;
+        statistics[input[i]]=i*2;
+    }
 
-    // for(auto &it:que){
-    //     cout<<it.first<<"->"<<it.second<<endl;
-    // }
+    for(auto &it:que){
+        cout<<it.first<<"->"<<it.second<<endl;
+    }
 
     // for(auto &it:statistics){
     //     cout<<it.first<<"->"<<it.second<<endl;
@@ -3268,10 +3398,10 @@ int main()
     // cout<<distance<<endl;
 
 
-    Solution slu;
-    bool res=slu.canFinish(3,courses);
+    // Solution slu;
+    // bool res=slu.canFinish(3,courses);
     // int len=slu.lengthOfLongestSubstring(input_str);
-    cout<<res<<endl;
+    // cout<<res<<endl;
     // cout<<profit<<endl;
 
     // char c='(';
