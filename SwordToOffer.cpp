@@ -257,6 +257,30 @@ public:
 class Solution
 {
 public:
+    /**
+     * 寻找重复数
+     * **/
+    int findDuplicate(vector<int>& nums) {
+        int ans=0;
+        int n=nums.size();
+        int max_bit=31;
+        while(!((n-1)>>max_bit)){
+            max_bit--;
+        }
+        for(int i=0;i<=max_bit;i++){
+            int x=0,y=0;
+            for(int j=0;j<n;j++){
+                if(nums[j]&(1<<i))
+                    x++;
+                if(j>0&&(j&(1<<i)))
+                    y++;
+            }
+            if(x>y)
+                ans|=1<<i;
+        }
+        return ans;
+    }
+
 
     /**
      *  最短无序连续子数组
@@ -599,7 +623,7 @@ public:
     
 
     /**
-     * 数组中出现超过一半的数字
+     * 数组中出现一半的数字
      * **/
     int majorityElement_(vector<int>& nums) {
         int count=0;
