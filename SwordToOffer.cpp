@@ -258,7 +258,7 @@ class Solution
 {
 public:
     /**
-     * 寻找重复数
+     * 寻找重复数(只有一个重复的整数)
      * **/
     int findDuplicate(vector<int>& nums) {
         int ans=0;
@@ -371,68 +371,66 @@ public:
     /**
      * 除法求值(待修正)
      * **/
-    unordered_map<string,string> edges_forward;
-    unordered_map<string,int> edges_forward_index;
-    unordered_map<string,string> edges_backward;
-    unordered_map<string,int> edges_backward_index;
-    double get_query(vector<double>& values,vector<string> &single_query){
-        double res=1.0;
+   unordered_map<string,int> node2num;
+    
+    double get_query(vector<string> &single_query,vector<vector<pair<int,double>>>&edges){
 
-        if(single_query[0]==single_query[1]&&edges_forward.find(single_query[0])!=edges_forward.end())
-            return res;
-         if(single_query[0]==single_query[1]&&edges_backward.find(single_query[0])!=edges_backward.end())
-            return res;
-        unordered_map<string,string>::iterator it=edges_forward.find(single_query[0]);
-        
-        while(it!=edges_forward.end()){
-            int index=edges_forward_index[it->first];
-            // printf("index:%d,%s->%s: %f\n",index,it->first.c_str(),it->second.c_str(),values[index]);
-            res*=values[index];
-            // printf("single query 1 %s\n",single_query[1].c_str());
-            if(it->second==single_query[1]){
-                // printf("return 1\n");
+        double res=-1.0;
+
+        int start,end;
+        if(node2num.find(single_query[0])!=node2num.end()&&node2num.find(single_query[1])!=node2num.end()){
+
+            res=1.0;
+            start=node2num[single_query[0]];
+            end=node2num[single_query[1]];
+            if(start==end)
                 return res;
+            queue<int> points;
+            points.push(start);
+            vector<double> ratios(edges.size(),-1.0);
+            ratios[start]=1.0;
+            while(!points.empty()&&ratios[end]<0){
+                int curpoint=points.front();
+               
+                points.pop();
+                for(pair<int,double> it: edges[curpoint]){
+                    if(ratios[it.first]<0){
+                        ratios[it.first]=ratios[curpoint]*it.second;
+                        points.push(it.first);
+                    }
+                }
             }
-            it=edges_forward.find(it->second);
-            // if(it==edges_forward.end()){
-            //     // printf("return 2\n");
-            //     return -1.0;
-            // }
+            res=ratios[end];
         }
-        res=1.0;
-        it=edges_backward.find(single_query[0]);
-        while(it!=edges_backward.end()){
-            int index=edges_backward_index[it->first];
-            // printf("%s->%s\n",it->first.c_str(),it->second.c_str());
-            res*=values[index];
-            if(it->second==single_query[1])
-                return 1/res;
-            it=edges_forward.find(it->second);
-            if(it==edges_forward.end())
-                return -1.0;
-        }
-        // printf("return 3\n");
-        return -1.0;
+        return res;
+
     }
 
     vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values,vector<vector<string>>& queries) {
        
         vector<double> res;
+        int num=0;
         int i=0,j=0;
+
+        //字符串隐射到数字
         for(i=0;i<equations.size();i++){
-            // printf("push %s->%s\n",equations[i][0].c_str(),equations[i][1].c_str());
-            edges_forward[equations[i][0]]=equations[i][1];
-            edges_backward[equations[i][1]]=equations[i][0];
-            edges_forward_index[equations[i][0]]=i;
-            edges_backward_index[equations[i][1]]=i;
+            if(node2num.find(equations[i][0])==node2num.end())
+                node2num[equations[i][0]]=num++;
+            if(node2num.find(equations[i][1])==node2num.end())
+                node2num[equations[i][1]]=num++;
         }
-        // unordered_map<string,string>::iterator it;
-        //  for(it=edges_forward.begin();it!=edges_forward.end();it++){
-        //      printf("%s->%s\n",it->first.c_str(),it->second.c_str());
-        //  }
+
+        vector<vector<pair<int,double>>> edges(num);
+        //起点和终点及对应边的权值一一对应
+        for(i=0;i<equations.size();i++){
+            int start=node2num[equations[i][0]];
+            int end=node2num[equations[i][1]];
+            edges[start].push_back(make_pair(end,values[i]));
+            edges[end].push_back(make_pair(start,1.0/values[i]));
+        }
+
         for(j=0;j<queries.size();j++){
-            res.push_back(get_query(values,queries[j]));
-            // break;
+            res.push_back(get_query(queries[j],edges));
         }
         return res;
     }
