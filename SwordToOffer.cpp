@@ -257,6 +257,59 @@ public:
 class Solution
 {
 public:
+
+    /**
+     * 从前序与中序遍历序列构造二叉树
+     **/
+    TreeNode* buildOwnTree(vector<int>& preorder, vector<int>& inorder,int pre_left,int pre_right,int in_left,int in_right,map<int,int>&elements){
+
+        if(pre_left>pre_right)    
+            return nullptr;
+        
+        if(in_left>in_right)
+            return nullptr;
+    
+        TreeNode *p=new TreeNode(preorder[pre_left]);
+
+        int p_index=elements[preorder[pre_left]];
+
+        p->left=buildOwnTree(preorder,inorder,pre_left+1,p_index-in_left+pre_left,in_left,p_index-1,elements);
+
+
+        p->right=buildOwnTree(preorder,inorder,p_index-in_left+pre_left+1,pre_right,p_index+1,in_right,elements);
+
+        return p;
+
+    }
+
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        if(!preorder.size())
+            return nullptr;
+        
+        map<int,int> elements;
+
+        for(int i=0;i<inorder.size();i++){
+           elements[inorder[i]]=i;
+        }
+
+        int pre_left,pre_right,in_left,in_right,p_index;
+
+        pre_left=0;
+        pre_right=preorder.size()-1;
+        
+        p_index=elements[preorder[pre_left]];
+
+        in_left=0;
+        in_right=inorder.size()-1;
+        
+        TreeNode* p=buildOwnTree(preorder,inorder,pre_left,pre_right,in_left,in_right,elements);
+
+        return p;
+
+    }
+
+
+
     /**
      * 寻找重复数(只有一个重复的整数)
      * **/
