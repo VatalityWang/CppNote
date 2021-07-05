@@ -347,6 +347,7 @@ std::istream& operator>>(std::istream &is,Sale_Data&item)//input
 		item.revenue=price*item.revenue;
 	else 
 		item=Sale_Data();
+	return is;
 }
  std::ostream& operator<<(std::ostream &os,const Sale_Data&item)//output
 {
@@ -1002,6 +1003,7 @@ String& String::operator=(const String& rhs)
 	elements = newdata.first;
 	end= newdata.second;
 	  std::cout << "copy-assignment" << std::endl;
+	return *this;
 }
 String::~String()
 {
