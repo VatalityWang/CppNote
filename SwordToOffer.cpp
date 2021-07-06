@@ -259,6 +259,22 @@ class Solution
 public:
 
     /**
+     * 最长递增子序列
+     * **/
+     int lengthOfLIS(vector<int>& nums) {
+        int n=nums.size();
+        vector<int> dp(n,0);
+        for(int i=0;i<nums.size();i++){
+            dp[i]=1;
+            for(int j=0;j<=i;j++){
+                if(nums[j]<nums[i])
+                    dp[i]=max(dp[i],dp[j]+1);//动态更新dp[i]
+            }
+        }
+        return *std::max_element(dp.begin(),dp.end());
+    }
+
+    /**
      * 从前序与中序遍历序列构造二叉树
      **/
     TreeNode* buildOwnTree(vector<int>& preorder, vector<int>& inorder,int pre_left,int pre_right,int in_left,int in_right,map<int,int>&elements){
