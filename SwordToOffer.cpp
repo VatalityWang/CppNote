@@ -259,6 +259,33 @@ class Solution
 public:
 
     /**
+     * 
+     * 旋转图像
+     * **/
+     void rotate(vector<vector<int>>& matrix) {
+
+
+        int row=matrix.size();
+        int column=matrix[0].size();
+       
+
+        for(int i=0;i<row/2;i++)
+
+            for(int j=0;j<column;j++){
+
+                swap(matrix[i][j],matrix[row-i-1][j]);
+            }
+    
+    
+        for(int i=0;i<row;i++)
+
+            for(int j=i;j<column;j++){
+
+                swap(matrix[i][j],matrix[j][i]);
+            }
+    }
+
+    /**
      * 组合总和
      * **/
      void add_elment(vector<int>&candidates,int index,int target,vector<int>&res,vector<vector<int>>&final_res){
