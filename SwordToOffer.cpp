@@ -259,6 +259,36 @@ class Solution
 public:
 
     /**
+     * 组合总和
+     * **/
+     void add_elment(vector<int>&candidates,int index,int target,vector<int>&res,vector<vector<int>>&final_res){
+       if(index==candidates.size())
+            return;
+        if(target==0){
+            final_res.push_back(res);
+            return;
+        }
+        add_elment(candidates,index+1,target,res,final_res);
+        if(target-candidates[index]>=0){
+            res.push_back(candidates[index]);
+            add_elment(candidates,index,target-candidates[index],res,final_res);
+            res.pop_back();
+        }
+
+    }
+
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+       
+        sort(candidates.begin(),candidates.end());
+        vector<vector<int>> final_res;
+        vector<int> res;
+        int index=0;
+        add_elment(candidates,0,target,res,final_res);
+    
+        return final_res;
+    }
+
+    /**
      * 最长递增子序列
      * **/
      int lengthOfLIS(vector<int>& nums) {
