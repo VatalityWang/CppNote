@@ -283,8 +283,6 @@ public:
             backward[i]=product;
         }
 
-      
-
         for(i=0;i<n;i++){
             if(i==0)
                 res.push_back(backward[i+1]);
@@ -296,6 +294,24 @@ public:
         }
 
         return res;
+    }
+    //空间复杂度为o(1)
+      vector<int> productExceptSelf_(vector<int>& nums) {
+        int n=nums.size();
+        vector<int> forward(n);
+        int product=1;
+        int i;
+        forward[0]=1;
+        for(i=1;i<n;i++){
+        
+            forward[i]=nums[i-1]*forward[i-1];
+        }
+        product=1;
+        for(i=n-1;i>=0;i--){
+             forward[i]=forward[i]*product;
+             product=product*nums[i];
+            }
+        return forward;
     }
 
     /**
