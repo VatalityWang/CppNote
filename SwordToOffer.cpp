@@ -260,6 +260,42 @@ public:
 
 
     /**
+     * 前 K 个高频元素
+     * **/
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        vector<int> res;
+        priority_queue<int> num;
+        unordered_map<int,int> element2num; 
+        unordered_multimap<int,int> num2element; 
+        int i;
+        for(i=0;i<nums.size();i++){
+            element2num[nums[i]]++;
+        }
+
+
+
+        unordered_map<int,int>::iterator it;
+        for(it=element2num.begin();it!=element2num.end();it++){
+            num.push(it->second);
+            num2element.insert({it->second,it->first});
+          
+        }
+        
+        int curnum=-1;
+        while(res.size()<k){
+            int temp=num.top();
+            num.pop();
+            if(curnum!=temp){
+                curnum=temp;
+               
+                for(auto pos=num2element.equal_range(curnum);pos.first!=pos.second;++pos.first)
+                    res.push_back(pos.first->second);
+            }
+        }
+        return res;
+    }
+
+    /**
      * 除自身以外数组的乘积
      * **/
      vector<int> productExceptSelf(vector<int>& nums) {
