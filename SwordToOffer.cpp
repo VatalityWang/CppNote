@@ -258,6 +258,46 @@ class Solution
 {
 public:
 
+
+    /**
+     * 除自身以外数组的乘积
+     * **/
+     vector<int> productExceptSelf(vector<int>& nums) {
+        int n=nums.size();
+        vector<int> res;
+        vector<int> forward(n);
+        vector<int> backward(n);
+        int product=1;
+        int i;
+
+        for(i=0;i<n;i++){
+            product*=nums[i];
+         
+            forward[i]=product;
+        }
+
+        product=1;
+        for(i=n-1;i>=0;i--){
+            product*=nums[i];
+           
+            backward[i]=product;
+        }
+
+      
+
+        for(i=0;i<n;i++){
+            if(i==0)
+                res.push_back(backward[i+1]);
+            else if(i==n-1)
+                res.push_back(forward[i-1]);
+            else{
+                res.push_back(forward[i-1]*backward[i+1]);
+            }
+        }
+
+        return res;
+    }
+
     /**
      * 
      * 旋转图像
