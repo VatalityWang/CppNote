@@ -262,7 +262,10 @@ public:
     /**
      *实现 Trie (前缀树)
      * **/
-      vector<string> elements;
+   class Trie {
+public:
+
+    vector<string> elements;
 
     /** Initialize your data structure here. */
     Trie() {
@@ -290,6 +293,8 @@ public:
         else
             return true;
     }
+};
+
 
     /**
      * 前 K 个高频元素
