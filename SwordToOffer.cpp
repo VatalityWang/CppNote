@@ -260,6 +260,38 @@ public:
 
 
     /**
+     *实现 Trie (前缀树)
+     * **/
+      vector<string> elements;
+
+    /** Initialize your data structure here. */
+    Trie() {
+    }
+    
+    /** Inserts a word into the trie. */
+    void insert(string word) {
+        if(find(elements.begin(),elements.end(),word)==elements.end())
+            elements.push_back(word);
+    }
+    
+    /** Returns if the word is in the trie. */
+    bool search(string word) {
+        if(find(elements.begin(),elements.end(),word)!=elements.end())
+            return true;
+        else 
+            return false;
+    }
+    
+    /** Returns if there is any word in the trie that starts with the given prefix. */
+    bool startsWith(string prefix) {
+        auto it=find_if(elements.begin(),elements.end(),[prefix] (const string &a){auto im=a.find(prefix);return im==0;});
+        if(it==elements.end())
+            return false;
+        else
+            return true;
+    }
+
+    /**
      * 前 K 个高频元素
      * **/
     vector<int> topKFrequent(vector<int>& nums, int k) {
