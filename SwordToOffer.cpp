@@ -295,7 +295,7 @@ public:
             }
         return num;
     }
-    
+
 
     /**
      *实现 Trie (前缀树)
@@ -750,6 +750,28 @@ public:
        struct selectStatus res=Dfs(root);
        return max(res.selected,res.notSelected);
     }
+
+    //数组版本  打家劫舍
+     struct choose{
+        int selected;
+        int notselected;
+    };
+
+    struct choose dfs(vector<int>& nums,int index){
+        if(index==nums.size())
+            return {0,0};
+        struct choose res=dfs(nums,index+1);
+        int selected=res.notselected+nums[index];
+        int notselected=max(res.selected,res.notselected);
+        
+        return {selected,notselected};
+    }
+
+    int rob_(vector<int>& nums) {
+        struct choose res=dfs(nums,0);
+        return max(res.selected,res.notselected);
+    }
+
 
     /**
      * 最近公共祖先节点
