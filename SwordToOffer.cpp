@@ -259,6 +259,44 @@ class Solution
 public:
 
 
+    /*
+    *
+    * 岛屿数量
+    */
+    void dfs(int i,int j,int row,int column, vector<vector<char>>&grid){
+        if(i<0||i>row-1)   
+            return;
+        if(j<0||j>column-1)
+            return;
+        if(grid[i][j]=='0')
+            return;
+        else{
+            grid[i][j]='0';
+            dfs(i+1,j,row,column,grid);
+            dfs(i-1,j,row,column,grid);
+            dfs(i,j+1,row,column,grid);
+            dfs(i,j-1,row,column,grid);
+        }
+    }
+
+    int numIslands(vector<vector<char>>& grid) {
+
+        int row=grid.size();
+        int column=grid[0].size();
+        int i,j,num;
+        num=0;
+        // vector<vector<int>> visited(row,vector<int>(column));
+        for(i=0;i<row;i++)
+            for(j=0;j<column;j++){
+                if(grid[i][j]=='1'){
+                    dfs(i,j,row,column,grid);
+                    num++;
+                }
+            }
+        return num;
+    }
+    
+
     /**
      *实现 Trie (前缀树)
      * **/
