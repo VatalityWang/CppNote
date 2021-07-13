@@ -259,6 +259,60 @@ class Solution
 public:
     
     /**
+     * 目标和
+     * **/
+    void sumdfs(vector<int> &nums,int index,int target,int sum,int &total){
+      
+        if(index==nums.size()){
+            if(sum==target)
+                total++;
+        }
+        else{
+            sumdfs(nums,index+1,target,sum+nums[index],total);
+            sumdfs(nums,index+1,target,sum-nums[index],total);
+        }
+    }
+
+    int findTargetSumWays(vector<int>& nums, int target) {
+        int total=0,sum=0;
+        sumdfs(nums,0,target,sum,total);
+        return total;
+    }
+
+    //动态规划法
+     int findTargetSumWays_(vector<int>& nums, int target) {
+        
+        int sum=std::accumulate(nums.begin(),nums.end(),0);
+        int diff=sum-target;
+        if(diff%2)
+            return 0;
+        int neg=diff/2;
+        if(neg<0)
+            return 0;
+        
+        int num=nums.size();
+        vector<vector<int>> dp(num+1,vector<int>(neg+1));
+        int i,j;
+        
+        //dp[i][j] 表示在前i个数中选择数存在通过组合等于j的方案数
+        for(j=0;j<=neg;j++)
+        
+            if(j==0)
+                dp[0][j]=1;
+            else
+                dp[0][j]=0;
+        for(i=1;i<=num;i++)
+            for(j=0;j<=neg;j++){
+                if(j<nums[i-1])
+                    dp[i][j]=dp[i-1][j];
+                else    
+                    dp[i][j]=dp[i-1][j-nums[i-1]]+dp[i-1][j];
+            }
+        return dp[num][neg];
+    }
+
+
+    /**
      * 分割等和子集
      * **/
      bool canPartition(vector<int>& nums) {
