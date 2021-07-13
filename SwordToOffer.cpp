@@ -257,6 +257,37 @@ public:
 class Solution
 {
 public:
+    
+    /**
+     * 分割等和子集
+     * **/
+     bool canPartition(vector<int>& nums) {
+        int i,j;
+        int sum=0;
+        for(i=0;i<nums.size();i++){
+            sum+=nums[i];
+        }
+        if(sum%2)   
+            return false;
+        sum=sum/2;
+        int target=sum;
+        bool res=false;
+        int max_element=*std::max_element(nums.begin(),nums.end());
+        if(max_element>target)
+            return false;
+        vector<vector<bool>> dp(nums.size(),vector<bool>(target+1));
+        for(i=0;i<nums.size();i++)
+            dp[i][0]=true;
+        dp[0][nums[0]]=true;
+        for(i=1;i<nums.size();i++)
+            for(j=1;j<=target;j++){
+                if(j>=nums[i])
+                    dp[i][j]=dp[i-1][j]|dp[i-1][j-nums[i]];
+                else
+                    dp[i][j]=dp[i-1][j];
+            }
+        return dp[nums.size()-1][target];
+    }
 
 
     /*
