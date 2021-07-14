@@ -259,6 +259,34 @@ class Solution
 public:
 
     /**
+     * 索二维矩阵 II
+     * **/
+     bool binary_search(vector<int> &nums,int low,int high,int target){
+        if(low>=0&&high<=nums.size()&&low<=high){
+            int mid=(low+high)/2;
+            if(nums[mid]==target)
+                return true;
+            else if(nums[mid]<target)
+                low=mid+1;
+            else
+                high=mid-1;
+            return binary_search(nums,low,high,target);
+        }
+      
+        return false;
+    }
+
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int i,j;
+        int m=matrix.size();
+        int n=matrix[0].size();
+        bool res=false;
+        for(i=0;i<m;i++)
+             res|=binary_search(matrix[i],0,n-1,target);
+        return res;
+    }
+
+    /**
      * 最小花费跑楼梯
      * **/
      int minCostClimbingStairs(vector<int>& cost) {
