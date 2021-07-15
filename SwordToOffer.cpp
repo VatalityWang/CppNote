@@ -286,6 +286,23 @@ public:
         return res;
     }
 
+    //0(m+n) 版本
+     bool searchMatrix_(vector<vector<int>>& matrix, int target) {
+        int i,j;
+        int m=matrix.size();
+        int n=matrix[0].size();
+        i=m-1;
+        j=0;
+       while(i>=0&&j<n){
+                if(matrix[i][j]>target)
+                    i--;
+                else if(matrix[i][j]<target)
+                    j++;
+                else    
+                    return true;
+            }
+        return false;
+    }
     /**
      * 最小花费跑楼梯
      * **/
