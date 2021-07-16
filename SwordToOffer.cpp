@@ -257,6 +257,28 @@ public:
 class Solution
 {
 public:
+
+    /**
+     * 和为K的子数组
+     * **/
+     int subarraySum(vector<int>& nums, int k) {
+        int i,j;
+        int num=0;
+        int sum=0;
+        int n=nums.size();
+        int pre;
+        unordered_map<int,int> statistic; 
+        statistic.insert({0,1});
+        for(i=0;i<n;i++){
+            sum+=nums[i];
+            pre=sum-k;
+            if(statistic.find(pre)!=statistic.end()){
+                num+=statistic[pre];//可能好几段都是相同的。
+            } 
+            statistic[sum]++;
+        }
+        return num;
+    }
     
     /**
      * 跳跃游戏 II
