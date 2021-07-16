@@ -2809,6 +2809,43 @@ public:
         }
     }
 
+    /**
+     * 单词搜索
+     * **/
+     void match(vector<vector<char>>& board,int i,int j,int index,string word,bool &res,vector<vector<bool>> &memory){
+        int m=board.size();
+        int n=board[0].size();
+        if(i>=0&&i<m&&j>=0&&j<n&&index<=word.size()-1&&!memory[i][j]){
+            if(board[i][j]==word[index]){
+                if(index==word.size()-1){
+                    res|=true;
+                    return;
+                }
+                
+                memory[i][j]=true;
+                match(board,i+1,j,index+1,word,res,memory);
+                match(board,i-1,j,index+1,word,res,memory);
+                match(board,i,j+1,index+1,word,res,memory);
+                match(board,i,j-1,index+1,word,res,memory);
+                memory[i][j]=false;
+            }
+        }
+    }
+
+    bool exist(vector<vector<char>>& board, string word) {
+        int i,j;
+        int m=board.size();
+        int n=board[0].size();
+        vector<vector<bool>> memory(m,vector<bool>(n,false));
+        bool res=false;
+        for(i=0;i<m;i++)
+            for(j=0;j<n;j++){
+                match(board,i,j,0,word,res,memory);
+            }
+        return res;
+    }
+
+
     /*
     * 机器人的运动范围
     * */
