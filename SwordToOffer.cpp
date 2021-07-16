@@ -265,12 +265,7 @@ public:
         int m=matrix.size()-1;
         int n=matrix[0].size()-1;
         int max_len=min(m-i,n-j);
-
-      
-       
         int p=0,q=0;
-       
-
         for(p=0;p<max_len;p++){
             if(matrix[i+p][j]=='0')
                 break;
@@ -316,6 +311,7 @@ public:
         }
         return max_;
     }
+    //基于动态规划的算法
 
     /**
      * 索二维矩阵 II
@@ -935,7 +931,7 @@ public:
     }
 
     /**
-     * 打家截舍 
+     * 打家劫舍 
      **/
     struct selectStatus{
         int selected;
@@ -977,7 +973,28 @@ public:
         struct choose res=dfs(nums,0);
         return max(res.selected,res.notselected);
     }
+    
+    /**
+     * 打家劫舍 II
+     * **/
+     int rob_by_scope(vector<int> &nums,int start,int end){
+        int fisrt=nums[start],second=max(fisrt,nums[start+1]);
+        for(int i=start+2;i<=end;i++){
+            int temp=second;
+            second=max(nums[i]+fisrt,second);
+            fisrt=temp;
+        }
+        return second;
+    }
 
+    int rob(vector<int>& nums) {
+        if(nums.size()==1)
+            return nums[0];
+        else if(nums.size()==2)
+            return max(nums[0],nums[1]);
+        int n=nums.size();
+        return max(rob_by_scope(nums,0,n-2),rob_by_scope(nums,1,n-1));
+    }
 
     /**
      * 最近公共祖先节点
@@ -2298,7 +2315,7 @@ public:
     /**
      * 删除并获得点数
      * **/
-    int rob(vector<int>&sum_nums){
+    int rob_delete_num(vector<int>&sum_nums){
         int size=sum_nums.size();
         int first=sum_nums[0],second=max(sum_nums[0],sum_nums[1]);
         for(int i=2;i<size;i++){
