@@ -259,6 +259,65 @@ class Solution
 public:
 
     /**
+     * 最大正方形
+     * **/
+    int Expand_Square(vector<vector<char>> &matrix, int i,int j){
+        int m=matrix.size()-1;
+        int n=matrix[0].size()-1;
+        int max_len=min(m-i,n-j);
+
+      
+       
+        int p=0,q=0;
+       
+
+        for(p=0;p<max_len;p++){
+            if(matrix[i+p][j]=='0')
+                break;
+        }
+        for(q=0;q<max_len;q++){
+            if(matrix[i][j+q]=='0')
+                break;
+        }
+        int max_boundary=0;
+        bool flag=false;
+        max_len=min(p,q);
+       
+        if(matrix[i][j]=='1'){
+            max_boundary=1;
+            for(p=1;p<=max_len;p++){
+                flag=false;
+                if(matrix[i+p][j+p]=='0')
+                    break;
+                for(q=0;q<p;q++){
+                    if(matrix[i+p][j+q]=='0'||matrix[i+q][j+p]=='0'){
+                        flag=true;
+                        break;
+                    }
+                }
+                if(!flag)
+                    max_boundary=max(max_boundary,p+1);
+                else
+                    break;
+            }
+        }
+
+        return max_boundary*max_boundary;
+    }
+
+    int maximalSquare(vector<vector<char>>& matrix) {
+        int i,j;
+        int m=matrix.size();
+        int n=matrix[0].size();
+        int max_=0;
+        for(i=0;i<m;i++){
+            for(j=0;j<n;j++)
+                max_=max(Expand_Square(matrix,i,j),max_);
+        }
+        return max_;
+    }
+
+    /**
      * 索二维矩阵 II
      * **/
      bool binary_search(vector<int> &nums,int low,int high,int target){
