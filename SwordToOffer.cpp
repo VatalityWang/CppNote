@@ -257,6 +257,29 @@ public:
 class Solution
 {
 public:
+    
+    /**
+     * 跳跃游戏 II
+     * **/
+    
+     int jump(vector<int>& nums) {
+        if(nums.size()==1)
+            return 0;
+        else if(nums.size()==2)
+            return 1;
+        int i,j,rightmost=nums[0];
+
+        int num=0,max_pos=0,end=0;
+        int n=nums.size();
+        for(i=0;i<n-1;++i){
+            max_pos=max(max_pos,i+nums[i]);
+            if(i==end){
+                end=max_pos;
+                num++;
+            }
+        }
+        return num;
+    }
 
     /**
      * 最大正方形
