@@ -259,6 +259,29 @@ class Solution
 public:
 
     /**
+     * 零钱兑换
+     * **/
+    int coinChange(vector<int>& coins, int amount) {
+        if(amount==0)
+            return 0;
+        int i,j;
+        int n=coins.size();
+      
+      
+        vector<int> memeory(amount+1,amount+1);
+        memeory[0]=0;
+        for(i=1;i<=amount;i++){
+        
+            for(j=0;j<n;j++){
+                int temp=i-coins[j];//
+                if(temp>=0)
+                    memeory[i]=min(memeory[i],memeory[temp]+1);   
+            }
+        }
+        return memeory[amount]>amount?-1:memeory[amount];
+    }
+
+    /**
      * 和为K的子数组
      * **/
      int subarraySum(vector<int>& nums, int k) {
@@ -273,7 +296,7 @@ public:
             sum+=nums[i];
             pre=sum-k;
             if(statistic.find(pre)!=statistic.end()){
-                num+=statistic[pre];//可能好几段都是相同的。
+                num+=statistic[pre];//可能好几段都是相同的。在前i项中查找是否有等于pre的项，并累加出现pre出现的次数
             } 
             statistic[sum]++;
         }
