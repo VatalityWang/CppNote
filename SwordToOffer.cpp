@@ -259,6 +259,39 @@ class Solution
 public:
 
     /**
+     * 环形子数组的最大和
+     * **/
+     int maxSubarraySumCircular(vector<int>& nums) {
+        
+        int i,j,sum=0;
+        int n=nums.size();
+        if(n==1)
+            return nums[0];
+        int pre=0,max_=INT_MIN,min1=INT_MAX,min2=INT_MAX;
+        for(auto &it:nums)
+            sum+=it;
+        pre=0;
+        for(i=0;i<n;i++){
+            pre=max(nums[i],pre+nums[i]);
+            max_=max(max_,pre);
+        }
+        pre=0;
+        for(i=1;i<n;i++){
+            pre=min(nums[i],pre+nums[i]);
+            min1=min(min1,pre);
+        }
+        int max_1=sum-min1;
+        pre=0;
+        for(i=0;i<n-1;i++){
+            pre=min(nums[i],pre+nums[i]);
+            min2=min(min2,pre);
+        }
+        int max_2=sum-min2;
+
+        return max(max_,max(max_1,max_2));
+    }
+
+    /**
      * 零钱兑换
      * **/
     int coinChange(vector<int>& coins, int amount) {
