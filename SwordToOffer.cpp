@@ -259,6 +259,43 @@ class Solution
 public:
 
     /**
+     * 搜索旋转排序数组
+     * **/
+    int search_(vector<int>& nums, int target) {
+        int n=nums.size();
+        if(!n)
+            return -1;
+        if(n==1){
+            return nums[0]==target?0:-1;
+        }
+        int l,r;
+        l=0;
+        r=n-1;
+        while(l<=r){
+            int mid=(l+r)/2;
+            if(nums[mid]==target)
+                return mid;
+            //左边有序
+            if(nums[0]<=nums[mid]){
+                if(nums[0]<=target&&target<nums[mid]){
+                    r=mid-1;
+                }
+                else 
+                    l=mid+1;
+            }
+            
+            //右边有序 nums[mid]<=nums[r]
+            else{
+                if(nums[mid]<target&&target<=nums[n-1])
+                    l=mid+1;
+                else
+                    r=mid-1;
+            }
+        }
+        return -1;
+    }
+
+    /**
      * 在排序数组中查找元素的第一个和最后一个位置
      * **/
      vector<int> searchRange(vector<int>& nums, int target) {
