@@ -259,6 +259,35 @@ class Solution
 public:
 
     /**
+     * 在排序数组中查找元素的第一个和最后一个位置
+     * **/
+     vector<int> searchRange(vector<int>& nums, int target) {
+        int i;
+        int n=nums.size();
+        int start=-1,end=-1;
+        if(n==0)
+           return {start,end};
+        vector<int> res;
+        auto pos=equal_range(nums.begin(),nums.end(),target);
+        //返回一个pair{first,second};
+        //first指向第一个小于等于target的元素，不存在则指向end,second指向第一个大于target的元素,不存在则指向end。
+
+        //不存在小于等于target的元素
+        if(pos.first==nums.end())
+            return {start,end};
+        //存在target
+        else if(*pos.first==target){
+            start=pos.first-nums.begin();
+            end=pos.second-nums.begin()-1;
+            return {start,end};
+        }
+        //target包含于数组元素范围中，但不存在。
+        else{
+            return {start,end};
+        }
+     }
+
+    /**
      * 环形子数组的最大和
      * **/
      int maxSubarraySumCircular(vector<int>& nums) {
