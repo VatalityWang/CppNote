@@ -290,7 +290,24 @@ public:
 
         return max(max_,max(max_1,max_2));
     }
-
+    //another solution
+      int maxSubarraySumCircular_(vector<int> &A) { 
+        if (A.size()==0 || A.size() < 1) {
+            return 0;
+        }
+        int curMax, max_, curMin, min, sum;
+        curMax  = max_ = curMin = min = sum = A[0];
+        for (int i = 1; i < A.size(); i++) {
+            sum += A[i];
+            curMax = curMax > 0 ? curMax + A[i] : A[i]; 
+            max_ = curMax > max_ ? curMax : max_;
+            curMin = curMin < 0 ? curMin + A[i] : A[i];
+            min = curMin < min ? curMin : min;
+        }
+        if (max_ < 0)
+            return max_;
+        return max(sum - min, max_);
+    }
     /**
      * 零钱兑换
      * **/
