@@ -259,6 +259,23 @@ class Solution
 public:
 
     /**
+     * 完全平方数
+     * **/
+     int numSquares(int n) {
+        int i,j;
+        vector<int> dp(n+1);
+        dp[0]=0;
+        for(i=1;i<=n;i++){
+            int min_temp=INT_MAX;
+            for(j=1;j*j<=i;j++){
+                min_temp=min(dp[i-j*j],min_temp);
+            }
+            dp[i]=min_temp+1;
+        }
+        return dp[n];
+    }
+
+    /**
      * 不同路径
      * **/
         int uniquePaths(int m, int n) {
