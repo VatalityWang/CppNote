@@ -259,6 +259,27 @@ class Solution
 public:
 
     /**
+     * 不同路径
+     * **/
+        int uniquePaths(int m, int n) {
+        int i,j;
+        vector<vector<int>> path_num(m,vector<int>(n));
+        path_num[0][0]=1;
+        if(!m&&!n)
+            return path_num[m][n];
+        for(i=0;i<m;i++)
+            for(j=0;j<n;j++){
+                if(i-1>=0&&j-1>=0)
+                    path_num[i][j]=path_num[i-1][j]+path_num[i][j-1];
+                if(i==0)
+                    path_num[i][j]=1; 
+                if(j==0)
+                    path_num[i][j]=1;
+            }
+        return path_num[m-1][n-1];
+    }
+
+    /**
      * 搜索旋转排序数组
      * **/
     int search_(vector<int>& nums, int target) {
