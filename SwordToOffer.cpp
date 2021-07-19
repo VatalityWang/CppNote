@@ -259,6 +259,51 @@ class Solution
 public:
 
     /**
+     *  电话号码的字母组合
+     * **/
+    void num_dfs(vector<string> &total_str,int index,vector<string> &res,string cur){
+        if(cur.size()==total_str.size()){
+            res.push_back(cur);
+            return;
+        }
+        if(index<total_str.size()){
+            // printf("cur size %d, total_str size %d\n",cur.size(),total_str.size());
+           
+            for(auto &it:total_str[index]){
+                cur+=it;
+                // printf("cur %s, %c\n",cur.c_str(),it);
+                num_dfs(total_str,index+1,res,cur);
+                cur.pop_back();
+            }
+        }
+    }
+
+    vector<string> letterCombinations(string digits) {
+        vector<string> total_str;
+        vector<string> res;
+        if(digits.empty())
+            return  res;
+        map<char,string> num2char;
+        num2char.insert({'2',"abc"});
+        num2char.insert({'3',"def"});
+        num2char.insert({'4',"ghi"});
+        num2char.insert({'5',"jkl"});
+        num2char.insert({'6',"mno"});
+        num2char.insert({'7',"pqrs"});
+        num2char.insert({'8',"tuv"});   
+        num2char.insert({'9',"wxyz"});
+        int n=digits.size();
+        string cur;
+        int i;
+        for(i=0;i<n;i++)
+            total_str.push_back(num2char[digits[i]]);
+    
+        num_dfs(total_str,0,res,cur);
+    
+        return res;
+    }
+
+    /**
      * 完全平方数
      * **/
      int numSquares(int n) {
