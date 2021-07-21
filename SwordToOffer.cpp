@@ -12,6 +12,7 @@
 #include <deque>
 #include<cmath>
 #include<sstream>
+#include<bitset>
 // #include<math>
 using namespace ::std;
 using std::cout;
@@ -257,6 +258,45 @@ public:
 class Solution
 {
 public:
+
+    /**
+     * 字符串的排列
+     * **/
+     void comination(string &s,string &str,set<string>&res,vector<bool> &used){
+        if(str.size()==s.size()){
+            res.insert(str);
+            return;
+        }
+        for(int i=0;i<used.size();i++){
+            if(used[i]==false){
+                used[i]=true;
+                str+=s[i];
+                comination(s,str,res,used);
+                str.pop_back();
+                used[i]=false;
+            }
+        }
+    }
+
+    vector<string> permutation(string s) {
+        set<string> res;
+        int n=s.size();
+        if(n==1||n==0){
+            return {s};
+        }
+        vector<bool> used(n);
+        string str;
+        comination(s,str,res,used);
+        vector<string> new_res;
+        for(auto &it:res)
+            new_res.push_back(it);
+        return new_res;
+    }
+
+    /**
+     * 合并表记录
+     * **/
+    
 
     /**
      *  电话号码的字母组合
