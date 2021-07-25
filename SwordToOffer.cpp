@@ -8,6 +8,7 @@
 #include<unordered_map>
 #include <cstring>
 #include <set>
+#include<unordered_set>
 #include <queue>
 #include <deque>
 #include<cmath>
@@ -253,11 +254,147 @@ public:
             return -1;
     }
 };
+struct DListNode{
+    DListNode * pre;
+    DListNode * next;
+    int key,val;
+    DListNode(int _key,int _val){key=_key;val=_val;pre=nullptr;next=nullptr;}
+    DListNode():key(0),val(0),pre(nullptr),next(nullptr) {}
+};
 
+
+class LRUCache {
+public:
+    int totalCapacity;
+    int size=0;
+    map<int,DListNode*> elements;
+    DListNode * head;
+    DListNode * tail;
+
+    
+    void moveToHead(DListNode * node){
+      
+        node->pre->next=node->next;
+        node->next->pre=node->pre;
+        node->next=head->next;
+        head->next->pre=node;
+        node->pre=head;
+        head->next=node;
+    }
+
+     void addToHead(DListNode * node){
+        node->next=head->next;
+        head->next->pre=node;
+        node->pre=head;
+        head->next=node;
+    }
+
+    void removeNode(DListNode * node){
+        node->pre->next=node->next;
+        node->next->pre=node->pre;
+    }
+
+    DListNode* removeFromTail(){
+        DListNode * temp=tail->pre;
+        removeNode(temp);
+        return temp;
+    }
+
+    LRUCache(int capacity) {
+        totalCapacity=capacity;
+        head=new DListNode();
+        tail=new DListNode();
+        head->next=tail;
+       
+        tail->pre=head;
+     
+    }
+
+    void printNode(){
+        DListNode *p=head->next;
+        while(p!=tail){
+            cout<<p->val<<"->";
+            p=p->next;
+        }
+        cout<<endl;
+    }
+    
+    int get(int key) {
+        //能找到
+        if(elements.find(key)!=elements.end()){
+            //移动链表节点至表头
+           moveToHead(elements[key]);
+           return elements[key]->val;
+        }
+        //不能找到
+        else
+            return -1;
+    }
+    
+    void put(int key, int value) {
+        //能找到,更新value值
+        if(elements.find(key)!=elements.end()){
+            DListNode *old=elements[key];
+            moveToHead(old);
+            old->val=value;
+
+        }
+        //不能找到
+        else{   //增加新的节点至链表头
+                if(size<totalCapacity){
+                    //cout<<"insert "<<key<<" "<<value<<endl;
+                    DListNode * node=new DListNode(key,value);
+                    addToHead(node);
+                    size++;
+                    elements.insert({key,node});
+                }
+                //容量满了，删除尾部节点,增加新节点至表头
+                else if(size==totalCapacity){
+                    DListNode * temp= removeFromTail();
+                    elements.erase(temp->key);
+                    delete temp;
+
+                    DListNode * tempNew=new DListNode(key,value);
+                    addToHead(tempNew);
+                    elements.insert({key,tempNew});
+                }
+        } 
+        //printNode();
+    }
+};
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
 
 class Solution
 {
 public:
+
+    /**
+     * 单词拆分
+     * **/
+     bool wordBreak(string s, vector<string>& wordDict) {
+        unordered_set<string> words;
+        for(auto &it:wordDict){
+            words.insert(it);
+        }
+        int n=s.size();
+        vector<bool> dp(n+1);
+        dp[0]=true;
+        int i,j;
+        for(i=0;i<=n;i++)
+            for(j=0;j<i;j++)
+                if(dp[j]&&words.find(s.substr(j,i-j))!=words.end()){
+                    dp[i]=true;
+                    break;
+                }
+      
+        return dp[n];  
+    }
 
     /**
      * 字符串的排列
@@ -4292,6 +4429,7 @@ void print_variable_name(){
 
 int main()
 {
+    #if 0
     map<int,int> statistics;
     unordered_map<int,int> que;
     vector<int> input={2,3,4,5,7,6};
@@ -4312,6 +4450,18 @@ int main()
     for(auto &it:que){
         cout<<it.first<<"->"<<it.second<<endl;
     }
+    #endif
+
+    string str="worldhellotask";
+    string str1="hello";
+    auto it=str.find(str1);
+    cout<<it<<endl;
+    auto endpos=str.size()-1-(it+str1.size()-1)+1;
+    str=str.substr(0,it)+str.substr(it+str1.size(),endpos);
+    cout<<str<<endl;
+
+
+
 
     // for(auto &it:statistics){
     //     cout<<it.first<<"->"<<it.second<<endl;
