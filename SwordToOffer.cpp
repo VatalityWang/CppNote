@@ -375,6 +375,34 @@ class Solution
 public:
 
     /**
+     * 验证二叉搜索树
+     * **/
+    bool isValidBST(TreeNode* root) {
+        if(!root)
+            return false;
+        stack<TreeNode *> elements;
+        int lastElement=INT_MIN;
+        stack<TreeNode *> orders;
+        TreeNode *p=root;
+        while(p||!elements.empty()){
+            while(p){
+                elements.push(p);
+                p=p->left;
+            }
+            if(!elements.empty()){
+                p=elements.top();
+                elements.pop();
+                if(lastElement>=p->val)
+                    return false;
+                lastElement=p->val;
+                p=p->right;
+            }
+          
+        }
+        return true;
+    }
+
+    /**
      * 单词拆分
      * **/
      bool wordBreak(string s, vector<string>& wordDict) {
