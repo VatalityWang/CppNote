@@ -375,6 +375,37 @@ class Solution
 public:
 
     /**
+     * 戳气球 二维动态规划，行列坐标分别表示数组下标的范围。
+     * **/
+    int maxCoins(vector<int>& nums) {
+        if(nums.size()==1){
+            return  nums[0];
+        }
+        if(nums.size()==2)
+            return nums[0]*nums[1]+nums[1];
+        
+        int n=nums.size();
+
+        vector<vector<int>> dp(n+2,vector<int>(n+2));
+        vector<int> val(n+2);
+        val[0]=1;
+        val[n+1]=1;
+
+        for(int i=1;i<=n;i++){
+            val[i]=nums[i-1];
+        }
+        int i,j,k;
+        for(i=n-1;i>=0;i--)
+            for(j=i+2;j<n+2;j++)
+                for(k=i+1;k<j;k++){
+                    int sum=val[i]*val[k]*val[j];
+                    sum+=dp[i][k]+dp[k][j];
+                    dp[i][j]=max(sum,dp[i][j]);
+                }
+        return dp[0][n+1];
+    }   
+
+    /**
      * 验证二叉搜索树
      * **/
     bool isValidBST(TreeNode* root) {
