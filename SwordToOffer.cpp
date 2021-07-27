@@ -375,6 +375,32 @@ class Solution
 public:
 
     /**
+     * 滑动窗口最大值
+     * **/
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        vector<int> res;
+        int n=nums.size();
+        if(k==1){
+            return nums;
+        }
+        priority_queue<pair<int,int>> elements;
+        int i=0;
+        for(i=0;i<k;i++){
+            elements.push({nums[i],i});
+        }
+        res.push_back(elements.top().first);
+        //右边的元素
+        for(i=k;i<n;i++){
+            elements.push({nums[i],i});
+            while(elements.top().second<=i-k){
+                elements.pop();
+            }
+            res.push_back(elements.top().first);
+        }
+        return res;
+    }
+
+    /**
      * 戳气球 二维动态规划，行列坐标分别表示数组下标的范围。
      * **/
     int maxCoins(vector<int>& nums) {
@@ -4511,16 +4537,32 @@ int main()
     }
     #endif
 
-    string str="worldhellotask";
-    string str1="hello";
-    auto it=str.find(str1);
-    cout<<it<<endl;
-    auto endpos=str.size()-1-(it+str1.size()-1)+1;
-    str=str.substr(0,it)+str.substr(it+str1.size(),endpos);
-    cout<<str<<endl;
+    //使用substr
 
+    // string str="worldhellotask";
+    // string str1="hello";
+    // auto it=str.find(str1);
+    // cout<<it<<endl;
+    // auto endpos=str.size()-1-(it+str1.size()-1)+1;
+    // str=str.substr(0,it)+str.substr(it+str1.size(),endpos);
+    // cout<<str<<endl;
 
+    //验证priority_queue插入pair是否按第一个元素排序
 
+    // priority_queue<pair<int,int>> elements;
+    // vector<int> input{2,3,5,8,1,9,0,7};
+    // for(int i=0;i<input.size();i++){
+    //     elements.push({input[i],i});
+    // }
+
+    // while (!elements.empty()){
+    //     auto it=elements.top();
+    //     cout<<it.first<<"->"<<it.second<<endl;
+    //     elements.pop();
+    // }
+    
+    
+    //使用queue
 
     // for(auto &it:statistics){
     //     cout<<it.first<<"->"<<it.second<<endl;
