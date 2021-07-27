@@ -375,6 +375,28 @@ class Solution
 public:
 
     /**
+     * 接雨水
+     * **/
+    int trap(vector<int>& height) {
+        //单调栈,index对应高度递减
+        stack<int> indexs;
+        int i,top,left;
+        int volume=0;
+        for(i=0;i<height.size();i++){
+            while(!indexs.empty()&&height[indexs.top()]<=height[i]){
+                top=indexs.top();
+                indexs.pop();
+                if(!indexs.empty()){
+                    left=indexs.top();
+                    volume+=min(height[i]-height[top],height[left]-height[top])*(i-left-1);
+                }
+            }
+            indexs.push(i);
+        } 
+        return volume;
+    }
+
+    /**
      * 滑动窗口最大值
      * **/
     vector<int> maxSlidingWindow(vector<int>& nums, int k) {
