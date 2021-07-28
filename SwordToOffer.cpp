@@ -370,6 +370,29 @@ public:
  * obj->put(key,value);
  */
 
+static int sum=0;
+class SumSolution {
+public:
+    SumSolution(){
+
+    }
+    ~SumSolution(){
+        sum=0;
+        
+    }
+    SumSolution(int n):num(n){
+        sum+=n;
+    }
+
+    int sumNums(int n) {
+        for(int i=1;i<=n;i++){
+          SumSolution*p =new SumSolution(i);
+        }
+        return sum;
+    }
+    int num;
+};
+
 class Solution
 {
 public:
