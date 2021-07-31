@@ -439,7 +439,28 @@ public:
 class Solution
 {
 public:
+    /**
+     * 乘积最大子数组
+     * **/
+    int maxProduct(vector<int>& nums) {
+        int i,res=nums[0];
+        int pre=nums[0];
+        if(nums.size()==1)
+            return res;
+        int max_=pre;
+        int min_=pre;
+        int tempMax,tempMin;
+        for(i=1;i<nums.size();i++){
+            tempMax=max_;
+            tempMin=min_;
+            max_=max(tempMax*nums[i],max(nums[i],tempMin*nums[i]));
+            min_=min(tempMin*nums[i],min(nums[i],tempMax*nums[i]));
+           
+            res=max(max_,res);
 
+        }
+        return res;
+    }
     /**
      * 合并K个升序链表
      * **/
@@ -489,6 +510,41 @@ public:
                     pwork.erase(pwork.begin()+i);
             }
         }
+        return head->next;
+    }
+    //基于multimap的方法
+     ListNode* mergeKLists_(vector<ListNode*>& lists) {
+        if(lists.size()==0)
+            return nullptr;
+        if(lists.size()==1)
+            return lists[0];
+        int n=lists.size();
+        multimap<int,ListNode *> pwork;
+        ListNode * head=new ListNode(0);
+        ListNode * min=nullptr;
+        ListNode * tail=head;
+        int minIndex=-1;
+
+        //初始化头节点
+        for(int i=0;i<lists.size();i++)
+        if(lists[i])
+            pwork.insert({lists[i]->val,lists[i]});
+      
+        while(pwork.size()){
+            multimap<int,ListNode *>::iterator it=pwork.begin();
+            if(it->second){
+                tail->next=it->second;
+                tail=tail->next;
+                ListNode *temp=it->second;
+
+                pwork.erase(it);
+
+                if(temp->next)
+                    pwork.insert({temp->next->val,temp->next});
+
+            }
+        }
+
         return head->next;
     }
 
@@ -4686,12 +4742,21 @@ void print_variable_name(){
     cout<<typeid(a).name()<<endl;
 }
 
+void printMultimap(multimap<int,int>&order){
+    multimap<int,int> ::iterator it=order.begin();
+    while(it!=order.end()){
+        cout<<it->first<<" "<<it->second<<endl;
+        it++;
+    }
+    cout<<endl;
+}
+
 #if 1
 
 int main()
 {
 
-    vector<int> input={3,5,7,8,9,10,11};
+    vector<int> input={1,5,2,8,9,10,11};
     int sum=500;
     Solution slu;
 
