@@ -14,6 +14,8 @@
 #include<cmath>
 #include<sstream>
 #include<bitset>
+#include<mutex>
+#include<functional>
 // #include<math>
 using namespace ::std;
 using std::cout;
@@ -129,9 +131,50 @@ struct point{
     }
 
 
+/**
+ * 按序打印
+ * **/
+class Foo {
+public:
+    mutex mutex1,mutex2;
+    unique_lock<mutex> lock1,lock2;
+
+    Foo():lock1(mutex1,try_to_lock),lock2(mutex2,try_to_lock){
+       
+    }
+
+    void first(function<void()> printFirst) {
+        
+        // printFirst() outputs "first". Do not change or remove this line.
+        printFirst();
+        lock1.unlock();
+
+    }
+
+    void second(function<void()> printSecond) {
+        
+        // printSecond() outputs "second". Do not change or remove this line.
+        lock_guard<mutex> guard(mutex1);
+        printSecond();
+        mutex2.unlock();
+    }
+
+    void third(function<void()> printThird) {
+        
+        // printThird() outputs "third". Do not change or remove this line.
+        lock_guard<mutex> guard(mutex2);
+        printThird();
+             
+    } 
+
+   
+   
+};
+
+
 /********************************************栈**********************************************************/
 /**
- * 用栈实现两个队列
+ * 用两个栈实现队列
  * **/
 class CQueue {
 public:
@@ -398,6 +441,95 @@ class Solution
 public:
 
     /**
+     * 合并K个升序链表
+     * **/
+     ListNode* mergeKLists(vector<ListNode*>& lists) {
+        if(lists.size()==0)
+            return nullptr;
+        if(lists.size()==1)
+            return lists[0];
+        int n=lists.size();
+        vector<ListNode *> pwork;
+        ListNode * head=new ListNode(0);
+        ListNode * min=nullptr;
+        ListNode * tail=head;
+        int minIndex=-1;
+
+        //初始化头节点
+        std::copy(lists.begin(),lists.end(),std::back_inserter(pwork));
+       
+        //遍历n个链表
+        bool flag=true;
+        while(flag){
+            flag=false;
+            min=nullptr;
+            minIndex=-1;
+            for(int i=0;i<pwork.size();i++){
+                if(!min&&pwork[i]){
+                    min=pwork[i];
+                    minIndex=i;
+                    flag|=true;
+                }
+                else if(pwork[i]&&min->val>pwork[i]->val){
+                    minIndex=i;
+                    min=pwork[i];
+                    flag|=true;
+                }
+               
+            }
+            if(minIndex!=-1){
+                tail->next=min;
+                tail=min;
+                pwork[minIndex]=pwork[minIndex]->next;
+            }
+            else 
+                break;
+            for(int i=0;i<pwork.size();i++){
+                 if(!pwork[i])
+                    pwork.erase(pwork.begin()+i);
+            }
+        }
+        return head->next;
+    }
+
+    /**
+     *  零钱兑换 II(暴力，会超时)
+     * **/
+    void dfsCoins(int amount,int index,int &num,vector<int>&coins){
+
+        if(index==coins.size())
+            return;
+        if(amount==0){
+            num++;
+            return;
+        }
+        cout<<"amount "<<amount<<endl;
+        dfsCoins(amount,index+1,num,coins);
+        if(amount-coins[index]>=0){
+            dfsCoins(amount-coins[index],index,num,coins);
+        }
+    }
+
+    int change(int amount, vector<int>& coins) {
+        int num=0;
+        dfsCoins(amount,0,num,coins);
+        
+        return num;
+    }
+
+    //动态规划解法
+    int change_dp(int amount, vector<int>& coins) {
+        vector<int> dp(amount+1);
+        dp[0]=1;
+        for(int j=0;j<coins.size();j++){
+            for(int i=coins[j];i<=amount;i++)    
+                dp[i]+=dp[i-coins[j]];
+        }
+        return dp[amount];
+    }
+
+
+    /**
      * 接雨水
      * **/
     int trap(vector<int>& height) {
@@ -484,7 +616,6 @@ public:
             return false;
         stack<TreeNode *> elements;
         int lastElement=INT_MIN;
-        stack<TreeNode *> orders;
         TreeNode *p=root;
         while(p||!elements.empty()){
             while(p){
@@ -886,7 +1017,7 @@ public:
     //基于动态规划的算法
 
     /**
-     * 索二维矩阵 II
+     * 搜索二维矩阵 II
      * **/
      bool binary_search(vector<int> &nums,int low,int high,int target){
         if(low>=0&&high<=nums.size()&&low<=high){
@@ -4559,6 +4690,15 @@ void print_variable_name(){
 
 int main()
 {
+
+    vector<int> input={3,5,7,8,9,10,11};
+    int sum=500;
+    Solution slu;
+
+    int res=slu.change_dp(sum,input);
+    cout<<res<<endl;
+    return 0;
+
     #if 0
     map<int,int> statistics;
     unordered_map<int,int> que;
@@ -4629,8 +4769,7 @@ int main()
 
     // char c='(';
     // cout<<c<<endl;
-    return 0;
-
+  
 #if 0
 
     int a[9]={5,8,9,6,7,1,3,2,4};
