@@ -16,6 +16,7 @@
 #include<bitset>
 #include<mutex>
 #include<functional>
+#include<climits>
 // #include<math>
 using namespace ::std;
 using std::cout;
@@ -439,6 +440,38 @@ public:
 class Solution
 {
 public:
+
+    /**
+     * 不同路径 II
+     * **/
+     int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+        int m=obstacleGrid.size();
+        int n=obstacleGrid[0].size();
+        int i,j;
+        vector<vector<int>> dp(m,vector<int>(n));
+        if(obstacleGrid[0][0]){
+            return 0;
+        }
+        dp[0][0]=1;
+        for(j=1;j<n;j++)
+            if(obstacleGrid[0][j])
+                break;
+            else
+                dp[0][j]=dp[0][j-1];
+        for(i=1;i<m;i++)
+            if(obstacleGrid[i][0])
+                break;
+            else
+                dp[i][0]=dp[i-1][0];
+        for(i=1;i<m;i++)
+            for(j=1;j<n;j++){
+                if(!obstacleGrid[i][j]){
+                    dp[i][j]=dp[i][j-1]+dp[i-1][j];
+                }
+            }
+        return dp[m-1][n-1];
+    }
+
     /**
      * 乘积最大子数组
      * **/
@@ -465,7 +498,7 @@ public:
      * 合并K个升序链表
      * **/
      ListNode* mergeKLists(vector<ListNode*>& lists) {
-        if(lists.size()==0)
+        if(lists.size()==0) 
             return nullptr;
         if(lists.size()==1)
             return lists[0];
@@ -2246,21 +2279,22 @@ public:
      * 三色问题
      * **/
     void sortColors(vector<int>& nums) {
-        int left=0,right=0;
+         int left=0,right=0;
         for(int i=0;i<nums.size();i++){
             if(nums[i]==0){
                 swap(nums[i],nums[left]);
-                left++;
                 if(left<right){
                     swap(nums[i],nums[right]);
-                    right++;
                 }
+                left++;
+                right++;
             }
             else if(nums[i]==1){
                 swap(nums[i],nums[right]);
                 right++;
             }
         }
+
     }
 
     /**
