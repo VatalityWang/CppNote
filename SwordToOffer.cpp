@@ -442,6 +442,31 @@ class Solution
 public:
 
     /**
+     * 82. 删除排序链表中的重复元素 II map
+     * **/
+    ListNode* deleteDuplicates_map(ListNode* head) {
+        if(!head||!head->next)
+            return head;
+        map<int,int> elements;
+        ListNode * pwork=head;
+        ListNode * newHead=new ListNode(0);        
+        ListNode *tail=newHead;
+        while(pwork){
+            elements[pwork->val]++;
+            pwork=pwork->next;
+        }
+        map<int,int>::iterator it=elements.begin();
+        while(it!=elements.end()){
+            if(it->second==1){
+                tail->next=new ListNode(it->first);
+                tail=tail->next;
+            }
+            it++;
+        }
+        return newHead->next;
+    }
+
+    /**
      * 82. 删除排序链表中的重复元素 II
      * **/
     ListNode* deleteDuplicates(ListNode* head) {
