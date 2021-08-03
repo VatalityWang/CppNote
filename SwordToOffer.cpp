@@ -442,6 +442,44 @@ class Solution
 public:
 
     /**
+     * 82. 删除排序链表中的重复元素 II
+     * **/
+    ListNode* deleteDuplicates(ListNode* head) {
+        if(!head||!head->next)
+            return head;
+        ListNode * pre,*pwork,*tail;
+        ListNode * newHead=new ListNode(0);
+        tail=newHead;
+        pre=head;
+        pwork=pre->next;
+        bool newPre=true;
+        while(pwork){
+            if(!newPre){
+                if(pwork->val!=pre->val){
+                    newPre=true;
+                    pre=pwork;
+                }    
+            }
+            else{
+                if(pwork->val==pre->val){
+                    newPre=false;
+                }
+                else{
+                    tail->next=pre;
+                    tail=pre;
+                    pre=pwork;
+                }
+            }
+            pwork=pwork->next;
+        }
+        if(newPre)
+            tail->next=pre;
+        else
+            tail->next=nullptr;
+        return newHead->next;
+    }
+
+    /**
      * 不同路径 II
      * **/
      int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
@@ -3052,8 +3090,6 @@ public:
             statistic[nums[i]]=i;
         }
         return {};
-       
-      
     }
 
     /**
