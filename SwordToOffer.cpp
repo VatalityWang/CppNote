@@ -442,7 +442,48 @@ class Solution
 public:
 
     /**
+     * 剑指 Offer 35. 复杂链表的复制
+     * **/
+     int findIndex(vector<Node*>&nodes,Node*node){
+        if(!node)
+            return -1;
+        vector<Node*>::iterator it=find(nodes.begin(),nodes.end(),node);
+        return it-nodes.begin();
+    }
+
+    Node* copyRandomList(Node* head) {
+        if(!head)
+            return head;
+        Node * pwork=head;
+        vector<Node*> nodes;
+        vector<Node*> newnodes;
+        Node * newHead=new Node(0);
+        Node * tail=newHead;
+        while(pwork){
+            //创建新节点
+            Node * temp=new Node(pwork->val);
+            newnodes.push_back(temp);
+            tail->next=temp;
+            tail=tail->next;
+            nodes.push_back(pwork);
+            pwork=pwork->next;
+        }
+        pwork=head;
+        int i=0;
+        while(pwork){
+            int randIndex=findIndex(nodes,pwork->random);
+            if(randIndex==-1)
+                newnodes[i]->random=nullptr;
+            else
+                newnodes[i]->random=newnodes[randIndex];
+            pwork=pwork->next;
+            i++;
+        }
+        return newHead->next;
+    }   
+    /**
     * 611. 有效三角形的个数
+    * 
     **/
     int triangleNumber(vector<int>& nums) {
         int n=nums.size();
