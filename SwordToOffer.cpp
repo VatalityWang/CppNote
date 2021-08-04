@@ -442,6 +442,39 @@ class Solution
 public:
 
     /**
+    * 611. 有效三角形的个数
+    **/
+    int triangleNumber(vector<int>& nums) {
+        int n=nums.size();
+        if(n<=2)
+            return 0;
+        int num=0;
+        int i,j,k;
+        sort(nums.begin(),nums.end());
+        for(i=0;i<n-2;i++)
+            for(j=i+1;j<n-1;j++){
+                int temp=nums[i]+nums[j];
+                k=j+1;
+                if(k<n){
+                // 二分查找第一个比前两个数小的。
+                    int left=k,right=n-1,pos=j;
+                    while(left<=right){
+                        int mid=(left+right)/2;
+                        if(nums[mid]>=temp){
+                            right=mid-1;
+                        }
+                        else{
+                            pos=mid;
+                            left=mid+1;
+                        }    
+                    }
+                    num+=pos-k+1;
+                }
+            }
+        return num;
+    }
+
+    /**
      * 82. 删除排序链表中的重复元素 II map
      * **/
     ListNode* deleteDuplicates_map(ListNode* head) {
