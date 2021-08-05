@@ -440,6 +440,27 @@ public:
 class Solution
 {
 public:
+    /**
+    * 剑指 Offer 49. 丑数
+    **/
+    int nthUglyNumber(int n) {
+        vector<int> uglys;
+        uglys.push_back(1);
+        int p2=0,p3=0,p5=0,curMax;
+        while(uglys.size()!=n){
+            curMax=min(uglys[p2]*2,min(uglys[p3]*3,uglys[p5]*5));
+            if(curMax==uglys[p2]*2)//有可能存在相等的情况
+                p2++;
+            if(curMax==uglys[p3]*3)
+                p3++;
+            if(curMax==uglys[p5]*5)
+                p5++;
+            uglys.push_back(curMax);
+        }
+        return uglys.back();
+    }
+
+
 
     /**
      * 剑指 Offer 35. 复杂链表的复制
