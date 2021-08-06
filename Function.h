@@ -937,10 +937,13 @@ class singleton
 {
 	private:
 		static singleton *pInstance;
+		//声明为private表示不能被创建
 		singleton()
 		{
 			cout<<"This is constructer"<<endl;	
 		}
+		singleton(singleton&);
+		singleton & operator=(const singleton&);
 		~singleton(){}
 	public:
 		static singleton * GetInstance()
@@ -1894,45 +1897,23 @@ class StackSolution
 };
 class StackPopOrderJudge {
 public:
-    bool IsPopOrder(vector<int> pushV,vector<int> popV) 
+    bool IsPopOrder(vector<int> pushed,vector<int> popped) 
 	{
-		if(pushV.size()!=popV.size())
-			return false;
-		stack<int> TempStack;
-		vector<int>::iterator iter1=popV.begin();
-		vector<int>::iterator iter2=pushV.begin();
-		//遍历弹出序列
-		while(iter1!=popV.end())
-		{
-			//在压栈序列中找弹出序列 未找到压入辅助栈中
-			while(*iter1!=*iter2&&iter2!=pushV.end())
-			{
-				TempStack.push(*iter2);
-				iter2++;
-			}
-			//弹入序列已遍历完 
-			if(iter2==pushV.end())
-			{
-				while(!TempStack.empty()&&TempStack.top()==*iter1)
-				{
-					TempStack.pop();
-					iter1++;
-				}
-				if(!TempStack.empty())
-					return false;
-			}
-			else if(*iter1==*iter2)
-			{
-				iter1++;
-				iter2++;
-			}
-		}
-		//弹出栈不为空 
-		if(!TempStack.empty())
-			return false;
-		else
-			return true;
+		 if(pushed.size()!=popped.size())
+            return false;
+        stack<int> experiment;
+        int n=pushed.size();
+        int i=0,j=0;
+        for(i=0;i<n;i++){
+            experiment.push(pushed[i]);
+            while(!experiment.empty()&&experiment.top()==popped[j]){
+                j++;
+                experiment.pop();
+            }
+        }
+        return !experiment.size();
     }
+    
 };
 namespace alg
 {
