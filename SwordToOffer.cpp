@@ -56,6 +56,19 @@ struct TreeLinkNode
     }
 };
 
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+    
+    Node(int _val) {
+        val = _val;
+        next = NULL;
+        random = NULL;
+    }
+};
+
  // Definition for an interval.
   struct Interval
   {
