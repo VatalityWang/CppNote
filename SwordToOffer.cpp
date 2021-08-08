@@ -4159,10 +4159,11 @@ public:
         return res;
     }
 
+
     /*
     * 按之字顺序打印二叉树
     * */
-    vector<vector<int>> Print(TreeNode *pRoot)
+    vector<vector<int>> Print__(TreeNode *pRoot)
     {
 
         vector<vector<int>> res;
@@ -4211,6 +4212,46 @@ public:
             }
             if (!temp.empty())
                 res.push_back(temp);
+        }
+        return res;
+    }
+    //leetcode
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        vector<vector<int>> res;
+        if(!root)
+            return res;
+        queue<TreeNode *> nodes;
+        stack<int> tempNodes;
+        vector<int> cur;
+        TreeNode * temp;
+        bool left2Right=true;
+        nodes.push(root);
+        while(!nodes.empty()){
+            int len=nodes.size();
+            for(int i=0;i<len;i++){
+                temp=nodes.front();
+                nodes.pop();
+                if(left2Right){
+                    cur.push_back(temp->val);
+                }else{
+                    tempNodes.push(temp->val);
+                }
+                if(temp->left)
+                    nodes.push(temp->left);
+                if(temp->right)    
+                    nodes.push(temp->right);
+            }
+            if(left2Right)
+                left2Right=false;
+            else{
+                while(tempNodes.size()){
+                    cur.push_back(tempNodes.top());
+                    tempNodes.pop();
+                }
+                left2Right=true;
+            }
+            res.push_back(cur);
+            cur.clear();
         }
         return res;
     }
@@ -4567,6 +4608,25 @@ public:
             }
         return res;
     }
+    //leetcode 
+    vector<int> constructArr(vector<int>& a) {
+        int n=a.size();
+        vector<int> res;
+        if(!n||n==1) 
+            return res;
+        res.resize(n);
+        vector<int> left(n,1);
+        vector<int> right(n,1);
+        int i;
+        for(i=1;i<n;i++)
+            left[i]=left[i-1]*a[i-1];
+        for(i=n-2;i>=0;i--)
+            right[i]=right[i+1]*a[i+1];
+        for(i=0;i<n;i++)
+            res[i]=left[i]*right[i];
+        return res;
+    }
+
 
     /*
     * 数组中重复的数字
