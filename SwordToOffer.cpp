@@ -453,6 +453,38 @@ public:
 class Solution
 {
 public:
+
+    /**
+     * 剑指 Offer 34. 二叉树中和为某一值的路径
+     * **/
+    void dfs_Bt(TreeNode* root, int target,vector<int> &cur,vector<vector<int>> &res){
+        if(root){
+            //页节点
+            if(!root->left&&!root->right){
+                if(root->val==target){
+                    cur.push_back(root->val);
+                    res.push_back(cur);
+                    cur.pop_back();
+                }
+            }
+            else{
+                cur.push_back(root->val);
+                dfs_Bt(root->left,target-root->val,cur,res);
+                dfs_Bt(root->right,target-root->val,cur,res);
+                cur.pop_back();
+            }
+        }
+    }
+
+    vector<vector<int>> pathSum(TreeNode* root, int target) {
+        vector<vector<int>> res;
+        if(!root)
+            return res;
+        vector<int> cur;
+        dfs_Bt(root,target,cur,res);
+        return res;
+    }
+
     /**
     * 剑指 Offer 49. 丑数
     **/
