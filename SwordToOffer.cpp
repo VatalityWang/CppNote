@@ -455,6 +455,38 @@ class Solution
 public:
 
     /**
+     * 剑指 Offer 46. 把数字翻译成字符串
+     * **/
+     int translateNum(int num) {
+        string strnum=std::to_string(num);
+        int n=strnum.size();
+        if(n==1)
+            return 1;
+        else if(n==2){
+            if(num<=25)
+                return 2;
+            else    
+                return 1;
+        }
+        vector<int> dp(n+1);
+        dp[0]=1;
+        dp[1]=1;
+        int i;
+        string tempStr;
+        tempStr+=strnum[0];
+        for(i=2;i<=n;i++){
+            tempStr+=strnum[i-1];
+            int tempNum=std::stoi(tempStr);
+            if(10<=tempNum&&tempNum<=25)
+                dp[i]=dp[i-2]+dp[i-1];
+            else
+                dp[i]=dp[i-1];
+            tempStr=tempStr.substr(1,1);
+        }
+        return dp[n];
+    }
+
+    /**
      * 剑指 Offer 33. 二叉搜索树的后序遍历序列
      * **/
      bool verifyPostorder(vector<int>&postorder,int start,int end){
