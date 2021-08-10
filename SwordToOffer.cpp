@@ -455,6 +455,60 @@ class Solution
 public:
 
     /**
+     * 剑指 Offer 67. 把字符串转换成整数
+     * **/
+     int strToInt(string str) {
+        bool charContinue=true;
+        stack<int> elements;
+        int i=0;
+        int n=str.size();
+        int flag=1;
+        long long res=0;
+        for(i=0;str[i]==' ';i++);
+        if(str[i]=='-'||str[i]=='+'||'0'<=str[i]&&str[i]<='9'){
+            if(str[i]=='-'||str[i]=='+'){
+                if(str[i]=='-')
+                    flag=-1;
+                for(i=i+1;str[i]=='0';i++);
+            }
+            else{
+                 for(;str[i]=='0';i++);
+            }
+            for(;charContinue&&i<n;i++){
+                if('0'<=str[i]&&str[i]<='9'){
+                    elements.push(str[i]-'0');
+                }
+                else
+                    charContinue=false;
+            }
+            long long scale=1;
+            while(elements.size()){
+                res+=elements.top()*scale;
+                if(res>INT_MAX){
+                    if(flag==1){
+                        return INT_MAX;
+                    }
+                    else{
+                        return INT_MIN;
+                    }    
+                }
+                scale*=10;
+                elements.pop();
+                if(elements.size()&&scale>INT_MAX){
+                   if(flag==1){
+                        return INT_MAX;
+                    }
+                    else{
+                        return INT_MIN;
+                    }    
+                }
+            }
+            res*=flag;
+        }
+        return res;
+    }
+
+    /**
      * 剑指 Offer 46. 把数字翻译成字符串
      * **/
      int translateNum(int num) {
@@ -3933,7 +3987,9 @@ public:
         return res;
     }
 
-
+    //"20 000 000 000 000 000 000"
+    //"-91 283 472 332"
+    //1 283 472 332
     /*
     * 机器人的运动范围
     * */
