@@ -455,6 +455,30 @@ class Solution
 public:
 
     /**
+     * 
+     * 剑指 Offer 60. n个骰子的点数
+     * **/
+    vector<double> dicesProbability(int n) {
+        vector<double> res;
+        int i,j,k;
+       //dp[n][i]:n个骰子出现点数和为i的次数
+        vector<vector<double>> dp(n+1,vector<double>(6*n+1));
+        for(i=1;i<=6;i++)
+            dp[1][i]=1;
+        for(i=2;i<=n;i++)
+            for(j=i;j<=6*n;j++){
+                    for(k=1;k<=6&&j-k>0;k++){
+                        dp[i][j]+=dp[i-1][j-k];
+                    }
+        }
+        //总情况数 n个骰子，每个骰子出现六个情况，每个独立投6次总的情况数
+        int all=pow(6,n);
+        for(i=n;i<=6*n;i++)
+            res.push_back(dp[n][i]*1.0/all);
+        return res;
+    }
+
+    /**
      * 剑指 Offer 34. 二叉树中和为某一值的路径
      * **/
     void dfs_Bt(TreeNode* root, int target,vector<int> &cur,vector<vector<int>> &res){
@@ -3778,6 +3802,23 @@ public:
                 return 2*pow(3,y);            
 
         }
+    }
+    //leetcode
+    int cuttingRope(int n) {
+        vector<int> dp(n+1);  
+        dp[1]=1;
+        dp[2]=1;
+        if(n<=2)
+            return dp[n];
+        else{
+            for(int i=3;i<=n;i++){
+                for(int j=2;j<i;j++){
+                    //剪下长度为j的，剩下的长度为i-j,可以选择继续剪dp[i-j]或者不剪(i-j)
+                    dp[i]=max(dp[i],max(dp[i-j]*j,j*(i-j)));
+                }
+            }
+        }
+        return dp[n];
     }
 
     /**
