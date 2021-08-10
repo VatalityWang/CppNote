@@ -455,6 +455,29 @@ class Solution
 public:
 
     /**
+     * 剑指 Offer 33. 二叉搜索树的后序遍历序列
+     * **/
+     bool verifyPostorder(vector<int>&postorder,int start,int end){
+        
+        if(start>=end)
+            return true;
+        int i,divide;
+        //左子树
+        for(i=start;i<end&&postorder[i]<postorder[end];i++);
+        divide=i;
+        //右子树
+        for(;i<end&&postorder[i]>postorder[end];i++);
+        if(i<end)
+            return false;
+        else{
+            return verifyPostorder(postorder,start,divide-1)&&verifyPostorder(postorder,divide,end-1);
+        }
+    }
+
+    bool verifyPostorder(vector<int>& postorder) {
+       return verifyPostorder(postorder,0,postorder.size()-1);
+    }
+    /**
      * 
      * 剑指 Offer 60. n个骰子的点数
      * **/
@@ -477,7 +500,28 @@ public:
             res.push_back(dp[n][i]*1.0/all);
         return res;
     }
-
+    // 从后往前更新
+     vector<double> dicesProbability_(int n) {
+        vector<double> res;
+        int i,j,k;
+        vector<int> dp(6*n+1);
+        for(i=1;i<=6;i++)
+            dp[i]=1;
+        //遍历骰子
+        for(i=2;i<=n;i++)
+            //遍历该骰子数对应的点数
+            for(j=6*n;j>=i;j--){
+                dp[j]=0;
+                //累加和当前总点数相关的骰子点数和出现的次数
+                //比如当前总点数和为7,与之相关的骰子点数和为：6,5,4,3,2,1. (当前骰子数为i,前面的骰子点数和最少为i-1)
+                for(k=1;j-k>=i-1&&k<=6;k++)
+                    dp[j]+=dp[j-k];
+            }
+        int all=pow(6,n);
+        for(i=n;i<=6*n;i++)
+            res.push_back(dp[i]*1.0/all);
+        return res;
+    }
     /**
      * 剑指 Offer 34. 二叉树中和为某一值的路径
      * **/
