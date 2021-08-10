@@ -3972,7 +3972,7 @@ public:
         through_path(threshold, memory, i, j - 1, rows, cols);
     }
 
-    int movingCount(int threshold, int rows, int cols)
+    int movingCount_(int threshold, int rows, int cols)
     {
         int count = 0;
         int i, j;
@@ -3982,6 +3982,39 @@ public:
         for (i = 0; i < total; i++)
             if (memory[i])
                 count++;
+        return count;
+    }
+
+    int getCoordinateSum(int x){
+       int sum=0;
+       while(x){
+           sum+=x%10;
+           x/=10;
+       }
+       return sum;
+   }
+
+
+    void movingCount(int i,int j,int &count,int m,int n,vector<vector<int>>&visited,int k){
+         if(0<=i&&i<m&&0<=j&&j<n&&!visited[i][j]){
+            visited[i][j]=1;
+            //当前能走，才能继续往下走
+            if((getCoordinateSum(i)+getCoordinateSum(j))<=k){
+                count++;
+                movingCount(i+1,j,count,m,n,visited,k);
+                movingCount(i-1,j,count,m,n,visited,k);
+                movingCount(i,j-1,count,m,n,visited,k);
+                movingCount(i,j+1,count,m,n,visited,k);
+            }
+            else
+                return;
+        }
+    }
+
+    int movingCount(int m, int n, int k) {
+        int count=0;
+        vector<vector<int>> visited(m,vector<int>(n));
+        movingCount(0,0,count,m,n,visited,k);
         return count;
     }
 
@@ -5172,7 +5205,8 @@ int main()
     int sum=500;
     Solution slu;
 
-    int res=slu.change_dp(sum,input);
+    int res=slu.movingCount(16,8,4);
+    
     cout<<res<<endl;
     return 0;
 
