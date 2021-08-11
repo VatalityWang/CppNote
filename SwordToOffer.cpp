@@ -455,7 +455,7 @@ class Solution
 public:
 
     /**
-     * 1584. 连接所有点的最小费用
+     * 1584. 连接所有点的最小费用(Prime超时算法)
      * **/
     int distance(vector<int> &start,vector<int> &end){
         return abs(start[0]-end[0])+abs(start[1]-end[1]);
@@ -463,7 +463,7 @@ public:
 
     
 
-    int minCostConnectPoints(vector<vector<int>>& points) {
+    int minCostConnectPoints_(vector<vector<int>>& points) {
         int i;
         int minPrice=0;
         int minDis=INT_MAX;
@@ -505,7 +505,60 @@ public:
         }
         return minPrice;
     }
+    //primer + 邻接矩阵
+     int prime(vector<vector<int>>&G,int n){
+       int minPrice=0;
+       int i,j,k;
+    
+     
+       vector<int> visited(n,0);
 
+       //初始化图中到每个点的到已选点的最短距离，刚开始已选点为空，一次为INT_MAX，后面去更新最短距离
+       vector<int> distance(n,INT_MAX);
+       distance[0]=0;
+
+       //n次选点
+       for(i=0;i<n;i++){
+           //选择一个到已选点中距离最小的点加入其中构成最小生成树
+           int curPoint=-1,minDis=INT_MAX;
+           for(j=0;j<n;j++){
+               if(!visited[j]&&distance[j]<minDis){
+                   curPoint=j;
+                   minDis=distance[j];
+               }
+           }
+
+           visited[curPoint]=1;
+           distance[curPoint]=minDis;
+           minPrice+=minDis;
+           
+           for(k=0;k<n;k++){
+               //当前节点未被加入生成树，从本次已选点到当前点有路径，且该路径长度小于以前到当前点的最小距离，则更新最小距离，便于下次选取。
+               if(!visited[k]&&G[curPoint][k]!=0&&G[curPoint][k]<distance[k]){
+                   distance[k]=G[curPoint][k];
+               }
+           }
+       
+       }
+       return minPrice;
+   }
+
+
+
+    int minCostConnectPoints(vector<vector<int>>& points) {
+        int i,j;
+        int n=points.size();
+
+        //邻接矩阵
+        vector<vector<int>> edge(n,vector<int>(n,0));
+
+        for(i=0;i<n;i++)
+            for(j=0;j<i;j++){
+                int dis=abs(points[i][0]-points[j][0])+abs(points[i][1]-points[j][1]);
+                edge[i][j]=edge[j][i]=dis;
+            }
+        return prime(edge,n);
+    }
 
     /**
      * 剑指 Offer 67. 把字符串转换成整数
