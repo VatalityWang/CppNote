@@ -455,6 +455,59 @@ class Solution
 public:
 
     /**
+     * 1584. 连接所有点的最小费用
+     * **/
+    int distance(vector<int> &start,vector<int> &end){
+        return abs(start[0]-end[0])+abs(start[1]-end[1]);
+    }
+
+    
+
+    int minCostConnectPoints(vector<vector<int>>& points) {
+        int i;
+        int minPrice=0;
+        int minDis=INT_MAX;
+        int n=points.size();
+        if(n==1)
+            return minPrice;
+
+        //已选择节点
+        vector<vector<int>> choose;
+        //当前距离最小节点
+        vector<vector<int>>::iterator minDisPoint;
+
+        //选择第一个节点作为起始节点
+        vector<int> start(points[0].begin(),points[0].end());
+        choose.push_back(start);
+        //删除第一个节点
+        vector<vector<int>>::iterator it=points.begin();
+        points.erase(it);
+       
+
+        vector<vector<int>>::iterator im=choose.begin();
+
+        while(choose.size()!=n){
+            for(im=choose.begin();im!=choose.end();im++){
+                    for(it=points.begin();it!=points.end();it++){
+                        int curDis=distance(*im,*it);
+                        if(curDis<minDis){
+                            minDisPoint=it;
+                            minDis=curDis;
+                        }
+                        //break;
+                    }
+            }
+            choose.push_back({*minDisPoint});
+            points.erase(minDisPoint);
+            minPrice+=minDis;
+            minDis=INT_MAX;
+            //break;
+        }
+        return minPrice;
+    }
+
+
+    /**
      * 剑指 Offer 67. 把字符串转换成整数
      * **/
      int strToInt(string str) {
