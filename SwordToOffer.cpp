@@ -455,6 +455,60 @@ class Solution
 public:
 
     /**
+     * 剑指 Offer II 092. 翻转字符
+     *
+     * **/
+    int minFlipsMonoIncr(string s) {
+        
+        int n=s.size();
+        if(n==1)
+            return 0;
+        int ans=INT_MAX;
+        //统计1的个数
+        vector<int> oneNum(n+1);
+        int i;
+        //分割成左右两部分，左边需要有多少个1需要反转，右边有多少个0需要反转。
+        //最终把左右需要反转的个数相加。
+       
+        for(i=1;i<=n;i++){
+            oneNum[i]=oneNum[i-1]+(s[i-1]=='1');
+        }
+
+        //从0开始，考虑n个字符中的1全都需要反转的情况
+        for(i=0;i<=n;i++)    
+            ans=min(ans,oneNum[i]+n-i-(oneNum[n]-oneNum[i]));
+        return ans;
+        
+    }
+
+    /**
+     * 剑指 Offer II 079. 所有子集
+     * **/
+    void dfsSubset(vector<int>& nums,int index,vector<int>&cur,vector<vector<int>>&res){
+        if(index==nums.size()){
+                res.push_back(cur);
+            return;
+        }
+        //选当前
+        cur.push_back(nums[index]);
+        dfsSubset(nums,index+1,cur,res);
+        //不选当前
+        cur.pop_back();
+        dfsSubset(nums,index+1,cur,res);
+    }
+
+    //基于回溯
+    vector<vector<int>> subsets_(vector<int>& nums) {
+        vector<vector<int>> res;
+        int n=nums.size();
+        if(!n)
+            return {{}};
+        vector<int> cur;
+        dfsSubset(nums,0,cur,res);
+        return res;
+    }
+
+    /**
      * 1584. 连接所有点的最小费用(Prime超时算法)
      * **/
     int distance(vector<int> &start,vector<int> &end){
