@@ -2972,7 +2972,7 @@ public:
     }
 
     /**
-     * 无重复字符的最长字串
+     * 无重复字符的最长子串
      * **/
     int lengthOfLongestSubstring(string s) {
         if(s.size()<=1)
@@ -2996,7 +2996,41 @@ public:
         }
         return max_length;
     }
+    //另外一个版本
+     int lengthOfLongestSubstring_(string s) {
+        if(s.size()<=1)
+            return s.size();
+        
+        int ans=INT_MIN;
+        int i=-1,j;
+        int n=s.size();
+        
+        //存某一个字符距离当前遍历下标最近的下标
+        map<char,int> occurs;
+        int lastLen=1,curLen;
+        occurs.insert({s[0],0});
+        map<char,int>::iterator it;
+        for(j=1;j<n;j++){
+            it=occurs.find(s[j]);
+            //找到
+            if(it!=occurs.end()){
+                i=occurs[s[j]];
+                if(j-i<=lastLen)
+                    curLen=j-i;
+                else
+                    curLen=lastLen+1;
+            }
+            else{
+                curLen=lastLen+1;
+            }
+            //更新出现的下标
+            lastLen=curLen;
+            occurs[s[j]]=j;
+            ans=max(ans,curLen);
+        }
 
+        return ans;
+    }
    /**
     * 最小的k个数
     * **/
