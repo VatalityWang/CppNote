@@ -4394,6 +4394,36 @@ public:
     //         continue;
     // }
 
+    //leetcode 
+      bool dfsMatrix(vector<vector<char>>& board,int i,int j,int cur,string &word){
+        int row=board.size();
+        int column=board[0].size();
+        if(i<0||j<0||i>=row||j>=column||board[i][j]!=word[cur])
+            return false;
+        if(cur==word.size()-1){
+            return true;
+        }
+      
+        board[i][j]='\0';
+        bool res=dfsMatrix(board,i+1,j,cur+1,word)||dfsMatrix(board,i-1,j,cur+1,word)||dfsMatrix(board,i,j+1,cur+1,word)||dfsMatrix(board,i,j-1,cur+1,word);
+        board[i][j]=word[cur];
+        return res;
+    }
+    
+
+    bool exist_(vector<vector<char>>& board, string word) {
+        int row=board.size();
+        int column=board[0].size();
+
+        int i,j;
+        for(i=0;i<row;i++)
+            for(j=0;j<column;j++){
+                if(dfsMatrix(board,i,j,0,word))
+                    return true;
+            }
+        return false;
+    }
+
     /*
     *  滑动窗口最大值 
     */
