@@ -455,6 +455,42 @@ class Solution
 public:
 
     /**
+     * 剑指 Offer 16. 数值的整数次方
+     * **/
+    double myPow(double x, int n) {
+       //x为0
+        if(abs(x-0.0)<1e-6)
+            return x;
+        double start=1.0;
+        //n为0
+        if(!n)
+            return start;
+        double negStart=-1.0;
+        long i;
+
+        //x为1
+        if(abs(x-start)<1e-6)
+            return start;
+        //x为-1
+        if(abs(x-negStart)<1e-6)
+            return n%2?negStart:start;
+        
+         //防止n过大
+        long absN=abs(long(n));
+        
+        for(i=1;i<=absN;i++){
+            start*=x;
+            if(i+i<absN){
+                start*=start;
+                i+=i;
+            }
+        }
+
+        return n>=0?start:1.0/start;
+    }
+    
+
+    /**
      * 剑指 Offer II 092. 翻转字符
      *
      * **/
@@ -5481,13 +5517,16 @@ void printMultimap(multimap<int,int>&order){
 int main()
 {
 
-    vector<int> input={1,5,2,8,9,10,11};
-    int sum=500;
-    Solution slu;
+    cout<<sizeof(long)<<endl;
+    cout<<sizeof(int)<<endl;
 
-    int res=slu.movingCount(16,8,4);
+    // vector<int> input={1,5,2,8,9,10,11};
+    // int sum=500;
+    // Solution slu;
+
+    // int res=slu.movingCount(16,8,4);
     
-    cout<<res<<endl;
+    // cout<<res<<endl;
     return 0;
 
     #if 0
