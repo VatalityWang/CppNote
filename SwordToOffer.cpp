@@ -455,6 +455,43 @@ class Solution
 public:
 
     /**
+     * 剑指 Offer 44. 数字序列中某一位的数字
+     * **/
+    int findNthDigit(int n) {
+        if(!n)
+            return 0;
+
+        //求n所在数字的位数//
+
+        //对应数字位数
+        int digit=1;
+        //对用数位有多少个数字
+        long count=9;
+        //对应数位的开始数字
+        long start=1;
+       
+        while(n>count){
+            n-=count;
+            start*=10;
+            digit++;
+            count=9*start*digit;
+        }
+
+        //求该数位对应的数字//
+
+        unsigned int num=start+(n-1)/digit;
+
+        //求对应数位上的数字//
+
+        string numStr=std::to_string(num);    
+        
+
+        char res=numStr[(n-1)%digit];
+
+        return res-'0';
+    }
+
+    /**
      * 剑指 Offer 16. 数值的整数次方
      * **/
     double myPow(double x, int n) {
