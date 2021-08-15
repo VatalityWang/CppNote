@@ -4177,7 +4177,22 @@ public:
         }
         return intervals;
     }
+    /**
+     * 剑指 Offer 14- II. 剪绳子 II
+     * **/
+     int cuttingRope_II(int n) {
+        if(n<=3)
+            return n-1;
 
+        long long res=1;
+        int temp=1e9+7;
+        while(n>4){
+            res*=3;
+            res=res%temp;
+            n-=3;
+        }
+        return res*n%temp;
+    }
     /*
     * 剪绳子
     * */
