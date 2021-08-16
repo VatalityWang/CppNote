@@ -2131,7 +2131,51 @@ public:
         return p;
 
     }
+    // 二刷
+    TreeNode * buildTree(vector<int>&preorder,vector<int>& inorder,int preLeft,int preRight,int inLeft,int inRight){
 
+        if(preLeft<=preRight){
+            TreeNode *root=new TreeNode(preorder[preLeft]);
+             //初始化前序，中序遍历节点的左右边界
+       
+            //求中序中根节点下标
+            int inRoot=inLeft;
+            while(inorder[inRoot]!=preorder[preLeft]){
+                inRoot++;
+            }
+            //左子树节点数
+            int lenLeft=inRoot-inLeft;
+            //右子树节点数
+            int lenRight=inRight-inRoot;
+             //建立左子树
+            TreeNode *left=nullptr;
+            if(lenLeft)
+                left=buildTree(preorder,inorder,preLeft+1,preLeft+lenLeft,inLeft,inRoot-1);
+            //建立右子树
+            TreeNode *right=nullptr;
+            if(lenRight)
+                right=buildTree(preorder,inorder,preRight-lenRight+1,preRight,inRoot+1,inRight);
+              //给根节点左右节点赋值并返回根节点
+            root->left=left;
+            root->right=right;
+            return root;
+        }
+        else
+            return nullptr;
+    }
+
+
+
+    TreeNode* buildTree_(vector<int>& preorder, vector<int>& inorder) {
+        if(!preorder.size())
+            return nullptr;
+        
+        //初始化前序，中序遍历节点的左右边界
+        int preLeft=0,preRight=preorder.size()-1;
+        int inLeft=0,inRight=inorder.size()-1;
+
+        return buildTree(preorder,inorder,preLeft,preRight,inLeft,inRight);
+    }
 
 
     /**
