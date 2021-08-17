@@ -481,6 +481,48 @@ public:
         return pos;
     }
 
+     //kmp求下一个比较的位置
+    vector<int> nextPos(string s){
+        int n=s.size();
+
+        //子串中相应位置匹配失败时从何处重新开始匹配,极端情况：
+        // 最后一个匹配失败 
+        // 第一个就匹配失败
+        vector<int> pos(n,-1);
+        int j=0,k=-1;
+        while(j+1<n){
+            if(k==-1||s[j]==s[k]){
+                ++k;++j; pos[j]=k;
+            }
+            else
+                k=pos[k];   
+        }
+        return pos;
+    }
+
+    int strStrKmp(string haystack, string needle) {
+        if(needle.size()==0)
+            return 0;
+
+        vector<int> Pos=nextPos(needle);
+        
+        int n=haystack.size();
+        int m=needle.size();
+        int i=0,j=0;
+        while(i<n){
+            if(j==-1||haystack[i]==needle[j]){
+                ++i;++j;
+            }
+            else
+                //子串中下一个开始匹配的位置
+                j=Pos[j];
+            if(j==m)
+                return i-j;
+        }
+        return -1;
+    }
+
+
     bool isNumber(string s) {
         int n=s.size();
         int i=0;
