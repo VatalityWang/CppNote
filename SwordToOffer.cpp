@@ -455,6 +455,126 @@ class Solution
 public:
 
     /**
+     *  实现 strStr()
+     * **/
+    int strStr(string haystack, string needle) {
+        if(needle.size()==0)
+            return 0;
+        int n=haystack.size();
+        int m=needle.size();
+        int i,j,k;
+        int pos=-1;
+        for(i=0;i<n;i++){
+            if(haystack[i]==needle[0]){
+                for(j=1;j<=m-1;j++){
+                    if(haystack[i+j]==needle[j])
+                        continue;
+                    else
+                        break;
+                }
+                if(j==m){
+                    pos=i;
+                    return pos;
+                }
+            }
+        }
+        return pos;
+    }
+
+    bool isNumber(string s) {
+        int n=s.size();
+        int i=0;
+
+        //最后一位为字母或者符号
+        if(('a'<=s[n-1]&&s[n-1]<='z')||('A'<=s[n-1]&&s[n-1]<='Z')||(s[n-1]=='-')||s[n-1]=='+')
+            return false;
+
+        //优先判断第一位,第一位为字母
+        if(('a'<=s[i]&&s[i]<='z')||('A'<=s[i]&&s[i]<='Z'))
+            return false;
+
+        bool pointExist=false;
+        bool eExist=false;
+        int sign=0;
+
+        bool digitExist=false;
+
+        //跳过前面的空格
+        while(i<n&&s[i]==' ') i++;
+        int start=i;
+        while(i<n){
+            if(('a'<=s[i]&&s[i]<='z')||('A'<=s[i]&&s[i]<='Z')){
+                //出现e/E
+                if(s[i]=='e'||s[i]=='E'){
+                    //只能包含一个e
+                    if(eExist)
+                        return false;
+                    else{
+                        eExist=true;
+                        // 出现e/E 时从未出现数字，如 +e
+                        if(!digitExist)
+                            return false;
+                    }
+                    //出现e后下一位不能有空格或者小数点
+                    if(i+1<n&&(s[i+1]==' '||s[i+1]=='.'))
+                        return false;
+                }
+                //出现除e/E以外的
+                else 
+                    return false;
+            }
+            //第一位非空格,非字母字符的符号位
+            else if((s[i]=='+')||(s[i]=='-')){
+               sign++;
+               if(sign>2)
+                    return false;
+                if(eExist){
+                    //e/E已出现但+,-前一位不为e/E
+                    if(i&&s[i-1]!='e'&&s[i-1]!='E')
+                        return false;
+                    //符号出现在最后一位
+                    if(i==n-1)
+                        return false;
+                }else{
+                    //不出现在开始位置
+                    if(i!=start)
+                        return false;
+                }
+            }    
+            //非空格字符为数字
+            else if(s[i]=='.'){
+                // e之后只能出现整数
+                if(eExist)
+                    return false;
+                //只能包含一个小数点
+                if(pointExist)
+                    return false;
+                else
+                    pointExist=true;
+
+            }
+            //空格
+            else if(s[i]==' '){
+                int j=i;
+                while(j<n&&s[j]==' ')
+                    j++;
+                //只是中间出现空格
+                if(j<=n-1)
+                    return false;
+            }
+            //非空格字符为数字
+            else{
+                digitExist=true;
+            }
+            i++;
+        }
+        if(digitExist)
+            return true;
+        else
+            return false;
+    }
+
+    /**
      * 剑指 Offer 44. 数字序列中某一位的数字
      * **/
     int findNthDigit(int n) {
@@ -5613,12 +5733,17 @@ void printMultimap(multimap<int,int>&order){
 int main()
 {
 
-    cout<<sizeof(long)<<endl;
-    cout<<sizeof(int)<<endl;
+    string input="0e ";
+    // char input[]={'0','e',' '};
+    Solution slu;
+    bool res=slu.isNumber(input);
+    cout<<res<<endl;
+
+    // cout<<sizeof(long)<<endl;
+    // cout<<sizeof(int)<<endl;
 
     // vector<int> input={1,5,2,8,9,10,11};
     // int sum=500;
-    // Solution slu;
 
     // int res=slu.movingCount(16,8,4);
     
