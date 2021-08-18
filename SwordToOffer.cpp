@@ -455,6 +455,47 @@ class Solution
 public:
 
     /**
+     * 
+     * 763. 划分字母区间
+     * **/
+
+     //查找更新右区间后是否加入的新的元素，如果加入新元素，右边界可能继续扩大
+    int newCharJoin(string s,int start,int pos, set<char>&occurs){
+        int i,k;
+        //start:pos之间的所有元素
+        for(k=start+1;k<pos;k++)
+            occurs.insert(s[k]);
+        for(i=s.size()-1;i>pos;i--){
+            if(occurs.count(s[i]))
+                return i;
+        }
+        return pos;
+    }
+
+
+    vector<int> partitionLabels(string s) {
+        //存储处理区间内已出现的元素
+        set<char> occurs;
+        vector<int> res;
+        int n=s.size();
+        //起止,终止，新终止，区间临时起点
+        int i,pos,newPos,start;
+        for(i=0;i<n;i++){
+            pos=i;
+            occurs.insert(s[i]);
+            newPos=pos;
+            start=i;
+            while((newPos=newCharJoin(s,start,pos,occurs))!=pos){
+                    start=pos;
+                    pos=newPos;
+                }
+            res.push_back(newPos-i+1);
+            occurs.clear();
+            i=newPos;
+        }
+        return res;
+    }
+    /**
      * 1877. 数组中最大数对和的最小值
      * **/
     int minPairSum(vector<int>& nums) {
