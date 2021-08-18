@@ -455,6 +455,24 @@ class Solution
 public:
 
     /**
+     * 1877. 数组中最大数对和的最小值
+     * **/
+    int minPairSum(vector<int>& nums) {
+        //排序
+        sort(nums.begin(),nums.end());
+        //左右指针
+        int i=0,j=nums.size()-1;
+        int res=INT_MIN;
+        //选最大
+        while(i<j){
+            res=max(nums[i]+nums[j],res);
+            i++;
+            j--;
+        }
+        return res;
+    }
+
+    /**
      *  实现 strStr()
      * **/
     int strStr(string haystack, string needle) {
@@ -491,6 +509,7 @@ public:
         vector<int> pos(n,-1);
         int j=0,k=-1;
         while(j+1<n){
+            //k==-1表示字符需要从头(0)开始匹配。
             if(k==-1||s[j]==s[k]){
                 ++k;++j; pos[j]=k;
             }
@@ -510,12 +529,14 @@ public:
         int m=needle.size();
         int i=0,j=0;
         while(i<n){
+            //j==-1,i后移一步,j从0开始。
             if(j==-1||haystack[i]==needle[j]){
                 ++i;++j;
             }
             else
                 //子串中下一个开始匹配的位置
                 j=Pos[j];
+            // 已经匹配完所有字符，下标超过子串下标范围
             if(j==m)
                 return i-j;
         }
