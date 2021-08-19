@@ -453,6 +453,35 @@ public:
 class Solution
 {
 public:
+
+    /**
+     * 345. 反转字符串中的元音字母
+     * **/
+     //判断元音
+   bool isVowels(char c){
+       if(c=='a'||c=='e'||c=='i'||c=='o'||c=='u'||c=='A'||c=='E'||c=='I'||c=='O'||c=='U')
+            return true;
+        else 
+            return false;
+   }
+
+    string reverseVowels(string s) {
+
+        int i=0,j=s.size()-1;
+        while(i<j){
+            //从左往右找左边的元音
+            while(i<j&&!isVowels(s[i]))
+               i++;
+            //从右往左找右边的元音
+            while(i<j&&!isVowels(s[j]))
+               j--;
+            if(i<j){
+                swap(s[i++],s[j--]);
+            }
+        }
+
+        return s;
+    }
     
     /**
      * 654. 最大二叉树
@@ -5919,13 +5948,15 @@ void printMultimap(multimap<int,int>&order){
 int main()
 {
 
-    string input="0";
-    string input2="00";
-    string input3="123";
-    for(int i=0;i<input3.size();i++){
-        input3[i]-=2;
-    }
-    cout<<input3<<endl;
+
+
+    // string input="0";
+    // string input2="00";
+    // string input3="123";
+    // for(int i=0;i<input3.size();i++){
+    //     input3[i]-=2;
+    // }
+    // cout<<input3<<endl;
     // bool res=(input2=="0");
     // cout<<res<<endl;
 
@@ -5937,7 +5968,9 @@ int main()
     // cout<<sizeof(long)<<endl;
     // cout<<sizeof(int)<<endl;
 
-    // vector<int> input={1,5,2,8,9,10,11};
+    vector<int> input={1,5,2,8,9,10,11};
+    int n=input.size();
+    cout<<*(input.begin()+n-1)<<endl;
     // int sum=500;
 
     // int res=slu.movingCount(16,8,4);
