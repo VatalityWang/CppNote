@@ -455,6 +455,42 @@ class Solution
 public:
 
     /**
+     * 1382. 将二叉搜索树变平衡
+     * **/
+    //中序遍历按序存储节点
+    void inorder(TreeNode * root,vector<int> & elements){
+        if(!root)
+            return;
+        else{
+            inorder(root->left,elements);
+            elements.push_back(root->val);
+            inorder(root->right,elements);
+        }
+    }
+
+    TreeNode * buildBST(vector<int> &elements,int left, int right){
+        if(left<=right){
+            int mid=(left+right)/2;
+            TreeNode * p=new TreeNode(elements[mid]);
+            p->left=buildBST(elements,left,mid-1);
+            p->right=buildBST(elements,mid+1,right);
+            return p;
+        }
+        return nullptr;
+    }
+
+    TreeNode* balanceBST(TreeNode* root) {
+        //边界
+        if(!root)
+            return root;
+        vector<int> elements;
+        inorder(root,elements);
+
+        //递归二分建立平衡二叉搜索树
+        return buildBST(elements,0,elements.size()-1);
+    }
+
+    /**
      * 
      * 763. 划分字母区间
      * **/
