@@ -453,6 +453,36 @@ public:
 class Solution
 {
 public:
+    
+    /**
+     * 654. 最大二叉树
+     * **/
+    //找到最大元素所在下标然后递归构建
+    TreeNode * buildMaxBT(vector<int> &nums,int start,int end){
+        if(start<=end){
+           
+            //下标越界
+            if(start==end){
+                if(end==nums.size())
+                    return nullptr;
+            }
+            //总个数
+            int n=end-start+1;
+            //注意下标范围[start:start+n]
+            int maxIndex=std::max_element(nums.begin()+start,nums.begin()+start+n)-nums.begin();
+            TreeNode * p=new TreeNode(nums[maxIndex]);
+            p->left=buildMaxBT(nums,start,maxIndex-1);
+            p->right=buildMaxBT(nums,maxIndex+1,end);
+            return p;
+        }
+        return nullptr;
+    }
+
+    TreeNode* constructMaximumBinaryTree(vector<int>& nums) {
+        int n=nums.size();
+        //传入下标范围
+        return buildMaxBT(nums,0,n-1);
+    }
 
     /**
      * 1689. 十-二进制数的最少数目
