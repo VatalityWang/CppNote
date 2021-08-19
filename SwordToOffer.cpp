@@ -455,6 +455,22 @@ class Solution
 public:
 
     /**
+     * 1689. 十-二进制数的最少数目
+     * **/
+    int minPartitions(string n) {
+        int len=n.size();
+        char maxChar=n[0];
+        if(len==1)
+            return maxChar-'0';
+        int i=1;
+        while(i<len){
+            maxChar=max(maxChar,n[i]);
+            i++;
+        }
+        return maxChar-'0';
+    }
+
+    /**
      * 1382. 将二叉搜索树变平衡
      * **/
     //中序遍历按序存储节点
@@ -5873,11 +5889,20 @@ void printMultimap(multimap<int,int>&order){
 int main()
 {
 
-    string input="0e ";
+    string input="0";
+    string input2="00";
+    string input3="123";
+    for(int i=0;i<input3.size();i++){
+        input3[i]-=2;
+    }
+    cout<<input3<<endl;
+    // bool res=(input2=="0");
+    // cout<<res<<endl;
+
     // char input[]={'0','e',' '};
-    Solution slu;
-    bool res=slu.isNumber(input);
-    cout<<res<<endl;
+    // Solution slu;
+    // bool res=slu.isNumber(input);
+    // cout<<res<<endl;
 
     // cout<<sizeof(long)<<endl;
     // cout<<sizeof(int)<<endl;
