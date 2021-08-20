@@ -2523,6 +2523,36 @@ public:
     }
 
 
+    /**
+     * 1008. 前序遍历构造二叉搜索树
+     * **/
+     //传入先序遍历序列和范围
+    TreeNode * bstFromPreorder(vector<int>&preorder,int leftPos,int rightPos){
+
+        if(leftPos<=rightPos){
+            TreeNode * root=new TreeNode(preorder[leftPos]);
+            
+            //找右子树起点
+            int index=leftPos+1;
+            while(index<=rightPos&&preorder[index]<preorder[leftPos])
+                index++;
+            
+            //传入左右子树下标范围
+            root->left=bstFromPreorder(preorder,leftPos+1,index-1);
+            root->right=bstFromPreorder(preorder,index,rightPos);
+            return root;
+        }
+        return nullptr;
+    }
+
+
+    TreeNode* bstFromPreorder(vector<int>& preorder) {
+    
+    //递归建树
+    return bstFromPreorder(preorder,0,preorder.size()-1);
+
+    }
+
 
     TreeNode* buildTree_(vector<int>& preorder, vector<int>& inorder) {
         if(!preorder.size())
