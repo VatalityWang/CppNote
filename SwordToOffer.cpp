@@ -463,31 +463,17 @@ public:
         stack<int> indexs;
         int n=temperatures.size();
         vector<int> res(n);
-        int i,top;
+        int i;
         for(i=0;i<n;i++){
-            //栈空
-            if(indexs.empty()) 
-                indexs.push(i);
-            else{
-                top=indexs.top();
-                //小于栈顶则入栈
-                if(temperatures[i]<temperatures[top]){
-                    indexs.push(i);
-                }
-                //大于则计算等待天数
-                else{
-                    while(!indexs.empty()&&temperatures[i]>temperatures[top]){
-                        res[top]=i-top;
-                        indexs.pop();
-                        //更新top之前判空
-                        if(!indexs.empty())
-                            top=indexs.top();
-                    }
-                    indexs.push(i);
-                }
+    
+            while(!indexs.empty()&&temperatures[i]>temperatures[indexs.top()]){
+                res[indexs.top()]=i-indexs.top();
+                indexs.pop();
+
             }
+            
+            indexs.push(i);
         }
-      
         return res;
     }
 
