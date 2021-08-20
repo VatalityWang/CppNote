@@ -3318,7 +3318,27 @@ public:
         }
 
     }
-
+    /**
+     * 一种比较好理解的解法
+     * **/
+    void sortColors_(vector<int>& nums) {
+        int left=0,right=nums.size()-1,i=left;
+    
+        while(i<=right){
+            //0 与左边界交换后，左边界增加
+            if(nums[i]==0){
+                swap(nums[i],nums[left++]);
+                // 如果左边界本身为0，则i后移
+                if(nums[i]==0)
+                    i++;
+            // 1直接跳过
+            }else if(nums[i]==1)
+                i++;
+            else
+            //交换后i不增加,防止交换后的是0
+                swap(nums[i],nums[right--]);
+        }
+    }
     /**
      * 最长回文子串
      * **/
