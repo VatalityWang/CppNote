@@ -454,6 +454,24 @@ class Solution
 {
 public:
 
+    /*
+    * 215. 数组中的第K个最大元素 基于优先队列
+    */
+    int findKthLargest(vector<int>& nums, int k) {
+       
+        priority_queue<int> elements;
+        int i=0,n=nums.size();
+        for(i=0;i<n;i++){
+            elements.push(nums[i]);
+        }
+        i=0;
+        while(i!=k-1){
+            elements.pop();
+            i++;
+        }
+        return elements.top();
+    }
+
     /**
      * 剑指 Offer II 038. 每日温度
      * **/
