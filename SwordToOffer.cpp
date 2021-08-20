@@ -455,6 +455,43 @@ class Solution
 public:
 
     /**
+     * 剑指 Offer II 038. 每日温度
+     * **/
+     vector<int> dailyTemperatures(vector<int>& temperatures) {
+        //核心思路：维持一个单调递减栈，存下标便于计算等待天数。
+        //入栈之间判断是否小于栈顶元素，不小于则调整栈元素
+        stack<int> indexs;
+        int n=temperatures.size();
+        vector<int> res(n);
+        int i,top;
+        for(i=0;i<n;i++){
+            //栈空
+            if(indexs.empty()) 
+                indexs.push(i);
+            else{
+                top=indexs.top();
+                //小于栈顶则入栈
+                if(temperatures[i]<temperatures[top]){
+                    indexs.push(i);
+                }
+                //大于则计算等待天数
+                else{
+                    while(!indexs.empty()&&temperatures[i]>temperatures[top]){
+                        res[top]=i-top;
+                        indexs.pop();
+                        //更新top之前判空
+                        if(!indexs.empty())
+                            top=indexs.top();
+                    }
+                    indexs.push(i);
+                }
+            }
+        }
+      
+        return res;
+    }
+
+    /**
      * 345. 反转字符串中的元音字母
      * **/
      //判断元音
