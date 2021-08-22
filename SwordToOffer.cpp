@@ -454,6 +454,31 @@ class Solution
 {
 public:
 
+    /**
+     * 1769. 移动所有球到每个盒子所需的最小操作数
+     * **/
+    //暴力
+    vector<int> minOperations(string boxes) {
+
+        int i,j,k,cur;
+        int n=boxes.size();
+
+        vector<int> res;    
+        for(i=0;i<n;i++){
+            cur=0;
+            for(j=i-1,k=i+1;j>=0||k<n;j--,k++){
+                if(j>=0&&boxes[j]=='1'){
+                    cur+=(i-j);
+                }
+                if(k<n&&boxes[k]=='1'){
+                    cur+=(k-i);
+                }
+            }
+            res.push_back(cur);
+        }
+        return res;
+    }
+
     /*
     * 215. 数组中的第K个最大元素 基于优先队列
     */
@@ -1217,6 +1242,8 @@ public:
             res.push_back(dp[i]*1.0/all);
         return res;
     }
+
+
     /**
      * 剑指 Offer 34. 二叉树中和为某一值的路径
      * **/
@@ -1247,6 +1274,7 @@ public:
         dfs_Bt(root,target,cur,res);
         return res;
     }
+
 
     /**
     * 剑指 Offer 49. 丑数
@@ -1957,15 +1985,25 @@ public:
         int i,j;
         int n=coins.size();
       
-      
+        // 总额为1~amount对应的最少硬币数
         vector<int> memeory(amount+1,amount+1);
         memeory[0]=0;
+
+        //遍历总额
         for(i=1;i<=amount;i++){
-        
+
+            //遍历硬币面额
             for(j=0;j<n;j++){
-                int temp=i-coins[j];//
+
+                // 计算放入当前硬币的剩余总额
+                int temp=i-coins[j];
+
+                //剩余总额大于等于0，选择当前硬币，更新当前总额对应的最少硬币数
                 if(temp>=0)
                     memeory[i]=min(memeory[i],memeory[temp]+1);   
+                
+                //不选择则无任何操作
+
             }
         }
         return memeory[amount]>amount?-1:memeory[amount];
