@@ -479,6 +479,49 @@ public:
         return res;
     }
 
+    //o(n)
+    vector<int> minOperations_(string boxes) {
+
+        int i,j,k,cur;
+        int n=boxes.size();
+
+        // leftToRight[i]:移动i左边所以1到i需要的移动次数
+        vector<int> leftToRight(n);
+
+        // rightToLight[i]:移动i右5边所以1到i需要的移动次数
+        vector<int> rightToLeft(n);
+        vector<int> res;    
+
+        //leftToRight[i]等于所有'1'移动到上一个位置的移动次数加上i左边'1'的个数(下标增加后所有'1'需要再多移动一次)，rightToLight于此同理。
+
+        if(boxes[0]=='1')
+            cur=1;
+        else
+            cur=0;
+      
+        for(i=1;i<n;i++){
+            leftToRight[i]=cur+leftToRight[i-1];
+            if(boxes[i]=='1')
+                cur++;
+        }
+
+        if(boxes[n-1]=='1')
+            cur=1;
+        else
+            cur=0;
+      
+        for(i=n-2;i>=0;i--){
+            rightToLeft[i]=cur+rightToLeft[i+1];
+            if(boxes[i]=='1')
+                cur++;
+        }
+
+        for(i=0;i<n;i++){
+            res.push_back(leftToRight[i]+rightToLeft[i]);
+        }
+        return res;
+    }
+
     /*
     * 215. 数组中的第K个最大元素 基于优先队列
     */
