@@ -3298,22 +3298,31 @@ public:
      * 下一个排列
      * **/
     void nextPermutation(vector<int>& nums) {
-        if(nums.size()==1)  
+         int n=nums.size();
+        if(n==1)  
             return;
-        int i=0,j=0;
-        bool find=false;
+        int i=n-2;
+        int j;
 
-        for(i=nums.size()-1;i>=0&&!find;i--){
-            for(j=i-1;j>=0&&!find;j--){
-                if(nums[j]<nums[i]){
-                    find=true;
-                    swap(nums[j],nums[i]);
-                    
-                }
-            }
+        //把左边一个较小的和右边一个较大的交换，同时左边较小的尽可能靠右，右边较大的尽可能小。
+
+        //从右往左找第一个逆序对---左边较小的尽可能靠右
+        while(i>=0&&nums[i]>=nums[i+1])
+            i--;
+
+        //找到后在左边较小的那个数右边的降序数字中找尽可能小的较大数
+        if(i>=0){
+            
+            j=n-1;
+            while(j>=i+1&&nums[j]<=nums[i])  
+                j--;
+            
+            //找到后交换左边的较大数和右边的较小数
+            swap(nums[j],nums[i]);
+
         }
-        if(!find)
-            sort(nums.begin(),nums.end());
+        //从左到右为降序，则直接反转/
+        reverse(nums.begin()+i+1,nums.end());
     }
     
     
