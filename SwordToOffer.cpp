@@ -455,6 +455,26 @@ class Solution
 public:
 
     /**
+     * 49. 字母异位词分组
+     * **/
+     vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        unordered_map<string,vector<string>> statistic;
+     
+        vector<vector<string>> res;
+       
+        for(auto &it:strs){
+            string temp=it;
+            sort(temp.begin(),temp.end());
+            statistic[temp].emplace_back(it);
+        }
+       
+        for(auto it=statistic.begin();it!=statistic.end();it++){
+            res.emplace_back(it->second);
+        }
+        return res;
+    }
+
+    /**
      * 1769. 移动所有球到每个盒子所需的最小操作数
      * **/
     //暴力
