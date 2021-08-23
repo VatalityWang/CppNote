@@ -455,6 +455,34 @@ class Solution
 public:
 
     /**
+     * 1347. 制造字母异位词的最小步骤数
+     * **/
+     int minSteps(string s, string t) {
+
+        int i;
+        int n=s.size();
+        int res=0;
+        //统计字符串的字符信息
+        vector<int> statistic(26);
+
+        for(i=0;i<n;i++){
+            statistic[s[i]-'a']++;
+        }
+
+        for(i=0;i<n;i++){
+            //t中有相同字符串则抵消
+            if(statistic[t[i]-'a'])
+                statistic[t[i]-'a']--;
+        }
+        // 统计不相同的字符个数
+        for(i=0;i<26;i++)
+            res+=abs(statistic[i]);
+
+        return res;
+    }
+
+
+    /**
      * 49. 字母异位词分组
      * **/
      vector<vector<string>> groupAnagrams(vector<string>& strs) {
