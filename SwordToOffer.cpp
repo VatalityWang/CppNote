@@ -476,6 +476,56 @@ class Solution
 public:
 
     /**
+     * 29. 两数相除
+     * **/
+    long divide_(long dividend, long divisor){
+
+        if(dividend==divisor)
+            return 1;
+        else if(dividend<divisor)
+            return 0;
+        else{
+            long count=1;
+            long temp=divisor;
+            //循环减少递归栈空间
+            while(temp+temp<dividend){
+                temp=temp+temp;
+                count=count+count;
+            }
+            return count+divide_(dividend-temp,divisor);
+        }  
+
+    }
+
+    int divide(int dividend, int divisor) {
+
+        int flag;
+        if((dividend>0&&divisor>0)||(dividend<0&&divisor<0))
+            flag=1;
+        else
+            flag=-1;
+        long a=abs(dividend);
+        long b=abs(divisor);
+       
+        if(a<b)
+            return 0;
+        if(a==b)
+            return flag*1;
+        if(a>=abs(INT_MIN)&&b==1){
+            if(flag>0)
+                return INT_MAX;
+            else
+                return INT_MIN;
+        }
+        int res=divide_(a,b);
+        if(res>=INT_MAX)
+            return INT_MAX;
+        return flag*res;
+
+    }
+};
+
+    /**
      * 24. 两两交换链表中的节点
      * **/
     ListNode* swapPairs(ListNode* head) {
