@@ -32,9 +32,9 @@ struct ListNode
 {
     int val;
     struct ListNode *next;
-    ListNode(int x) : val(x), next(NULL)
-    {
-    }
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(NULL){}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
 struct TreeNode
@@ -56,16 +56,37 @@ struct TreeLinkNode
     }
 };
 
-class Node {
+class Node_ {
 public:
     int val;
-    Node* next;
-    Node* random;
+    Node_* next;
+    Node_* random;
     
-    Node(int _val) {
+    Node_(int _val) {
         val = _val;
         next = NULL;
         random = NULL;
+    }
+};
+
+class Node {
+public:
+    int val;
+    Node* left;
+    Node* right;
+
+    Node() {}
+
+    Node(int _val) {
+        val = _val;
+        left = NULL;
+        right = NULL;
+    }
+
+    Node(int _val, Node* _left, Node* _right) {
+        val = _val;
+        left = _left;
+        right = _right;
     }
 };
 
@@ -453,6 +474,68 @@ public:
 class Solution
 {
 public:
+
+    /**
+     * 24. 两两交换链表中的节点
+     * **/
+    ListNode* swapPairs(ListNode* head) {
+
+        //空
+        if(!head)
+            return head;
+        
+        //一个节点
+        if(!head->next)
+            return head;
+        
+        ListNode * first, *second, *three, *newHead=nullptr, *tail;
+
+        //至少有两个节点
+        first=head;
+        second=first->next;
+        newHead=second;
+        three=second->next;
+
+        //只有两个节点
+        if(!three){
+            second->next=first;
+            first->next=nullptr;
+            return newHead;
+        }
+            
+        tail=new ListNode();
+
+        while(three){
+
+            tail->next=second;
+            second->next=first;
+            first->next=three;
+
+            //更新tail
+            tail=first;
+
+            //更新first
+            first=three;
+            
+            if(first->next){
+                second=first->next;
+                three=second->next;
+            }
+            //three是最后一个节点
+            else
+                break;
+        }
+
+        //剩余两个节点
+        if(!three){
+            tail->next=second;
+            second->next=first;
+            first->next=nullptr;
+        }else
+            tail->next=three;
+        
+        return newHead;
+    }
 
     /**
      * 135. 分发糖果
@@ -1272,7 +1355,9 @@ public:
      * **/
      int translateNum(int num) {
         string strnum=std::to_string(num);
+
         int n=strnum.size();
+
         if(n==1)
             return 1;
         else if(n==2){
@@ -1426,24 +1511,24 @@ public:
     /**
      * 剑指 Offer 35. 复杂链表的复制
      * **/
-     int findIndex(vector<Node*>&nodes,Node*node){
+     int findIndex(vector<Node_*>&nodes,Node_*node){
         if(!node)
             return -1;
-        vector<Node*>::iterator it=find(nodes.begin(),nodes.end(),node);
+        vector<Node_*>::iterator it=find(nodes.begin(),nodes.end(),node);
         return it-nodes.begin();
     }
 
-    Node* copyRandomList(Node* head) {
+    Node_* copyRandomList(Node_* head) {
         if(!head)
             return head;
-        Node * pwork=head;
-        vector<Node*> nodes;
-        vector<Node*> newnodes;
-        Node * newHead=new Node(0);
-        Node * tail=newHead;
+        Node_ * pwork=head;
+        vector<Node_*> nodes;
+        vector<Node_*> newnodes;
+        Node_ * newHead=new Node_(0);
+        Node_ * tail=newHead;
         while(pwork){
             //创建新节点
-            Node * temp=new Node(pwork->val);
+            Node_ * temp=new Node_(pwork->val);
             newnodes.push_back(temp);
             tail->next=temp;
             tail=tail->next;
@@ -2149,7 +2234,7 @@ public:
             sum+=nums[i];
             pre=sum-k;
             if(statistic.find(pre)!=statistic.end()){
-                num+=statistic[pre];//可能好几段都是相同的。在前i项中查找是否有等于pre的项，并累加出现pre出现的次数
+                num+=statistic[pre]; //可能好几段都是相同的。在前i项中查找是否有等于pre的项，并累加出现pre出现的次数
             } 
             statistic[sum]++;
         }
@@ -2232,6 +2317,7 @@ public:
         }
         return max_;
     }
+
     //基于动态规划的算法
 
     /**
@@ -2306,8 +2392,8 @@ public:
                 total++;
         }
         else{
-            sumdfs(nums,index+1,target,sum+nums[index],total);
-            sumdfs(nums,index+1,target,sum-nums[index],total);
+            sumdfs(nums,index+1,target,sum+nums[index],total); //选这个元素
+            sumdfs(nums,index+1,target,sum-nums[index],total); //不选这个元素
         }
     }
 
@@ -2339,6 +2425,7 @@ public:
                 dp[0][j]=1;
             else
                 dp[0][j]=0;
+        
         for(i=1;i<=num;i++)
             for(j=0;j<=neg;j++){
                 if(j<nums[i-1])
@@ -2605,9 +2692,11 @@ public:
         return final_res;
     }
 
+
     /**
      * 最长递增子序列
      * **/
+
      int lengthOfLIS(vector<int>& nums) {
         int n=nums.size();
         vector<int> dp(n,0);
@@ -3151,7 +3240,35 @@ public:
     /**
      * 二叉搜索树与双向链表
      * **/
-    
+     Node* treeToDoublyList(Node* root) {
+        if(!root)
+            return root;
+        Node * first=nullptr;
+        Node * last=nullptr;
+        Node * pNode=root;
+        stack<Node*> Tree_nodes;
+        while(!Tree_nodes.empty()||pNode){
+            while(pNode){
+                Tree_nodes.push(pNode);
+                pNode=pNode->left;
+            }
+            if(!Tree_nodes.empty()){
+                pNode=Tree_nodes.top();
+                Tree_nodes.pop();
+                if(last){
+                    last->right=pNode;
+                    pNode->left=last;
+                }
+                if(!first)
+                    first=pNode;
+                last=pNode;
+                pNode=pNode->right;
+            }
+        }
+        first->left=last;
+        last->right=first;
+        return first;
+    }
 
     /**
      * 数组中出现一半的数字
