@@ -455,6 +455,40 @@ class Solution
 public:
 
     /**
+     * 135. 分发糖果
+     * **/
+      int candy(vector<int>& ratings) {
+
+        int i,j,k;
+        int n=ratings.size();
+        vector<int> left(n);
+        int res=0;
+
+        int right=0;
+
+        //两趟扫描思路
+        for(i=0;i<n;i++){
+            // 后者大于前者
+            if(i>0&&ratings[i]>ratings[i-1])
+                left[i]=left[i-1]+1;
+            else    
+                left[i]=1;
+        }
+
+        for(i=n-1;i>=0;i--){
+            // 前者大于后者
+            if(i<n-1&&ratings[i]>ratings[i+1])
+                right++;
+            else
+                right=1;
+
+            res+=max(left[i],right);
+        }
+
+        return res;
+    }
+
+    /**
      * 1347. 制造字母异位词的最小步骤数
      * **/
      int minSteps(string s, string t) {
