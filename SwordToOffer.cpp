@@ -476,6 +476,55 @@ class Solution
 public:
 
     /**
+     * 61. 旋转链表
+     * **/
+    ListNode* rotateRight(ListNode* head, int k) {
+
+        if(!head)
+            return head;
+        else if(!head->next)
+            return head;
+        if(!k)
+            return head;
+
+       ListNode * pWork=head,*tail,*pre;
+       int num=0;
+       //统计链表节点个数
+       while(pWork) {
+           num++;
+           if(pWork)
+                tail=pWork;
+           pWork=pWork->next;
+        
+       }
+       if(num<=k){
+           //完整旋转
+           if(k%num==0){
+               return head;
+           }
+           else{
+               k=k%num;
+           }
+       }
+       
+       //原链表旋转k(k<num)次，倒数第k个节点，正数num-k+1为头节点
+       int i=1;
+       pWork=head;
+       //前驱
+       pre=pWork;
+       //找新表头，表头前面是新表尾。
+       while(i<num-k+1){
+           pre=pWork;
+           pWork=pWork->next;
+           i++;
+       }
+      
+       pre->next=nullptr;
+       tail->next=head;
+       return pWork;
+    }
+
+    /**
      * 29. 两数相除
      * **/
     long divide_(long dividend, long divisor){
