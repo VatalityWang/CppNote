@@ -476,6 +476,40 @@ class Solution
 public:
 
     /**
+     * 109. 有序链表转换二叉搜索树
+     * **/
+     TreeNode* sortedListToBST(ListNode* head) {
+
+        if(!head)
+            return nullptr;
+        else if(!head->next){
+            return new TreeNode(head->val);
+        }
+
+        ListNode *first=head,*second=head,*pre=nullptr;
+
+       // 快慢指针找到中间节点
+        while(second&&second->next){
+            pre=first;
+            first=first->next;
+            second=second->next->next;
+        
+        }
+        
+        //分离链表
+        second=first->next;
+        pre->next=nullptr;
+
+        // 中间节点为根节点
+        TreeNode * p=new TreeNode(first->val);
+
+        //递归建树
+        p->left=sortedListToBST(head);
+        p->right=sortedListToBST(second);
+        return p;
+    }
+
+    /**
      * 120. 三角形最小路径和
      * **/
       int minimumTotal(vector<vector<int>>& triangle) {
@@ -506,7 +540,7 @@ public:
             return triangle[0][0];
         int i,j;
         vector<int> dp;
-        //初始化
+        //初始化为最后一层节点的值
         dp=triangle[n-1];
 
         //自底向上，从倒数第二层开始
@@ -2935,6 +2969,40 @@ public:
             return nullptr;
     }
 
+
+    /**
+     * 106. 从中序与后序遍历序列构造二叉树
+     * **/
+    TreeNode* buildTree__(vector<int>& inorder, int inStart,int inEnd,vector<int>& postorder,int posStart, int posEnd) {
+        //后序遍历的最后一个节点为根，在中序遍历中找到根，并计算左右子树长度。
+        if(posStart<=posEnd){
+            int root=postorder[posEnd];
+            TreeNode *p=new TreeNode(root);
+
+            //找中序中根节点下标
+            int rootIndex=inStart;
+            while(inorder[rootIndex]!=root) rootIndex++;
+
+            int lenLeft=rootIndex-inStart;
+            int lenRight=inEnd-rootIndex;
+
+            //左子树
+            p->left=buildTree__(inorder,inStart,rootIndex-1,postorder,posStart,posStart+lenLeft-1);
+
+            //右子树
+            p->right=buildTree__(inorder,rootIndex+1,inEnd,postorder,posEnd-lenRight,posEnd-1);
+
+            return p;
+        }
+        return nullptr;
+    }
+
+    TreeNode* buildTreeP(vector<int>& inorder, vector<int>& postorder) {
+
+        int n=inorder.size();
+        return buildTree__(inorder,0,n-1,postorder,0,n-1);
+
+    }
 
     /**
      * 1008. 前序遍历构造二叉搜索树
