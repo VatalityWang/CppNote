@@ -476,6 +476,78 @@ class Solution
 public:
 
     /**
+     * 162. 寻找峰值
+     * **/
+      int findPeakElement(vector<int>& nums,int low,int high){
+
+        if(abs(low-high)>=2){
+            int mid=(low+high)/2;
+            if(nums[mid]>nums[mid-1]&&nums[mid]>nums[mid+1])
+                return mid;
+            
+            int left=findPeakElement(nums,low,mid);
+            // 提前结束
+            if(left!=-1)
+                return left;
+            // 无论是否找到都返回
+            int right=findPeakElement(nums,mid,high);
+            return right;
+        }
+        return -1;
+    }
+
+    int findPeakElement(vector<int>& nums) {
+
+    //中间元素比相邻元素都大，则必为峰值
+
+    int n=nums.size();
+    //边界
+    if(n==1)
+        return 0;
+    if(n==2)
+        return nums[0]>nums[1]?0:1;
+
+    int res=findPeakElement(nums,0,n-1);
+    if(res!=-1)
+        return res;
+    //单减或者单增
+    if(nums[0]>nums[n-1])
+        return 0;
+    else 
+        return n-1;
+    }
+
+    //leetcode answer
+     int findPeakElement_(vector<int>& nums,int low,int high){
+
+        if(low==high)
+            return low;
+
+    
+        int mid=(low+high)/2;
+        if(nums[mid]>nums[mid+1])
+            return findPeakElement(nums,low,mid);
+        
+        return findPeakElement(nums,mid+1,high);
+
+    }
+
+    int findPeakElement_(vector<int>& nums) {
+
+    //中间元素比相邻元素都大，则必为峰值
+
+    int n=nums.size();
+    //边界
+    if(n==1)
+        return 0;
+    if(n==2)
+        return nums[0]>nums[1]?0:1;
+
+    return findPeakElement_(nums,0,n-1);
+   
+    }
+
+    /**
      * 222. 完全二叉树的节点个数
      * **/
      int countNodes(TreeNode* root) {
