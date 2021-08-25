@@ -476,6 +476,60 @@ class Solution
 public:
 
     /**
+     * 222. 完全二叉树的节点个数
+     * **/
+     int countNodes(TreeNode* root) {
+        if(!root)
+            return 0;
+        else if(!root->left&&!root->right)
+            return 1;
+        else{
+            return 1+countNodes(root->left)+countNodes(root->right);
+        }
+    }
+    //非递归
+     int countNodes_(TreeNode* root) {
+        int num=0;
+        if(!root)
+            return 0;
+        else if(!root->left&&!root->right)
+            return 1;
+        else{
+           //求高度
+           int height=0;
+           TreeNode *p=root;
+           while(p){
+               height++;
+               p=p->left;
+           }
+
+           queue<TreeNode*> elements;
+           elements.push(root);
+
+           //当前队列中存第几层的数据 
+           int level=1;
+           while(!elements.empty()){
+               int n=elements.size();
+               for(int i=0;i<n;i++){
+                    p=elements.front();
+                    elements.pop();
+                    
+                    if(p->left)
+                            elements.push(p->left);
+                    if(p->right)
+                            elements.push(p->right);
+               }
+        
+               if(level==height-1){
+                   num=pow(2,height-1)-1+elements.size();
+                   break;
+               }
+               level++;
+           }
+        }
+        return num;
+    }
+    /**
      * 109. 有序链表转换二叉搜索树
      * **/
      TreeNode* sortedListToBST(ListNode* head) {
