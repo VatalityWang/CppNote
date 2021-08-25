@@ -497,6 +497,28 @@ public:
         return triangle[0][0];
     }
 
+    //不原地修改的方法
+    int minimumTotal_(vector<vector<int>>& triangle) {
+
+        //总的层数
+        int n=triangle.size();
+        if(n==1)
+            return triangle[0][0];
+        int i,j;
+        vector<int> dp;
+        //初始化
+        dp=triangle[n-1];
+
+        //自底向上，从倒数第二层开始
+        for(i=n-2;i>=0;i--){
+            for(j=0;j<triangle[i].size();j++)
+                dp[j]=min(dp[j],dp[j+1])+triangle[i][j];
+           
+        }
+
+        return dp[0];
+    }
+
     /**
      * 61. 旋转链表
      * **/
