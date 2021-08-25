@@ -476,6 +476,28 @@ class Solution
 public:
 
     /**
+     * 120. 三角形最小路径和
+     * **/
+      int minimumTotal(vector<vector<int>>& triangle) {
+
+        //总的层数
+        int n=triangle.size();
+         
+        if(n==1)
+            return triangle[0][0];
+        
+        int i,j;
+
+        //自底向上,原地修改
+        for(i=n-2;i>=0;i--){
+            for(j=0;j<triangle[i].size();j++)
+                triangle[i][j]+=min(triangle[i+1][j+1],triangle[i+1][j]);
+        }
+
+        return triangle[0][0];
+    }
+
+    /**
      * 61. 旋转链表
      * **/
     ListNode* rotateRight(ListNode* head, int k) {
@@ -3768,20 +3790,28 @@ public:
     }
 
     /**
-     * 516. 最长回文子序列
+     * 516. 最长回文子序列 1 遍历序列问题 2 字符相等与否的条件判断
      * **/
      int longestPalindromeSubseq(string s) {
         if(s.size()==1)
             return 1;
         int i,j;
         int size=s.size();
-        
+        // dp[i][j]: s[i:j]之间的最长子序列长度。
         vector<vector<int>> dp(size,vector<int>(size));
+
+        // 从后往前遍历
         for(i=size-1;i>=0;i--){
             dp[i][i]=1;
+
+            // 对于新的字符串依次与之前已经确定好的比较，确定dp[i][j]
             for(j=i+1;j<size;j++){
+
+                //相等 子序列+2
                 if(s[i]==s[j]){
                     dp[i][j]=dp[i+1][j-1]+2;
+                
+                //不相等，则缩小范围注意i是向右，j是向左。
                 }else{
                     dp[i][j]=max(dp[i+1][j],dp[i][j-1]);
                 }
