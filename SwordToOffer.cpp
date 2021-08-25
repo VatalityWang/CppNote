@@ -476,6 +476,41 @@ class Solution
 public:
 
     /**
+     * 73. 矩阵置零
+     * **/
+    void setZeroes(vector<vector<int>>& matrix) {
+        int row=matrix.size();
+        int column=matrix[0].size();
+        int i,j,k;
+
+        //存下0元素所在的行列值
+        set<int> emptyRows;
+        set<int> emptyColumns;
+        for(i=0;i<row;i++)
+            for(j=0;j<column;j++){
+                if(!matrix[i][j]){
+                    emptyRows.insert(i);
+                    emptyColumns.insert(j);
+                }
+            }
+        
+        // 修改对应行列值的零元素
+        set<int>::iterator it;
+        it=emptyRows.begin();
+        while(it!=emptyRows.end()){
+            for(i=0;i<column;i++)
+                matrix[*it][i]=0;
+            it++;
+        }
+        it=emptyColumns.begin();
+        while(it!=emptyColumns.end()){
+            for(i=0;i<row;i++)
+                matrix[i][*it]=0;
+            it++;
+        }
+    }
+
+    /**
      * 162. 寻找峰值
      * **/
       int findPeakElement(vector<int>& nums,int low,int high){
@@ -6718,6 +6753,15 @@ int main()
     // int res=slu.movingCount(16,8,4);
     
     // cout<<res<<endl;
+
+    set<int> test;
+
+    test.insert(1);
+    test.insert(2);
+    test.insert(3);
+    set<int>::iterator it=test.begin();
+    cout<<*it<<endl;
+
     return 0;
 
     #if 0
