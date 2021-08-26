@@ -509,6 +509,66 @@ public:
             it++;
         }
     }
+    // 常数复杂度
+    void setZeroes(vector<vector<int>>& matrix) {
+
+        int row=matrix.size();
+        int column=matrix[0].size();
+        int i,j,k;
+
+        //第一行是否存在0
+        bool firstRow=false;
+
+        //第一列是否存在0
+        bool firstColumn=false;
+
+        for(j=0;j<column;j++)
+            if(!matrix[0][j])
+                firstRow=true;
+        
+         for(i=0;i<row;i++)
+            if(!matrix[i][0])
+                firstColumn=true;
+
+        //存下0元素所在的行列值
+        for(i=0;i<row;i++)
+            for(j=0;j<column;j++){
+
+                if(!matrix[i][j]){
+                    if(i&&j){
+                        matrix[i][0]=0;
+                        matrix[0][j]=0;
+                    }
+                }
+            }
+
+        for(i=0;i<row;i++){
+            //除第一行外的行
+            if(i>=1&&!matrix[i][0]){
+                for(j=0;j<column;j++)
+                    matrix[i][j]=0;
+            }
+        }
+
+        for(i=0;i<column;i++){
+            //除第一列外的列
+            if(i>=1&&!matrix[0][i]){
+                for(j=0;j<row;j++)
+                    matrix[j][i]=0;
+            }
+        }
+
+        if(firstColumn){
+            for(i=0;i<row;i++)
+                matrix[i][0]=0;
+        }
+
+        if(firstRow){
+            for(j=0;j<column;j++)
+                matrix[0][j]=0;
+        }
+
+    }
 
     /**
      * 162. 寻找峰值
