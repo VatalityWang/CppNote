@@ -476,6 +476,103 @@ class Solution
 public:
 
     /**
+     * 43. 字符串相乘
+     * **/
+    string add(string str1,string str2){
+        int n1=str1.size();
+        int n2=str2.size();
+
+        int nMin=min(n1,n2);
+        int nMax=max(n1,n2);
+
+        string res;
+        int j,plus=0,sum;
+         for(j=0;j<nMin;j++){
+                sum=(str1[j]-'0')+(str2[j]-'0')+plus;
+                plus=sum/10;
+                sum=sum%10;
+                res+=std::to_string(sum);
+        }
+        for(;j<nMax;j++){
+            if(n1==nMax)
+                sum=(str1[j]-'0')+plus;
+            else
+                sum=(str2[j]-'0')+plus;
+            plus=sum/10;
+            sum=sum%10;
+            res+=std::to_string(sum);
+        }
+        if(plus)
+            res+=std::to_string(plus);
+        
+        return res;
+    }
+
+    // 每次计算两个数，递归计算用字符串表示的总和
+    string addStr(vector<string> &midStr,int index){
+
+        if(index==midStr.size()-1)
+            return midStr[index];
+        else{
+            return add(midStr[index],addStr(midStr,index+1));
+        }
+    }
+
+    string multiply(string num1, string num2) {
+
+        string res;
+
+        int n1=num1.size();
+        int n2=num2.size();
+        int nMax=max(n1,n2);
+
+        vector<string> midStr;
+
+        //判空
+        if(n1==0||n2==0)
+            return "0";
+        //判0
+        if(n1&&n2){
+            if(num1[0]=='0'||num2[0]=='0')
+                return "0";
+        }
+
+
+        int i,j,k;
+        int nMin=min(n1,n2);
+
+        int plus=0,multi;
+
+        for(i=n1-1;i>=0;i--){
+
+            k=0;
+            while(k<n1-1-i){
+               res.push_back('0');
+               k++;
+            }
+
+            for(j=n2-1;j>=0;j--){
+                multi=(num1[i]-'0')*(num2[j]-'0')+plus;
+                plus=multi/10;
+                multi=multi%10;
+                res+=std::to_string(multi);
+            }
+            if(plus)
+                res+=std::to_string(plus);
+            midStr.push_back(res);
+            plus=0;
+            res="";
+        }
+        
+
+        res=addStr(midStr,0);
+    
+        reverse(res.begin(),res.end());
+
+        return res;
+    }       
+
+    /**
      * 73. 矩阵置零
      * **/
     void setZeroes(vector<vector<int>>& matrix) {
@@ -510,7 +607,7 @@ public:
         }
     }
     // 常数复杂度
-    void setZeroes(vector<vector<int>>& matrix) {
+    void setZeroes_(vector<vector<int>>& matrix) {
 
         int row=matrix.size();
         int column=matrix[0].size();
