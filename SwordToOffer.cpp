@@ -476,6 +476,61 @@ class Solution
 public:
 
     /**
+     * 7. 整数反转
+     * **/
+    int reverse__(int x) {
+        
+        if(x==INT_MIN)
+            return 0;
+        if(x==INT_MAX)
+            return 0;
+        int flag;
+
+        if(x>0)
+            flag=1;
+
+        else{
+            flag=-1;
+            x=-x;
+        }
+       
+        string res=std::to_string(x);
+        ::reverse(res.begin(),res.end());
+    
+        int n=res.size();
+        
+        //越界
+        if(res[0]-'0'>3&&n>=10)
+            return 0;
+       
+        int i;
+        long num=0;
+        long negMin=2147483648;
+        long posMax=2147483647;
+       
+        for(i=0;i<n;i++){
+            num+=(res[i]-'0')*pow(10,n-1-i);
+            if(flag>0&&num>posMax)
+                return 0;
+            if(flag<0&&num>negMin)
+                return 0;
+        }
+        return num*flag;
+        
+    }
+    //simple
+    int reverse_(int x)
+    {
+        long n = 0;
+        while (x)
+        {
+            n = n * 10 + x % 10;
+            x /= 10;
+        }
+        return n > INT_MAX || n < INT_MIN ? 0 : n;
+    }
+
+    /**
      * 43. 字符串相乘
      * **/
     string add(string str1,string str2){
@@ -3747,7 +3802,7 @@ public:
     }
 
     /**
-     * 最长回文子串
+     * 回文子串
      * **/
     void judge_circle_str(string &s,int left,int right,int &num){
         while(left>=0&&right<s.size()&&s[left]==s[right]){
@@ -3765,6 +3820,43 @@ public:
         }
         return num;
     }
+
+    // another solution  dynamic programme
+    int countSubstrings_(string s) {
+
+        int i,j;
+        int num=0;
+        int n=s.size();
+
+        //dp[i][j]: s[i:j]是否为回文串
+        
+        vector<vector<bool>> dp(n,vector<bool>(n,false));
+
+        for(i=0;i<n;i++)
+            dp[i][i]=true;
+
+        //从下往上遍历
+        for(i=n-1;i>=0;i--){
+
+            // 从左往右
+            for(j=i;j<n;j++){
+                if(s[i]==s[j]){
+                    // 相差不超过1，子串长度为1或者2
+                    if(j-i<=1){
+                        dp[i][j]=true;
+                        num++;
+                    // 长度超过2
+                    }else if(dp[i+1][j-1]){
+                        num++;
+                        dp[i][j]=true;
+                    }
+                }
+            }
+        }
+
+        return num;
+    }
+    
 
     /**
      * 二叉搜索树与双向链表
@@ -6911,13 +7003,18 @@ int main()
     
     // cout<<res<<endl;
 
-    set<int> test;
+    // set<int> test;
 
-    test.insert(1);
-    test.insert(2);
-    test.insert(3);
-    set<int>::iterator it=test.begin();
-    cout<<*it<<endl;
+    // test.insert(1);
+    // test.insert(2);
+    // test.insert(3);
+    // set<int>::iterator it=test.begin();
+    // cout<<*it<<endl;
+
+
+    int a=-123;
+    string str=std::to_string(a);
+    cout<<str<<endl;
 
     return 0;
 
