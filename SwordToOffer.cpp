@@ -4666,6 +4666,54 @@ public:
     }   
 
     /**
+     * 16. 最接近的三数之和
+     * **/
+     int threeSumClosest(vector<int>& nums, int target) {
+
+        //排序
+        sort(nums.begin(),nums.end());
+
+        int n=nums.size();
+
+        int best=1e7;
+
+        int i,left,right,sum,k;  
+
+        //更新best
+        auto update=[&](int cur){
+            if(abs(cur-target)<abs(best-target))
+                best=cur;
+        };
+
+        for(i=0;i<n;i++){
+            left=i+1;
+            right=n-1;
+            while(left<right){
+                sum=nums[i]+nums[left]+nums[right];
+                update(sum);
+                if(sum>target){
+                    //过滤重复元素，去除多余比较    
+                    k=right-1;
+                    while(k>left&&nums[k]==nums[k+1])
+                        k--;
+                    right=k;
+
+                }
+                else if(sum<target){
+                    //过滤重复元素，去除多余比较
+                    k=left+1;
+                    while(k<right&&nums[k]==nums[k-1])
+                        k++;
+                    left=k;
+                }
+                else 
+                    return sum;
+            }
+        }
+        return best;
+    }
+
+    /**
      * 三角形的最大周长
      * **/
     int largestPerimeter(vector<int>& nums) {
