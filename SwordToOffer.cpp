@@ -476,6 +476,32 @@ class Solution
 public:
 
     /**
+     * 257. 二叉树的所有路径
+     * **/
+     void dfsTreePaths(TreeNode* root, vector<string>&res,string curPath){
+        curPath+=std::to_string(root->val);
+       if(!root->left&&!root->right){
+            res.push_back(curPath);
+            return;
+        }
+        //保证传入节点不为空
+        if(root->left)
+            dfsTreePaths(root->left,res,curPath+"->");
+        if(root->right)
+            dfsTreePaths(root->right,res,curPath+"->");
+        
+    }
+
+    vector<string> binaryTreePaths(TreeNode* root) {
+        vector<string> res;
+        if(!root)
+            return res;
+        string curPath;
+        dfsTreePaths(root,res,curPath);
+        return res;
+    }
+
+    /**
      * 7. 整数反转
      * **/
     int reverse__(int x) {
