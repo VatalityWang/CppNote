@@ -5630,6 +5630,19 @@ public:
         }
         return intervals;
     }
+
+
+    /**
+     * 57. 插入区间
+     * **/
+     
+
+    vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
+        intervals.push_back(newInterval);
+        vector<vector<int>> merged=merge(intervals);
+        return merged;
+    }
+
     /**
      * 剑指 Offer 14- II. 剪绳子 II
      * **/
