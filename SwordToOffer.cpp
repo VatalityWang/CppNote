@@ -476,6 +476,48 @@ class Solution
 public:
 
     /**
+     * 802. 找到最终的安全状态
+     * **/
+    // dfs 超时
+     void dfsGragh(vector<vector<int>>& graph,int index,vector<bool>&visited,bool &canFinish){
+        if(!visited[index]){
+            visited[index]=true;
+            int i;
+            for(i=0;i<graph[index].size();i++){
+                dfsGragh(graph,graph[index][i],visited,canFinish);
+            }
+            visited[index]=false;
+        }
+        //回到某个已经访问过的节点，构成了环
+        else{
+            canFinish=false;
+            return;
+        }
+    }
+
+
+    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        
+        int n=graph.size();
+
+        vector<bool> visited(n,false);
+
+        vector<int> res;
+
+        //是否能深度优先遍历完成
+        bool canFinish=true;
+
+        int i;
+        for(i=0;i<n;i++){
+            dfsGragh(graph,i,visited,canFinish);
+            if(canFinish)
+                res.push_back(i);
+            canFinish=true;
+        }
+        return res;
+    }
+
+    /**
      * 257. 二叉树的所有路径
      * **/
      void dfsTreePaths(TreeNode* root, vector<string>&res,string curPath){
