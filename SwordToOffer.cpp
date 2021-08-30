@@ -517,6 +517,96 @@ public:
         return res;
     }
 
+    // 基于链式前向星的方法
+    vector<int> eventualSafeNodes_(vector<vector<int>>& graph) {
+        
+        //边的数量
+
+        int N=1e4;
+
+        int M=4*1e4;
+
+        int edgeIndex=0,i,j;
+
+        int n=graph.size();
+
+        vector<bool> visited(n,false);
+
+        vector<int> res;
+
+        //存每个节点的入度
+        vector<int> inDegree(N,0);
+
+        // 反转图：由存图的出度节点改为存图的入度节点
+
+        //存节点链表 某个点对应的边表的第一条边
+        vector<int> head(n,-1);
+
+        //某一条边指向的节点
+        vector<int> edgeEnd(M);
+
+        //某个边对应的下一条边节点
+        vector<int> nextEdge(M); 
+
+        // 添加边
+        auto addEdge=[&](int a,int b){
+            edgeEnd[edgeIndex]=b;
+            nextEdge[edgeIndex]=head[a]; //该边下一条边对应的头节点
+            head[a]= edgeIndex++;
+        };
+
+        
+        //反向构建
+        for(i=0;i<n;i++)
+            for(j=0;j<graph[i].size();j++){
+                addEdge(graph[i][j],i);
+                inDegree[i]++;
+            }
+
+        /*
+        cout<<"head: ";
+        for(i=0;i<n;i++)
+            cout<<head[i]<<" ";
+        cout<<endl;
+
+        cout<<"endEdge: ";
+        for(i=0;i<edgeIndex;i++)
+            cout<<edgeEnd[i]<<" ";
+        cout<<endl;
+
+        cout<<"nextEdge: ";
+        for(i=0;i<edgeIndex;i++)
+            cout<<nextEdge[i]<<" ";
+        cout<<endl;
+        */
+
+        //BFS 求反向图的拓扑序列
+        queue<int> points;
+        for(i=0;i<n;i++){
+            //该节点入度为0
+            if(inDegree[i]==0){
+                points.push(i);
+            }
+        }
+
+        while(!points.empty()){
+            // 
+            int top=points.front();
+            points.pop();
+            for(i=head[top];i!=-1;i=nextEdge[i]){
+                //i为top节点对应的边编号
+                j=edgeEnd[i];// 该边对应尾节点
+                if((--inDegree[j])==0) points.push(j);
+            }
+        }
+
+        for(i=0;i<n;i++)
+            if(inDegree[i]==0)
+                res.push_back(i);
+
+        return res;
+    }
+
     /**
      * 257. 二叉树的所有路径
      * **/
@@ -7123,9 +7213,13 @@ int main()
     // cout<<sizeof(long)<<endl;
     // cout<<sizeof(int)<<endl;
 
-    vector<int> input={1,5,2,8,9,10,11};
-    int n=input.size();
-    cout<<*(input.begin()+n-1)<<endl;
+    vector<vector<int>> input={{1,2},{2,3},{5},{0},{5},{},{}};
+     Solution slu;
+    vector<int> res=slu.eventualSafeNodes_(input);
+    for(auto &it:res)
+        cout<<it<<endl;
+    // int n=input.size();
+    // cout<<*(input.begin()+n-1)<<endl;
     // int sum=500;
 
     // int res=slu.movingCount(16,8,4);
@@ -7141,9 +7235,9 @@ int main()
     // cout<<*it<<endl;
 
 
-    int a=-123;
-    string str=std::to_string(a);
-    cout<<str<<endl;
+    // int a=-123;
+    // string str=std::to_string(a);
+    // cout<<str<<endl;
 
     return 0;
 
