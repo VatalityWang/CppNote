@@ -479,7 +479,7 @@ public:
      * 210. 课程表 II 
      * **/
      // 超时算法
-      void dfsGraph(vector<vector<int>>&graph,vector<int>&res){
+      void dfsGraph_(vector<vector<int>>&graph,vector<int>&res){
         int n=graph.size();
         int i,j;
 
@@ -521,7 +521,7 @@ public:
         }
     }
 
-    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+    vector<int> findOrder_(int numCourses, vector<vector<int>>& prerequisites) {
 
         vector<vector<int>> graph(numCourses,vector<int>(numCourses));
 
@@ -532,7 +532,61 @@ public:
         for(i=0;i<prerequisites.size();i++)
             graph[prerequisites[i][1]][prerequisites[i][0]]=1;
         
-        dfsGraph(graph,res);
+        dfsGraph_(graph,res);
+
+        return res;
+    }
+
+    //基于邻接表
+
+     void dfsGraph(vector<vector<int>>&graph,vector<int>&res,vector<int> &inputG){
+        int n=graph.size();
+        int i,j;
+
+        stack<int> topOrder;
+        // 入度为0的顶点入栈
+        for(i=0;i<n;i++){
+            if(inputG[i]==0)
+                topOrder.push(i);
+        }
+
+        while(!topOrder.empty()){
+            int top=topOrder.top();
+            res.push_back(top);
+            topOrder.pop();
+            //更新以该顶点为起始点的边的尾节点的入度
+            for(j=0;j<graph[top].size();j++)
+                if(--inputG[graph[top][j]]==0) topOrder.push(graph[top][j]);
+        }
+
+     
+
+        if(res.size()!=n){
+            res.clear();
+        }
+    }
+
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+
+        vector<vector<int>> graph(numCourses);
+
+        vector<int> res;
+
+        // 统计每个节点入度
+        vector<int> inputG(numCourses);
+
+        //初始化图 邻接表形式
+        int i;
+        for(i=0;i<prerequisites.size();i++){
+            graph[prerequisites[i][1]].push_back(prerequisites[i][0]);
+            inputG[prerequisites[i][0]]++;
+        }
+        
+      
+
+        
+
+        dfsGraph(graph,res,inputG);
 
         return res;
     }
