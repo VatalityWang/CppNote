@@ -476,6 +476,68 @@ class Solution
 public:
 
     /**
+     * 210. 课程表 II 
+     * **/
+     // 超时算法
+      void dfsGraph(vector<vector<int>>&graph,vector<int>&res){
+        int n=graph.size();
+        int i,j;
+
+        // 当前节点入度
+        int inputNum;
+
+        // 是否存在无前趋的顶点
+        bool preExist=true;
+
+        vector<bool> visited(n,false);
+
+        while(res.size()!=n){
+            preExist=false;
+            for(i=0;i<n;i++){
+                if(!visited[i]){
+                    inputNum=0;
+                    for(j=0;j<n;j++){
+                        inputNum+=graph[j][i];
+                    }
+
+                    // 当前节点入读为0
+                    if(!inputNum){
+                        preExist=true;
+                        visited[i]=true;
+                        res.push_back(i);
+                        // 删除以该节点为起点的边
+                        for(j=0;j<n;j++)
+                            if(graph[i][j])
+                                graph[i][j]=0;
+                    }
+
+                }
+            }
+            //不存在无前驱节点，即存在环
+            if(!preExist){
+                res.clear();
+                return;
+            }
+        }
+    }
+
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+
+        vector<vector<int>> graph(numCourses,vector<int>(numCourses));
+
+        vector<int> res;
+
+        //初始化图
+        int i;
+        for(i=0;i<prerequisites.size();i++)
+            graph[prerequisites[i][1]][prerequisites[i][0]]=1;
+        
+        dfsGraph(graph,res);
+
+        return res;
+    }
+
+    /**
      * 802. 找到最终的安全状态
      * **/
     // dfs 超时
