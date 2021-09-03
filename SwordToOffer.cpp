@@ -341,6 +341,176 @@ struct DListNode{
 };
 
 
+class LFUCache {
+public:
+
+    typedef struct Node{
+        int key;
+        int value;
+        int freq;
+        struct Node * pre;
+        struct Node * next;
+        Node(int _key,int _value):key(_key),value(_value),pre(nullptr),next(nullptr){freq=1;}
+       
+    }Node;
+
+
+    //freqency-> 双链表,最近使用的插入头部。
+    unordered_map<int,Node*> freqNodeList;
+    
+    // key-> Node
+    unordered_map<int,Node*> elements;
+
+    // 存freqNodeList中各个键值对应双链表尾节点
+    unordered_map<int,Node*> freqNodeListTail;
+
+   
+    int capacity;
+
+    //最少的使用频率
+    int minFreq;
+    //是当前最少使用频率的节点个数
+    int minFreqNum;
+
+    
+
+    //移除双链表某个节点
+    void removeNode(Node* pNode,int freq){
+        // 尾节点直接移除
+        if(!pNode->next){
+            //更新尾节点信息
+            freqNodeListTail[freq]=pNode->pre;
+            if(pNode->pre)
+                pNode->pre->next=nullptr;
+            
+        }else{
+            // 不是头节点
+            if(pNode->pre)
+                pNode->pre->next=pNode->next;
+            else
+                freqNodeList[freq]=pNode->next;
+            pNode->next->pre=pNode->pre;
+        }
+
+        
+    }
+
+    //增加新节点到双链表头
+    void addNode(Node* pNode){
+        if(freqNodeList.find(pNode->freq)!=freqNodeList.end()){
+            pNode->next=freqNodeList[pNode->freq];
+            freqNodeList[pNode->freq]->pre=pNode;
+            freqNodeList[pNode->freq]=pNode;
+        }
+        else
+            freqNodeList[pNode->freq]=pNode;
+        
+    }
+
+
+    LFUCache(int _capacity) {
+        capacity=_capacity;
+      
+        minFreq=0;
+        minFreqNum=0;
+    }
+    
+    int get(int key) {
+        
+        if(elements.find(key)!=elements.end()){
+
+            Node *cur=elements[key];
+            
+            //从相应哈希表删除
+            removeNode(cur,cur->freq);
+            if(cur->freq==minFreq)
+                minFreqNum--;
+         
+            //更新该节点freq
+            (cur->freq)++;
+
+            // 更新最少使用节点和数量
+            if(!minFreqNum){
+                minFreq=cur->freq;
+                minFreqNum++;
+            }
+
+            //增加至新的哈希表对应双链表中
+            addNode(cur);
+
+            return cur->value;
+        }
+        else
+            return -1;
+    }
+    
+    void put(int key, int value) {
+        
+         //不存在
+        if(elements.find(key)==elements.end()){
+            //未满
+            Node * p=new Node(key,value);
+            if(elements.size()<capacity){
+                elements.insert({key,p});
+                if(freqNodeList.find(p->freq)!=freqNodeList.end()){
+                    addNode(p);
+                }
+                else{
+                    //第一个节点为尾结点
+                    freqNodeListTail[p->freq]=p;
+                    freqNodeList[p->freq]=p;
+                }
+
+            }
+            // 已满
+            else{
+                Node * re=freqNodeListTail[minFreq];
+                elements.erase(re->key);
+                removeNode(re,re->freq);
+
+                //移除节点需要删除
+                delete re;
+
+                addNode(p);
+            }
+            
+           
+            if(minFreq==1)
+                minFreqNum++;
+            else{
+                minFreq=1;
+                minFreqNum=1;
+            }
+
+        }
+        else{
+            // 存在则更新
+            Node *cur=elements[key];
+            cur->value=value;
+
+            // 更新最少使用节点和数量
+            if(cur->freq==minFreq)
+                minFreqNum--;
+
+            (cur->freq)++;
+
+            if(!minFreqNum){
+                minFreq=cur->freq;
+                minFreqNum=1;
+            }
+        }
+
+    }
+};
+
+/**
+ * Your LFUCache object will be instantiated and called as such:
+ * LFUCache* obj = new LFUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
+
+
 class LRUCache {
 public:
     int totalCapacity;
@@ -474,6 +644,28 @@ public:
 class Solution
 {
 public:
+
+    /**
+     * 9. 回文数
+     * **/
+    bool isPalindrome(int x) {
+        if(x<0)
+            return false;
+        else if(x==0){
+            return true;
+        }
+        else{
+            int i,j,n;
+            string num=std::to_string(x);
+            n=num.size();
+            for(i=0,j=n-1;i<j;i++,j--)
+                if(num[i]==num[j])
+                    continue;
+                else
+                    return false;
+            return true;
+        }
+    }
 
     /**
      * 210. 课程表 II 
@@ -7308,8 +7500,45 @@ void printMultimap(multimap<int,int>&order){
 
 int main()
 {
+     LFUCache* obj=nullptr;
+    vector<string> operation{"LFUCache","put","put","get","put","get","get","put","get","get","get"};
+    vector<string> input{"[2]","[1,1]","[2,2]","[1]","[3,3]","[2]","[3]","[4,4]","[1]","[3]","[4]"};
+    for(int i=0;i<operation.size();i++){
+       if(operation[i]=="LFUCache"){
+            int len=input[i].length();
+            int capacity=std::stoi(input[0].substr(1,len-2));
+            cout<<"capacity: "<<capacity<<endl;
+            obj= new LFUCache(capacity);
+       }
+       else if(operation[i]=="put"){
+           int len=input[i].size();
+           std::size_t delimiter=input[i].find(',');
+           int key=std::stoi(input[i].substr(1,delimiter-1));
+           int value=std::stoi(input[i].substr(delimiter+1,len-delimiter-1));
+           cout<<"put: "<<key<<" "<<value<<endl;
+           obj->put(key,value);
 
+           for(auto&it:obj->freqNodeList){
+                cout<<"freq: "<<it.first;
+                for( LFUCache::Node * h=it.second;h;h=h->next)
+                    cout<<" value: "<<h->value;
+                cout<<endl;
+           }
+           for(auto &it:obj->freqNodeListTail){
+                cout<<"freq: "<<it.first;
+                cout<<" NodeAdderss: "<<it.second<<endl;
+           }
 
+       }
+       else{
+            int len=input[i].length();
+            int key=std::stoi(input[i].substr(1,len-2));
+            cout<<"get: "<<key<<endl;
+            int value=obj->get(key);
+            cout<<"value: "<<value<<endl;
+       }
+    }
+    
 
     // string input="0";
     // string input2="00";
@@ -7329,11 +7558,16 @@ int main()
     // cout<<sizeof(long)<<endl;
     // cout<<sizeof(int)<<endl;
 
+
+
+    /*
     vector<vector<int>> input={{1,2},{2,3},{5},{0},{5},{},{}};
      Solution slu;
     vector<int> res=slu.eventualSafeNodes_(input);
     for(auto &it:res)
         cout<<it<<endl;
+    */
+    
     // int n=input.size();
     // cout<<*(input.begin()+n-1)<<endl;
     // int sum=500;
