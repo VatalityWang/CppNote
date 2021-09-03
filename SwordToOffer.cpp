@@ -646,6 +646,36 @@ class Solution
 public:
 
     /**
+     * 14. 最长公共前缀
+     * **/
+     string longestCommonPrefix(vector<string>& strs) {
+        string res;
+        int n=strs.size();
+        int i,j;
+        if(n==1)
+            return strs[0];
+        for(i=0;i<strs[0].size();i++){
+
+          
+            //遍历剩余字符串,从第二个开始匹配
+            for(j=1;j<n;j++){
+                if(i<strs[j].size()&&strs[j][i]==strs[0][i])
+                    continue;
+                else
+                    break;
+            }
+
+            //第j个字符串的比较结果
+            if(j==n)
+                res+=strs[0][i];
+            else
+                break;
+
+        }
+        return res;
+    }
+
+    /**
      * 9. 回文数
      * **/
     bool isPalindrome(int x) {
