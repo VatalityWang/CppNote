@@ -646,6 +646,59 @@ class Solution
 public:
 
     /**
+     * 209. 长度最小的子数组
+     * **/
+    // 超时算法
+     int minSubArrayLen(int target, vector<int>& nums) {
+
+        int n=nums.size();
+        int i,j;
+        int minDis=INT_MAX;
+
+        //存以下标开始到当前下标元素的总和
+        vector<int> aux=nums;
+
+        
+
+     
+        for(i=0;i<n;i++){
+            for(j=0;j<i;j++){
+                aux[j]+=nums[i];
+                if(aux[j]>=target)
+                    minDis=min(minDis,i-j+1);
+            }
+            if(nums[i]>=target)
+                return 1;
+        }
+        if(minDis==INT_MAX)
+            return 0;
+        else
+            return minDis;
+    }
+    // 优化
+    int minSubArrayLen_(int target, vector<int>& nums) {
+
+        int n = nums.size();
+        if (n == 0) {
+            return 0;
+        }
+        int ans = INT_MAX;
+        for (int i = 0; i < n; i++) {
+            int sum = 0;
+            for (int j = i; j < n; j++) {
+                sum += nums[j];
+                if (sum >= target) {
+                    ans = min(ans, j - i + 1);
+                    break;
+                }
+            }
+        }
+        return ans == INT_MAX ? 0 : ans;
+
+    }
+
+
+    /**
      * 14. 最长公共前缀
      * **/
      string longestCommonPrefix(vector<string>& strs) {
@@ -7526,11 +7579,43 @@ void printMultimap(multimap<int,int>&order){
     cout<<endl;
 }
 
+class A{
+    virtual void f();
+    char a;
+    static int * p;
+};
+
 #if 1
 
 int main()
 {
-     LFUCache* obj=nullptr;
+
+    /**
+     * 字符串常量
+     * **/
+    // char * a="abc";
+    // printf("%s\n",a);
+    // a[1]='b';
+
+    /**
+     * 类的大小
+     * **/
+    // cout<<sizeof(A)<<endl;
+
+    /**
+     * 列表初始化
+     * **/
+    vector<int> input={1,3,5,6,7,8};
+    for(auto &it:input)
+        cout<<it<<endl;
+    
+
+
+    /**
+     * LFU 使用
+     * **/
+    /*
+    LFUCache* obj=nullptr;
     vector<string> operation{"LFUCache","put","put","get","put","get","get","put","get","get","get"};
     vector<string> input{"[2]","[1,1]","[2,2]","[1]","[3,3]","[2]","[3]","[4,4]","[1]","[3]","[4]"};
     for(int i=0;i<operation.size();i++){
@@ -7568,7 +7653,7 @@ int main()
             cout<<"value: "<<value<<endl;
        }
     }
-    
+    */
 
     // string input="0";
     // string input2="00";
