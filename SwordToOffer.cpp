@@ -3563,6 +3563,41 @@ public:
         return dp[num][neg];
     }
 
+     int findTargetSumWays__(vector<int>& nums, int target) {
+       /*转化为01背包问题 */
+       
+       int sum=std::accumulate(nums.begin(),nums.end(),0);
+       if(abs(sum)<abs(target))
+            return 0;
+        
+        int i,j,n;
+        n=nums.size();
+     
+
+        /*
+        * left-right=target; left+right=sum; left=(sum+target)/2;
+        */
+        int temp=sum+target;
+        if(temp%2)
+            return 0;
+        int s=(temp)/2; 
+
+
+        //定义dp[i]: 装满容量为i的背包的总装法。
+        vector<int> dp(s+1);
+        dp[0]=1; //容量为0的背包 啥都不装  一种装法
+
+        //遍历物品
+        for(i=0;i<n;i++){
+            //遍历背包
+            for(j=s;j>=nums[i];j--)
+                dp[j]+=dp[j-nums[i]];
+                
+        }
+
+        return dp[s];
+
+    }
 
     /**
      * 分割等和子集
@@ -3620,7 +3655,6 @@ public:
             //     cout<<it<<" ";
             // cout<<endl;
         }
-
 
         if(dp[target]==target)      
             return true;
