@@ -696,7 +696,33 @@ public:
         return ans == INT_MAX ? 0 : ans;
 
     }
+    // 二分
+     int minSubArrayLen__(int target, vector<int>& nums) {
 
+        int n = nums.size();
+        if (n == 0) {
+            return 0;
+        }
+
+        //求前缀和
+        vector<int> sum(n+1);
+
+        for(int k=1;k<=n;k++)
+            sum[k]=sum[k-1]+nums[k-1];
+        
+        int ans = INT_MAX;
+
+        for (int i = 1; i <= n; i++) {
+            int s=target+sum[i-1];
+            //在i下标之前的所有前缀和里面找 前缀和<当前前缀和+target的前缀和。当前前缀和-找到的第一个满足条件的前缀和>target. 二者的下标范围即是最小连续子数组的长度。
+            auto it=lower_bound(sum.begin(),sum.end(),s);
+            if(it!=sum.end())            
+                ans=min(ans,static_cast<int>(it-sum.begin()-i+1));
+
+        }
+        return ans == INT_MAX ? 0 : ans;
+
+    }
 
     /**
      * 14. 最长公共前缀
