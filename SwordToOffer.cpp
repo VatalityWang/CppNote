@@ -714,8 +714,10 @@ public:
 
         for (int i = 1; i <= n; i++) {
             int s=target+sum[i-1];
-            //在i下标之前的所有前缀和里面找 前缀和<当前前缀和+target的前缀和。当前前缀和-找到的第一个满足条件的前缀和>target. 二者的下标范围即是最小连续子数组的长度。
-            auto it=lower_bound(sum.begin(),sum.end(),s);
+            //在所有前缀和里面找 前缀和>=前i-1个元素和+target。找到的第一个满足条件的前缀和-前i-1个元素和>=target. 二者的下标范围即是最小连续子数组的长度。
+
+            auto it=lower_bound(sum.begin(),sum.end(),s);//不小于目标值的第一个元素
+            // it-sum.begin() 第一个满足条件的下标
             if(it!=sum.end())            
                 ans=min(ans,static_cast<int>(it-sum.begin()-i+1));
 
@@ -3591,6 +3593,39 @@ public:
                     dp[i][j]=dp[i-1][j];
             }
         return dp[nums.size()-1][target];
+    }
+
+    // 一维 0 1 背包
+      bool canPartition_(vector<int>& nums) {
+        int n=nums.size();
+        int sum=std::accumulate(nums.begin(),nums.end(),0);
+
+        if(sum%2)
+            return false;
+        int target=sum/2;
+
+        //转化为0，1背包问题，target为当前背包容量
+        int i,j;
+        vector<int> dp(target+1);// dp[i] 表示容量为i的背包所获得的价值为dp[i]
+
+        //遍历物品
+        for(i=0;i<n;i++){
+            //遍历背包容量
+            for(j=target;j>=0;j--)
+                if(j-nums[i]>=0)
+                    dp[j]=max(dp[j],dp[j-nums[i]]+nums[i]);
+            
+            // 打印dp数组
+            // for(auto &it:dp)
+            //     cout<<it<<" ";
+            // cout<<endl;
+        }
+
+
+        if(dp[target]==target)      
+            return true;
+        else
+            return false;
     }
 
 
