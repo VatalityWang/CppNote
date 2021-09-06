@@ -646,6 +646,31 @@ class Solution
 public:
 
     /**
+     * 392. 判断子序列
+     * **/
+    bool isSubsequence(string s, string t) {
+        int ns=s.size();
+        int nt=t.size();
+        int i,j;
+        if(ns>nt)
+            return false;
+
+        //双指针法
+        for(i=0,j=0;i<nt&&j<ns;)
+            if(t[i]==s[j]){
+                i++;
+                j++;
+            }
+            else
+                i++;
+        
+        if(j!=ns)
+            return false;
+        else 
+            return true;
+    }
+
+    /**
      * 209. 长度最小的子数组
      * **/
     // 超时算法
