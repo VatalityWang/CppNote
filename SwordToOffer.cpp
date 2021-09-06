@@ -646,6 +646,38 @@ class Solution
 public:
 
     /**
+     * 392. 判断子序列 基于最小编辑距离的算法
+     * **/
+    bool isSubsequence_(string s, string t) {
+        int ns=s.size();
+        int nt=t.size();
+        int i,j;
+        if(ns>nt)
+            return false;
+        
+        //dp[i][j]:s[0:i-1] 是否是t[0:j-1] 的子串。 i,j表示s,t中子串的长度。
+        vector<vector<int>> dp(ns+1,vector<int>(nt+1));
+
+        //初始化 空串是是任何字符串的子串 i,j表示长度
+        for(i=0;i<=ns;i++)
+            dp[i][0]=i;
+        for(j=0;j<=nt;j++)
+            dp[0][j]=j;
+        
+        for(i=1;i<=ns;i++)
+            for(j=1;j<=nt;j++){
+                //相等：则判断借用以前的状态
+                if(s[i-1]==t[j-1]){
+                    dp[i][j]=dp[i-1][j-1];
+                }
+                //不相等则t减少一个或者s增加一个，或者替换
+                else
+                    dp[i][j]=min(dp[i][j-1],min(dp[i-1][j],dp[i-1][j-1]))+1;
+            }
+        return dp[ns][nt]==nt-ns?true:false;
+    }
+
+    /**
      * 392. 判断子序列
      * **/
     bool isSubsequence(string s, string t) {
