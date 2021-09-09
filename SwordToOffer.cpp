@@ -644,6 +644,51 @@ public:
 class Solution
 {
 public:
+    /**
+     * 147. 对链表进行插入排序
+     * **/
+      ListNode* insertionSortList(ListNode* head) {
+
+        ListNode * pWork,* pAdjust,*pre,*pAfter;
+        if(!head)
+            return head;
+        if(!head->next)
+            return head;
+        
+
+        pWork=head->next;
+        head->next=nullptr;
+        while(pWork){
+            pAdjust=head;
+            
+            //从前往后比较
+            while(pAdjust&&pAdjust->val<=pWork->val){
+                pre=pAdjust;
+                pAdjust=pAdjust->next;
+            }
+
+            pAfter=pWork->next;
+            //当前元素插入头节点之后
+            if(pAdjust!=head){
+
+                //先存工作指针后续节点
+                //插入节点
+                pWork->next=pre->next;
+                pre->next=pWork;
+
+                //插入节点为尾节点
+             
+            }
+            //当前元素比头节点小
+            else{
+                pWork->next=pAdjust;
+                head=pWork;
+            }
+            pWork=pAfter;
+        }
+        return head;
+
+    }
 
     /**
      * 392. 判断子序列 基于最小编辑距离的算法
@@ -7793,6 +7838,10 @@ class A{
 int main()
 {
 
+   
+    // cout<<"哈哈哈"<<endl;
+
+
     /**
      * 字符串常量
      * **/
@@ -7808,10 +7857,11 @@ int main()
     /**
      * 列表初始化
      * **/
+    /*
     vector<int> input={1,3,5,6,7,8};
     for(auto &it:input)
         cout<<it<<endl;
-    
+    */
 
 
     /**
