@@ -99,6 +99,17 @@ public:
       Interval(int s, int e) : start(s), end(e) {}
   };
 
+ //自定义数据类型存字符及字符出现的次数
+ typedef struct charinfo{
+        char c; //当前字符
+        int freq; //字符出现频率
+        charinfo(char c_,int freq_):c(c_),freq(freq_){}
+    }charinfo;
+
+    bool operator<(charinfo a,charinfo b){
+        return a.freq<b.freq;//较大的优先级高，放在前面
+    }
+
  bool static compare_Interval(const Interval &v1,const Interval &v2){
        if(v1.start>v2.start) return false;
        else return true;
@@ -644,6 +655,41 @@ public:
 class Solution
 {
 public:
+
+    /**
+     * 451. 根据字符出现频率排序
+     * **/
+    string frequencySort(string s) {
+        string res;
+        vector<int> charStatic(128);
+        int i;
+        int n=s.size();
+        //统计各个字符出现次数
+        for(i=0;i<n;i++){
+                charStatic[int(s[i])]++;
+        }
+        //存入大顶堆
+        priority_queue<charinfo> charQue;
+        for(i=0;i<128;i++){
+            if(charStatic[i]){
+                    charinfo cInfo(char(i),charStatic[i]);
+                    charQue.push(cInfo);
+
+                }
+            }
+        
+        //遍历大顶堆，输出相应字符
+     
+        while(!charQue.empty()){
+            charinfo tempC=charQue.top();
+          
+            string str(tempC.freq,tempC.c);
+            res+=str;
+            charQue.pop();
+        }
+        return res;
+    }
+
     /**
      * 147. 对链表进行插入排序
      * **/
@@ -7838,7 +7884,11 @@ class A{
 int main()
 {
 
-   
+   /**
+    * 测试字符转整数
+    * **/
+   char c='a';
+   cout<<int(c)<<endl;
     // cout<<"哈哈哈"<<endl;
 
 
