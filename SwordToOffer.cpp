@@ -663,7 +663,7 @@ public:
      * 1109. 航班预订统计(差分数组)
      * **/
     vector<int> corpFlightBookings(vector<vector<int>>& bookings, int n) {
-        //vector<int> res(n);
+        
         int i,j;
         int size=bookings.size();
 
