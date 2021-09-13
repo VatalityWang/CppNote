@@ -104,11 +104,14 @@ public:
         char c; //当前字符
         int freq; //字符出现频率
         charinfo(char c_,int freq_):c(c_),freq(freq_){}
+        bool operator<(const charinfo &a) const {
+        return freq<a.freq;//较大的优先级低，放在后面
+        }
     }charinfo;
 
-    bool operator<(charinfo a,charinfo b){
-        return a.freq<b.freq;//较大的优先级高，放在前面
-    }
+    // bool operator<(charinfo a,charinfo b){
+    //     return a.freq<b.freq;//较大的优先级高，放在前面
+    // }
 
  bool static compare_Interval(const Interval &v1,const Interval &v2){
        if(v1.start>v2.start) return false;
@@ -656,6 +659,37 @@ class Solution
 {
 public:
 
+    /**
+     * 1109. 航班预订统计(差分数组)
+     * **/
+    vector<int> corpFlightBookings(vector<vector<int>>& bookings, int n) {
+        //vector<int> res(n);
+        int i,j;
+        int size=bookings.size();
+
+        //基于差分数组的思路
+
+        vector<int> diff(n);
+
+        for(i=0;i<size;i++){
+
+            int start=bookings[i][0];
+            int end=bookings[i][1];
+            int seats=bookings[i][2];
+            //变化的下标范围是[start-1:end-1]
+            diff[start-1]+=seats;
+    
+            if(end<n)
+                diff[end]-=seats;
+
+        }
+        
+        for(i=1;i<n;i++){
+            diff[i]=diff[i-1]+diff[i];
+        }
+
+        return diff;
+    }
     /**
      * 451. 根据字符出现频率排序
      * **/
