@@ -659,6 +659,40 @@ class Solution
 {
 public:
 
+
+    /**
+     * 1497. 检查数组对是否可以被 k 整除
+     * **/
+     bool canArrange(vector<int>& arr, int k) {
+        int n=arr.size();
+        
+        int i,j;
+
+        // k个桶，n个数分别映射至k个桶
+        vector<int> statics(k);
+        int index;
+
+        for(i=0;i<n;i++){
+            index=arr[i]%k;
+            if(index<0)
+                index+=k;
+            statics[index]++;
+        }
+    
+        for(i=1,j=k-1;i<=j;i++,j--){
+            if(statics[i]==statics[j])
+                continue;
+            else
+                return false;
+        }
+
+        // 该数本身能被k整除，则需要判断是否两两成对
+
+        if(statics[0]%2)
+            return false;
+        return true;
+    }
+
     /**
      * 1109. 航班预订统计(差分数组)
      * **/
