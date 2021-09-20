@@ -659,6 +659,50 @@ class Solution
 {
 public:
 
+    /**
+     * 673. 最长递增子序列的个数
+     * **/
+    int findNumberOfLIS(vector<int>& nums) {
+        int i,j;
+        int maxLen=0;
+        int n=nums.size();
+        if(n==1)
+            return n;
+        int num=0;
+        // 以下标i结尾的最长递增子序列的长度，最后统计所有序列长度,求最大长度的个数就是所求结果
+        vector<int> dp(n,1);
+        // 以i结尾的最长递增子序列的个数
+        vector<int> cnt(n);
+        cnt[0]=1;
+
+        for(i=0;i<n;i++){
+           
+            for(j=0;j<i;j++)
+                if(nums[j]<nums[i])
+                    dp[i]=max(dp[j]+1,dp[i]);
+            maxLen=max(dp[i],maxLen);
+
+            //统计最长子序列的个数
+            for(j=0;j<i;j++)
+                if(nums[j]<nums[i]&&dp[j]==dp[i]-1)
+                    cnt[i]+=cnt[j];
+            
+            //以i结尾的最长子序列前面没有比其小的元素，则最长子序列为其本身，个数为1
+            if(cnt[i]==0)
+                cnt[i]=1;
+        }
+        if(maxLen==1)
+            return n;
+
+        //统计个数
+        for(i=0;i<n;i++){
+            if(dp[i]==maxLen){
+               num+=cnt[i];
+            }
+        }
+      
+        return num;
+    }
 
     /**
      * 1497. 检查数组对是否可以被 k 整除
@@ -904,9 +948,6 @@ public:
         //存以下标开始到当前下标元素的总和
         vector<int> aux=nums;
 
-        
-
-     
         for(i=0;i<n;i++){
             for(j=0;j<i;j++){
                 aux[j]+=nums[i];
@@ -3019,6 +3060,34 @@ public:
     }
 
     /**
+     * 83. 删除排序链表中的重复元素
+     * **/
+    ListNode* deleteDuplicates_(ListNode* head) {
+        ListNode * pre, *pwork;
+
+        //为空
+        if(!head)
+            return head;
+        //只有一个节点
+        if(!head->next)
+            return head;
+
+        pre=head;
+        pwork=pre->next;
+
+        while(pwork){
+
+            while(pwork&&pwork->val==pre->val)
+                pwork=pwork->next;
+        
+            pre->next=pwork;
+            pre=pwork;    
+            
+        }
+        return head;
+    }
+
+    /**
      * 不同路径 II
      * **/
      int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
@@ -3559,6 +3628,7 @@ public:
             return max_;
         return max(sum - min, max_);
     }
+    
     /**
      * 零钱兑换
      * **/
@@ -3602,12 +3672,15 @@ public:
         int n=nums.size();
         int pre;
         unordered_map<int,int> statistic; 
+
+        //初始化和为0的子数组个数
         statistic.insert({0,1});
+
         for(i=0;i<n;i++){
             sum+=nums[i];
             pre=sum-k;
             if(statistic.find(pre)!=statistic.end()){
-                num+=statistic[pre]; //可能好几段都是相同的。在前i项中查找是否有等于pre的项，并累加出现pre出现的次数
+                num+=statistic[pre];                    //可能好几段都是相同的。在前i项中查找是否有等于pre的项，并累加出现pre出现的次数
             } 
             statistic[sum]++;
         }
@@ -3619,6 +3692,7 @@ public:
      * **/
     
      int jump(vector<int>& nums) {
+
         if(nums.size()==1)
             return 0;
         else if(nums.size()==2)
@@ -3635,6 +3709,7 @@ public:
             }
         }
         return num;
+
     }
 
     /**
