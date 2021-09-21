@@ -660,6 +660,27 @@ class Solution
 public:
 
     /**
+     * 58. 最后一个单词的长度
+     * **/
+     int lengthOfLastWord(string s) {
+
+        int i,j;
+        int n=s.size();
+        if(n==1)
+            return n;
+        
+        //找右边第一个非空字符
+        i=n-1;
+        while(s[i]==' ') i--;
+        j=i;
+        
+        //找右边非空字符串的第一个空格
+        while(j>=0&&s[j]!=' ') j--;
+        return i-j;
+        
+    }
+
+    /**
      * 673. 最长递增子序列的个数
      * **/
     int findNumberOfLIS(vector<int>& nums) {
