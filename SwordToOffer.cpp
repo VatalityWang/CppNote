@@ -660,6 +660,130 @@ class Solution
 public:
 
     /**
+     * 216. 组合总和 III
+     * **/
+    void combinationSum3Dfs(vector<vector<int>>&res,vector<int>&cur,int k,int n,int index,int &sum){
+        if(sum>n)
+            return;
+        if(cur.size()==k){
+            // int sum=std::accumulate(cur.begin(),cur.end(),0);
+            if(sum==n)
+                res.push_back(cur);
+            return;
+        }
+        
+        //增加剪枝操作
+
+        for(int i=index;i<=9-(k-cur.size())+1;i++){
+            cur.push_back(i);
+            sum+=i;
+            combinationSum3Dfs(res,cur,k,n,i+1,sum);
+            sum-=i;
+            cur.pop_back();
+        }
+    }
+
+    // 选k个数使和等于n
+    vector<vector<int>> combinationSum3(int k, int n) {
+        int sum=0;
+        vector<vector<int>> res;
+        vector<int> cur;
+        combinationSum3Dfs(res,cur,k,n,1,sum);
+        return res;
+    }
+
+     /**
+     * 77. 组合
+     * **/
+    void dfsCombine_(vector<vector<int>>&res,int index,int n,int k,vector<int>&cur){
+        
+        
+        if(cur.size()==k){
+           
+            res.push_back(cur);
+            return;
+        }
+        for(int i=index;i<=n;i++){
+            cur.push_back(i);
+            dfsCombine_(res,i+1,n,k,cur);
+            cur.pop_back();
+        }
+    
+    }
+
+    vector<vector<int>> combine(int n,int k) {
+        vector<vector<int>> res;
+        vector<int> cur;
+        dfsCombine_(res,1,n,k,cur);
+        return res;
+    }
+
+    /**
+     * 725. 分隔链表
+     * **/
+    vector<ListNode*> splitListToParts(ListNode* head, int k) {
+        vector<ListNode*> res;
+        vector<ListNode*> cur;
+        ListNode* pWork=head;
+        ListNode* temp;
+        int num=0;
+
+        while(pWork){
+            pWork=pWork->next;
+            num++;
+        }
+
+        //一个节点一部分，剩下的为空
+        if(num<k){  
+            pWork=head;
+            while(pWork){
+                temp=pWork->next;
+                pWork->next=nullptr;
+                res.push_back(pWork);
+                pWork=temp;
+            }
+            while(res.size()!=k){
+                res.push_back(nullptr);
+            }
+            return res;
+        }
+        else{
+            int avg=num/k;
+            int leave=num%k;
+            int curNum=0;
+
+            cout<<"avg: "<<avg<<" leave: "<<leave<<endl;
+            //前leave部分每个含有节点数：avg+1 个
+            pWork=head;
+
+            while(pWork){   
+
+                temp=pWork->next;
+                res.push_back(pWork);
+                cur.push_back(pWork);
+                
+                //前leave个
+                if(res.size()<=(avg+1)*leave){    
+                    if(cur.size()==avg+1){
+                        pWork->next=nullptr;
+                        cur.clear();
+                    }
+                }
+                //剩余的
+                else{
+                    if(cur.size()==avg){
+                        pWork->next=nullptr;
+                        cur.clear();
+                    }
+                }
+                pWork=temp;
+            }
+            return res;
+        }
+
+    }
+
+    /**
      * 58. 最后一个单词的长度
      * **/
      int lengthOfLastWord(string s) {
@@ -8048,11 +8172,29 @@ class A{
 int main()
 {
 
+    /**
+     * 分割链表
+     * **/
+
+    /**
+     * 77. 组合
+     * **/
+    Solution slu;
+    int n=10;
+    int k=5;
+    vector<vector<int>> res=slu.combine(n,k);
+    cout<<"size: "<<res.size()<<endl;
+    // for(auto &it:res){
+    //     for(auto &im:it)
+    //         cout<<im<<" ";
+    //     cout<<endl;
+    // }
+    cout<<endl;
    /**
     * 测试字符转整数
     * **/
-   char c='a';
-   cout<<int(c)<<endl;
+   /*char c='a';
+   cout<<int(c)<<endl;*/
     // cout<<"哈哈哈"<<endl;
 
 
