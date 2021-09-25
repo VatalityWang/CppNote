@@ -660,6 +660,43 @@ class Solution
 public:
 
     /**
+     * 40. 组合总和 II
+     * **/
+     void combinationSum2Dfs(vector<vector<int>> &res,vector<int>& candidates,int index,int sum,vector<int>&cur, vector<bool> &used){
+        
+        if(sum==0){
+            res.push_back(cur);
+            return;
+        }
+
+        for(int i=index;i<candidates.size()&&sum>=candidates[i];i++){
+            
+            //candidates[i]==candidates[i-1]&&used[i-1]==false, 表示回溯路径构成的树的同一层：当前选择的和上一次选择一样，则没有选择的必要。candidates[i]==candidates[i-1]&&used[i-1]=true则表示回溯路径构成的树同一条路径上某个节点和上一层节点的值相同，不为同一层，可以继续选择。
+            if(i>0&&candidates[i]==candidates[i-1]&&used[i-1]==false)
+                continue;
+          
+            used[i]=true;
+            //选当前
+            cur.push_back(candidates[i]);
+            combinationSum2Dfs(res,candidates,i+1,sum-candidates[i],cur,used);
+            //不选当前
+            cur.pop_back();
+            used[i]=false;
+            
+        }
+    }
+
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        vector<vector<int>> res;
+        vector<int> cur;
+        sort(candidates.begin(),candidates.end());
+        int n=candidates.size();
+        vector<bool> used(n,false);
+        combinationSum2Dfs(res,candidates,0,target,cur,used);
+        return res;
+    }
+
+    /**
      * 216. 组合总和 III
      * **/
     void combinationSum3Dfs(vector<vector<int>>&res,vector<int>&cur,int k,int n,int index,int &sum){
