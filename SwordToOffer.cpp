@@ -660,6 +660,47 @@ class Solution
 public:
 
     /**
+     * 134. 加油站
+     * **/
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int i,j;
+        int n=gas.size();
+        int curGas;
+      
+        int start;
+        int curPos;
+        //遍历n个出发点
+        for(i=0;i<n;i++){
+            start=i;
+            curGas=0;
+            curPos=start;
+            //可以从该位置出发
+            if(cost[curPos]<=gas[curPos]){
+                curGas+=gas[curPos];
+                curGas-=cost[curPos];
+                curPos=(curPos+1)%n;
+                while(curPos!=start){
+                    //获取当前位置油桶里面的汽油
+                    curGas+=gas[curPos];
+                    //驶往下一站。
+                    if(curGas>=cost[curPos]){
+                        curGas-=cost[curPos];
+                        curPos=(curPos+1)%n;
+                    }
+                    //不能去下一站
+                    else
+                        break;
+                }
+                if(curPos==start)
+                    return start;
+            }
+            else
+                continue;
+        }
+        return -1;   
+    }
+
+    /**
      * 40. 组合总和 II
      * **/
      void combinationSum2Dfs(vector<vector<int>> &res,vector<int>& candidates,int index,int sum,vector<int>&cur, vector<bool> &used){
@@ -4290,7 +4331,7 @@ public:
             num.pop();
             if(curnum!=temp){
                 curnum=temp;
-               
+                //equal_range返回一个key为curnum的表示迭代器范围的pair,两个迭代器分别指向第一个key为curnum的第一个迭代器和key为curnum的最后一个迭代器的下一个迭代器
                 for(auto pos=num2element.equal_range(curnum);pos.first!=pos.second;++pos.first)
                     res.push_back(pos.first->second);
             }
@@ -8209,6 +8250,15 @@ class A{
 int main()
 {
 
+    int a[10];
+    for(int i=0;i<10;i++)
+        a[i]=10-i;
+    //最后一个元素的下一个位置
+    sort(a,a+10);
+    for(int i=0;i<10;i++)
+        cout<<a[i]<<" ";
+    cout<<endl;
+
     /**
      * 分割链表
      * **/
@@ -8216,17 +8266,14 @@ int main()
     /**
      * 77. 组合
      * **/
+    /*
     Solution slu;
     int n=10;
     int k=5;
     vector<vector<int>> res=slu.combine(n,k);
     cout<<"size: "<<res.size()<<endl;
-    // for(auto &it:res){
-    //     for(auto &im:it)
-    //         cout<<im<<" ";
-    //     cout<<endl;
-    // }
     cout<<endl;
+    */
    /**
     * 测试字符转整数
     * **/
