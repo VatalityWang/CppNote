@@ -662,6 +662,27 @@ public:
     /**
      * 134. 加油站
      * **/
+     int canCompleteCircuit_(vector<int>& gas, vector<int>& cost) {
+        /*基于贪心的思路*/
+        int curSum=0,totalSum=0;
+        int i,start=0;
+        int n=gas.size();
+        for(i=0;i<n;i++){
+            //累加当前剩余油量
+            curSum+=gas[i]-cost[i];
+            //累加总的剩余油量
+            totalSum+=gas[i]-cost[i];
+
+            //当前剩余油量小于0则只能从下一个位置开始继续行驶
+            if(curSum<0){
+                start=i+1;
+                curSum=0;
+            }
+        }
+        if(totalSum<0)
+            return -1;
+        return start;
+    }
     int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
         int i,j;
         int n=gas.size();
