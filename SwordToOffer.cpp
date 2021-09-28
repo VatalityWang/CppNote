@@ -660,6 +660,35 @@ class Solution
 public:
 
     /**
+     * 435. 无重叠区间
+     * **/
+        int eraseOverlapIntervals(vector<vector<int>>& intervals) {
+        //不重合区间个数
+        int res=0;
+        int i,preRight;
+        sort(intervals.begin(),intervals.end(),[](vector<int> &left,vector<int>& right){return 
+        left[1]<right[1];});
+
+        int n=intervals.size();
+        if(n==1)
+            return res;
+
+        res=1;
+        preRight=intervals[0][1];
+        for(i=0;i<n;i++){
+            //后一个区间左端点>=前一个区间右端点，则计入不重合区间里面，
+            //右端点已经有序
+            if(i>0&&intervals[i][0]>=preRight){
+                res++;
+                preRight=intervals[i][1];
+            }
+            
+        }
+        //总区间个数-不重合的最大区间个数=需要移除的最小区间个数
+        return n-res;
+    }
+
+    /**
      * 134. 加油站
      * **/
      int canCompleteCircuit_(vector<int>& gas, vector<int>& cost) {
