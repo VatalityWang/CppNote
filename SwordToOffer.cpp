@@ -655,6 +655,10 @@ public:
     int num;
 };
 
+bool cmp_(vector<int>&left,vector<int>&right){
+    return left[1]<right[1];
+}
+
 class Solution
 {
 public:
@@ -666,8 +670,8 @@ public:
         //不重合区间个数
         int res=0;
         int i,preRight;
-        sort(intervals.begin(),intervals.end(),[](vector<int> &left,vector<int>& right){return 
-        left[1]<right[1];});
+        auto f=[&](vector<int> &left,vector<int>& right){return left[1]<right[1];};
+        sort(intervals.begin(),intervals.end(),f);
 
         int n=intervals.size();
         if(n==1)
@@ -1528,6 +1532,9 @@ public:
         vector<int> nextEdge(M); 
 
         // 添加边
+        //[&] 表示基于引用的捕获方式
+        //[&] 采用值捕获方式
+        //为空则不捕获
         auto addEdge=[&](int a,int b){
             edgeEnd[edgeIndex]=b;
             nextEdge[edgeIndex]=head[a]; //该边下一条边对应的头节点
@@ -2564,6 +2571,33 @@ public:
             res.push_back(newPos-i+1);
             occurs.clear();
             i=newPos;
+        }
+        return res;
+    }
+    //once again
+     vector<int> partitionLabels(string s) {
+        vector<int> res;
+        //存每一个字符出现的最大的位置(最后一次出现)
+        map<char,int> char2pos;
+        int i,j;
+      
+        for(i=0;i<s.size();i++)
+            char2pos[s[i]]=i;
+
+        for(i=0;i<s.size();i++){
+            int start=i;
+            int end=char2pos[s[start]];
+            for(j=start+1;j<end;j++){
+             
+                //更新字符区间尾位置
+                if(char2pos[s[j]]>end){
+                    end=char2pos[s[j]];
+                    
+                }
+
+            }
+            res.push_back(end-start+1);
+            i=end;
         }
         return res;
     }
