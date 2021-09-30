@@ -663,6 +663,36 @@ class Solution
 {
 public:
 
+
+    /**
+     * 35. 搜索插入位置
+     * **/
+    int searchInsert(vector<int>& nums, int target) {
+        int mid;
+        int n=nums.size();
+        int left=0,right=n-1;
+       
+        while(left<=right){
+            mid=(left+right)>>1;
+            if(nums[mid]>target){
+             
+                right=mid-1;
+            }
+            else if(nums[mid]<target){
+             
+                left=mid+1;
+            }
+            else
+                return mid;
+        }
+        // 分别处理如下四种情况
+        // 目标值在数组所有元素之前  [0, -1]
+        // 目标值等于数组中某一个元素  return middle;
+        // 目标值插入数组中的位置 [left, right]，return  right + 1
+        // 目标值在数组所有元素之后的情况 [left, right]， return right + 1
+        return right+1;
+    }
+
     /**
      * 435. 无重叠区间
      * **/
@@ -2575,7 +2605,7 @@ public:
         return res;
     }
     //once again
-     vector<int> partitionLabels(string s) {
+     vector<int> partitionLabels__(string s) {
         vector<int> res;
         //存每一个字符出现的最大的位置(最后一次出现)
         map<char,int> char2pos;
@@ -8331,9 +8361,21 @@ class A{
 
 #if 1
 
+struct  int_
+{
+    int int1:1;
+    int  : 0;
+    int int2:2;
+    int int3:31;
+    int int4:5;
+};
+
+
 int main()
 {
-
+    cout<<"sizeof(int): "<<sizeof(int)<<endl;
+    cout<<sizeof(struct int_)<<endl;
+    /*
     int a[10];
     for(int i=0;i<10;i++)
         a[i]=10-i;
@@ -8342,7 +8384,7 @@ int main()
     for(int i=0;i<10;i++)
         cout<<a[i]<<" ";
     cout<<endl;
-
+    */
     /**
      * 分割链表
      * **/
