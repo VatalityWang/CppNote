@@ -166,6 +166,76 @@ bool static compare(const T &v1,const T &v2){
 }
 
 
+/*
+* 输入序列建立二叉树
+**/
+TreeNode *CreateBTree(TreeNode *bt)
+{
+    int val = list_node_val[counter++];
+    printf("counter %d\n", counter);
+    if (counter > 16)
+        return NULL;
+    // fflush(stdin);
+    // printf("please input val:\n");
+    // scanf("%d",&val);
+    // fflush(stdin);
+    if (val != -1)
+    {
+
+        bt = new TreeNode(val);
+        bt->left = CreateBTree(bt->left);
+        bt->right = CreateBTree(bt->right);
+        return bt;
+    }
+    else
+        // cout<<"current node pointer "<<bt<<endl;
+        return NULL;
+}
+
+void travserse_tree(TreeNode *root)
+{
+    if (root)
+    {
+        printf("%d\n", root->val);
+        travserse_tree(root->left);
+        travserse_tree(root->right);
+    }
+    else
+        return;
+}
+
+
+void print_variable_name(){
+    string a("hello");
+    cout<<typeid(a).name()<<endl;
+}
+
+void printMultimap(multimap<int,int>&order){
+    multimap<int,int> ::iterator it=order.begin();
+    while(it!=order.end()){
+        cout<<it->first<<" "<<it->second<<endl;
+        it++;
+    }
+    cout<<endl;
+}
+
+class A{
+    virtual void f();
+    char a;
+    static int * p;
+};
+/*
+struct  int_
+{
+    int int1:1;
+    int  : 0;
+    int int2:2;
+    int int3:31;
+    int int4:5;
+};
+*/
+
+
 bool static compare_string_by_number(const string &v1,const string &v2){
    return v1+v2>v2+v1;
 }
@@ -663,7 +733,32 @@ class Solution
 {
 public:
 
-
+    /**
+     * 714. 买卖股票的最佳时机含手续费
+     * **/
+    int maxProfit(vector<int>& prices, int fee) {
+        int i;
+        int n=prices.size();
+       
+        int minPrice=prices[0];
+        int res=0;
+        for(i=0;i<n;i++){
+            //更新截至目前的最小价格
+            if(minPrice>prices[i])
+                minPrice=prices[i];
+            // 不会获得收益直接跳过
+            if(minPrice<=prices[i]&&prices[i]<=minPrice+fee)
+                continue;
+            //并不是真的就出手了，只是暂时计算受益，如果后面有更高的价格，还会累计收益。
+            // minPrice=prices[i]-fee; 更新后下一次判断时，minPrice+fee=price[j],j在i的前面，然后累加收益。
+            else if(minPrice+fee<=prices[i]){
+                res+=prices[i]-minPrice-fee;
+                minPrice=prices[i]-fee;
+            }
+                
+        }
+        return res;
+    }
     /**
      * 35. 搜索插入位置
      * **/
@@ -8300,81 +8395,15 @@ private:
     ListNode * frontpointer;
 };
 
-/*
-* 输入序列建立二叉树
-**/
-TreeNode *CreateBTree(TreeNode *bt)
-{
-    int val = list_node_val[counter++];
-    printf("counter %d\n", counter);
-    if (counter > 16)
-        return NULL;
-    // fflush(stdin);
-    // printf("please input val:\n");
-    // scanf("%d",&val);
-    // fflush(stdin);
-    if (val != -1)
-    {
-
-        bt = new TreeNode(val);
-        bt->left = CreateBTree(bt->left);
-        bt->right = CreateBTree(bt->right);
-        return bt;
-    }
-    else
-        // cout<<"current node pointer "<<bt<<endl;
-        return NULL;
-}
-
-void travserse_tree(TreeNode *root)
-{
-    if (root)
-    {
-        printf("%d\n", root->val);
-        travserse_tree(root->left);
-        travserse_tree(root->right);
-    }
-    else
-        return;
-}
-
-
-void print_variable_name(){
-    string a("hello");
-    cout<<typeid(a).name()<<endl;
-}
-
-void printMultimap(multimap<int,int>&order){
-    multimap<int,int> ::iterator it=order.begin();
-    while(it!=order.end()){
-        cout<<it->first<<" "<<it->second<<endl;
-        it++;
-    }
-    cout<<endl;
-}
-
-class A{
-    virtual void f();
-    char a;
-    static int * p;
-};
-
 #if 1
 
-struct  int_
-{
-    int int1:1;
-    int  : 0;
-    int int2:2;
-    int int3:31;
-    int int4:5;
-};
 
 
 int main()
 {
+    /*
     cout<<"sizeof(int): "<<sizeof(int)<<endl;
-    cout<<sizeof(struct int_)<<endl;
+    cout<<sizeof(struct int_)<<endl;*、
     /*
     int a[10];
     for(int i=0;i<10;i++)
