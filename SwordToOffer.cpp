@@ -732,6 +732,21 @@ bool cmp_(vector<int>&left,vector<int>&right){
 class Solution
 {
 public:
+    /*
+    * 405. 数字转换为十六进制数
+    */
+    string toHex(int num) {
+        string res;
+        if(num==0)
+            return "0";
+        string hex="0123456789abcdef";
+        while(num&&res.size()<8){
+            res=hex[num&0xf]+res;
+            num>>=4;
+        }
+        return res;        
+    }
+
 
     /**
      * 714. 买卖股票的最佳时机含手续费
@@ -8395,12 +8410,15 @@ private:
     ListNode * frontpointer;
 };
 
-#if 1
+
 
 
 
 int main()
 {
+
+    return 0;
+}
     /*
     cout<<"sizeof(int): "<<sizeof(int)<<endl;
     cout<<sizeof(struct int_)<<endl;*、
@@ -8552,7 +8570,7 @@ int main()
     // string str=std::to_string(a);
     // cout<<str<<endl;
 
-    return 0;
+    
 
     #if 0
     map<int,int> statistics;
@@ -8770,5 +8788,4 @@ int main()
         for (auto im:it)
             cout<<im<<endl;
 #endif
-}
-#endif
+
