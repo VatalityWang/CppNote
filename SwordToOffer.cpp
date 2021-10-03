@@ -732,6 +732,55 @@ bool cmp_(vector<int>&left,vector<int>&right){
 class Solution
 {
 public:
+
+    /**
+     * 166. 分数到小数
+     * **/
+    string fractionToDecimal(int numerator, int denominator) {
+        string division;
+        double res;
+        int flag=1;
+        map<int,int> remain2pos;//记录余数出现的位置
+        map<int,int>::iterator it;
+        res=double(numerator)/denominator;
+        
+        if(res<0)
+            flag=-1;
+        
+        if(flag==-1)
+            division.push_back('-');
+        
+        unsigned long numerator_=abs(numerator);
+        unsigned long denominator_=abs(denominator);
+        
+        long div=numerator_/denominator_;
+        division+=std::to_string(div);
+        long remainder=numerator_%denominator_;
+       
+        if(remainder)
+            division+=".";
+
+        while(remainder){
+            it=remain2pos.find(remainder);
+            //出现重复余数，则小数部分会重复
+            if(it!=remain2pos.end()){
+                int pos=remain2pos[remainder];
+                string repetDivision=division.substr(remain2pos[remainder],division.size()-pos);
+                division=division.substr(0,pos);
+                division+="(";
+                division+=repetDivision;
+                division+=")";
+                return division;
+            }
+            numerator_=remainder*10;
+            div=numerator_/denominator_;
+            division+=std::to_string(div);
+            remain2pos[remainder]=division.size()-1;
+            remainder=numerator_%denominator_;    
+        }
+        return division;
+    }
+
     /**
      * 36. 有效的数独
      * 
