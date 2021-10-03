@@ -732,6 +732,52 @@ bool cmp_(vector<int>&left,vector<int>&right){
 class Solution
 {
 public:
+    /**
+     * 36. 有效的数独
+     * 
+    */
+    bool isValidSudoku(vector<vector<char>>& board) {
+        vector<set<char>> rowsChar(9);//行
+        vector<set<char>> columnsChar(9);//列
+        vector<set<char>> internalChar(9);//内部的9*9宫格
+        int i,j;
+        int m=board.size();
+        int n=board[0].size();
+        bool res=true;
+        for(i=0;res&&i<m;i++){
+            for(j=0;res&&j<n;j++){
+                if('1'<=board[i][j]&&board[i][j]<='9'){
+                    
+                    if(rowsChar[i].count(board[i][j])){
+                        
+                        res=false;
+                        break;
+                    }
+                    else
+                        rowsChar[i].insert(board[i][j]); 
+                    
+                    if(columnsChar[j].count(board[i][j])){
+                       
+                        res=false;
+                        break;
+                    }
+                    else
+                        columnsChar[j].insert(board[i][j]);
+
+                    if(internalChar[i/3*3+j/3].count(board[i][j])){
+                       
+                        res=false;
+                        break;
+                    }
+                    else
+                        internalChar[i/3*3+j/3].insert(board[i][j]);
+                }
+            }
+
+        }
+        return res;
+    }
+
     /*
     * 405. 数字转换为十六进制数
     */
