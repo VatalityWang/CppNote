@@ -734,6 +734,42 @@ class Solution
 public:
 
     /**
+     * 482. 密钥格式化
+     * **/
+     string licenseKeyFormatting(string s, int k) {
+        int i;
+        string res;
+        int nChar=0;
+        int curCharN=0;
+        int n=s.size();
+
+        for(i=0;i<n;i++){
+            if(s[i]!='-')
+                nChar++;
+        }
+
+        //第一个分组字符串长度
+        int firstStrN=nChar%k;
+        if(!firstStrN)
+            firstStrN=k;
+        for(i=0;i<n;i++){
+            if(s[i]!='-'){
+                //小写转大写
+                if('a'<=s[i]&&s[i]<='z')
+                    s[i]-=32;
+                res+=s[i];
+                curCharN++;
+                if(curCharN==firstStrN){
+                    res+='-';
+                    firstStrN=k;
+                    curCharN=0;
+                }
+            }
+        }
+        return res.substr(0,res.size()-1);
+    }
+
+    /**
      * 166. 分数到小数
      * **/
     string fractionToDecimal(int numerator, int denominator) {
