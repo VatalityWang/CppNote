@@ -734,40 +734,84 @@ class Solution
 public:
 
     /**
-     * 482. 密钥格式化
+     * 131. 分割回文串
      * **/
-     string licenseKeyFormatting(string s, int k) {
-        int i;
-        string res;
-        int nChar=0;
-        int curCharN=0;
-        int n=s.size();
-
-        for(i=0;i<n;i++){
-            if(s[i]!='-')
-                nChar++;
+    void backTracking(vector<string> &cur,vector<vector<string>> &res,string&s,int startIndex){
+        // startIndex为切割起始位置，起始位置大于字符串总长度，说明已经切割完毕，找到了一种切割方案
+        //startIndex=s.size()时，上一次传参必为startIndex=s.size()-1,说明调用backTracking所在循环中的字符串最后一位往前数到某一位(旧的startIndex)之间的字符串是回文字符串，这样才能进入下一次回溯过程。
+        if(startIndex>=s.size()){
+            res.push_back(cur);
+            return;
         }
+            
+        for(int i=startIndex;i<s.size();i++){
 
-        //第一个分组字符串长度
-        int firstStrN=nChar%k;
-        if(!firstStrN)
-            firstStrN=k;
-        for(i=0;i<n;i++){
-            if(s[i]!='-'){
-                //小写转大写
-                if('a'<=s[i]&&s[i]<='z')
-                    s[i]-=32;
-                res+=s[i];
-                curCharN++;
-                if(curCharN==firstStrN){
-                    res+='-';
-                    firstStrN=k;
-                    curCharN=0;
-                }
+            if(isPlalindrome(s,startIndex,i)){
+                string temp=s.substr(startIndex,i-startIndex+1);
+                cur.push_back(temp);
+                backTracking(cur,res,s,i+1);
+                cur.pop_back();
             }
         }
-        return res.substr(0,res.size()-1);
+        
     }
+
+    //判断回文子串
+    bool isPlalindrome(string&s,int start,int end){
+        if(start==end)
+            return true;
+        int i=start,j=end;
+        while(i<=j&&s[i]==s[j]){
+            i++;
+            j--;
+        }
+        if(i>j)
+            return true;
+        else
+            return false;
+    }
+
+    vector<vector<string>> partition(string s) {
+        vector<string> cur;
+        vector<vector<string>> res;
+        backTracking(cur,res,s,0);
+        return res;
+    }
+    /**
+     * 482. 密钥格式化
+     * **/
+        string licenseKeyFormatting(string s, int k) {
+            int i;
+            string res;
+            int nChar=0;
+            int curCharN=0;
+            int n=s.size();
+
+            for(i=0;i<n;i++){
+                if(s[i]!='-')
+                    nChar++;
+            }
+
+            //第一个分组字符串长度
+            int firstStrN=nChar%k;
+            if(!firstStrN)
+                firstStrN=k;
+            for(i=0;i<n;i++){
+                if(s[i]!='-'){
+                    //小写转大写
+                    if('a'<=s[i]&&s[i]<='z')
+                        s[i]-=32;
+                    res+=s[i];
+                    curCharN++;
+                    if(curCharN==firstStrN){
+                        res+='-';
+                        firstStrN=k;
+                        curCharN=0;
+                    }
+                }
+            }
+            return res.substr(0,res.size()-1);
+        }
 
     /**
      * 166. 分数到小数
@@ -4955,7 +4999,7 @@ public:
             while(index<=rightPos&&preorder[index]<preorder[leftPos])
                 index++;
             
-            //传入左右子树下标范围
+            //传入左右��树下标范围
             root->left=bstFromPreorder(preorder,leftPos+1,index-1);
             root->right=bstFromPreorder(preorder,index,rightPos);
             return root;
