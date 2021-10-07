@@ -6809,6 +6809,52 @@ public:
         return res;
     }
 
+    //len表示当前子集的大小
+    void backTrackingSubsets(vector<vector<int>>&res,vector<int>&cur,int len,int startIndex,vector<int>&nums){
+        if(cur.size()==len){
+            res.push_back(cur);
+            return;
+        }
+        if(startIndex==nums.size())
+            return;
+        for(int i=startIndex;i<nums.size();i++){
+            cur.push_back(nums[i]);
+            backTrackingSubsets(res,cur,len,i+1,nums);
+            cur.pop_back();
+        }
+    }
+
+    vector<vector<int>> subsets__(vector<int>& nums) {
+        vector<vector<int>> res;
+        vector<int> cur;
+        int i;
+        for(i=0;i<=nums.size();i++){
+            backTrackingSubsets(res,cur,i,0,nums);
+        }
+        return res;
+    }
+
+
+   
+    //遍历整棵树
+    void backTrackingAllTree(vector<vector<int>>&res,vector<int>&cur,int startIndex,vector<int>&nums){
+        res.push_back(cur);
+        if(startIndex==nums.size())
+            return;
+        for(int i=startIndex;i<nums.size();i++){
+            cur.push_back(nums[i]);
+            backTrackingAllTree(res,cur,i+1,nums);
+            cur.pop_back();
+        }
+    }
+
+    vector<vector<int>> subsets___(vector<int>& nums) {
+        vector<vector<int>> res;
+        vector<int> cur; 
+        backTrackingAllTree(res,cur,0,nums);
+        return res;
+    }
+
     /**
      * 删除并获得点数
      * **/
