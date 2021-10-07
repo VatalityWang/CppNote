@@ -734,6 +734,27 @@ class Solution
 public:
 
     /**
+     * 434. 字符串中的单词数
+     * **/
+     int countSegments(string s) {
+        int ans=0;
+
+        //统计连续字符串个数
+        int i=0;
+        int n=s.size();
+        while(i<n){
+            if(s[i]!=' '){
+                ans++;
+                while(i<n&&s[i]!=' ')
+                    i++;
+            }
+            else
+                i++;
+        }
+        return ans;
+    }
+
+    /**
      * 131. 分割回文串
      * **/
     void backTracking(vector<string> &cur,vector<vector<string>> &res,string&s,int startIndex){
@@ -8591,7 +8612,12 @@ private:
 
 int main()
 {
-
+    set<int,greater<int>> cur;
+    for(int i=4;i>=0;i--)
+        cur.insert(i);
+    for(auto &it:cur)
+        cout<<it<<" ";
+    cout<<endl;
     return 0;
 }
     /*
