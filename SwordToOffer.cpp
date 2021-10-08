@@ -734,6 +734,30 @@ class Solution
 public:
 
     /**
+     * 187. 重复的DNA序列
+     * **/
+    vector<string> findRepeatedDnaSequences(string s) {
+        int i;
+        int end;
+        int n=s.size();
+        vector<string> res;
+        map<string,int> statistics;
+
+        for(i=0;i<n;i++){
+            if((end=i+9)<n){
+                statistics[s.substr(i,10)]++;
+            }
+        }
+
+        for(auto&it:statistics){
+            if(it.second>1)
+                res.push_back(it.first);
+        }
+
+        return res;
+    }
+
+    /**
      * 434. 字符串中的单词数
      * **/
      int countSegments(string s) {
