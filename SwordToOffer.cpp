@@ -733,6 +733,66 @@ class Solution
 {
 public:
 
+
+    /**
+     * 441. 排列硬币
+     * **/
+     int arrangeCoins(int n) {
+        int i=1;
+        long long sum=0;
+        int ans;
+        while(sum<n){
+            sum+=i;
+            if(sum>n){
+                ans=i-1;
+            }
+            else if(sum==n)
+                ans=i;
+            i++;
+        }
+        return ans;
+    }
+
+    /**
+     * 491. 递增子序列
+     * **/
+    void backTrackingSubsequence(vector<int>&nums,vector<int>&cur, vector<vector<int>>&res,int startIndex){
+        if(cur.size()>=2)
+            res.push_back(cur);
+        if(startIndex==nums.size())
+            return;
+        //对本层元素进行去重
+        unordered_set<int> curLevel;
+
+        for(int i=startIndex;i<nums.size();i++){
+
+            //遍历树第一层 
+            if(!cur.size()&&curLevel.find(nums[i])==curLevel.end()){
+                //if(curLevel.find(nums[i])==curLevel.end()){
+                    cur.push_back(nums[i]);
+                    curLevel.insert(nums[i]);
+                    backTrackingSubsequence(nums,cur,res,i+1);
+                    cur.pop_back();
+                //}
+            }
+            else{
+                if(nums[i]>=cur.back()&&curLevel.find(nums[i])==curLevel.end()){
+                    curLevel.insert(nums[i]);
+                    cur.push_back(nums[i]);
+                    backTrackingSubsequence(nums,cur,res,i+1);
+                    cur.pop_back();
+                }
+            }
+        }
+    }
+
+    vector<vector<int>> findSubsequences(vector<int>& nums) {
+        vector<vector<int>> res;
+        vector<int> cur;
+        backTrackingSubsequence(nums,cur,res,0);
+        return res;
+    }
+
     /**
      * 118. 杨辉三角
      * **/
@@ -8706,12 +8766,16 @@ private:
 
 int main()
 {
-    set<int,greater<int>> cur;
-    for(int i=4;i>=0;i--)
-        cur.insert(i);
-    for(auto &it:cur)
-        cout<<it<<" ";
-    cout<<endl;
+    Solution slu;
+    vector<int> input{4,6,7,7};
+    vector<vector<int>> res;
+    res=slu.findSubsequences(input);
+    for(auto&it:res){
+        for(auto&im:it){
+            cout<<im<<" ";
+        }
+        cout<<endl;
+    }
     return 0;
 }
     /*
