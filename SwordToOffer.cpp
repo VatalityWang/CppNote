@@ -737,6 +737,19 @@ public:
     /**
      * 441. 排列硬币
      * **/
+    int arrangeCoins_(int n) {
+        int ans;
+        
+        ans=int(sqrt(2*long(n)));
+
+        long multi=long(ans)*(ans+1);
+
+        if(multi>long(n)*2)
+            ans-=1;
+        
+        return ans;
+    }
+
      int arrangeCoins(int n) {
         int i=1;
         long long sum=0;
