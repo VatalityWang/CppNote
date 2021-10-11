@@ -733,6 +733,69 @@ class Solution
 {
 public:
 
+    /**
+     * 401. 二进制手表
+     * **/
+     void getNumber(int total,int num,int startIndex,vector<int>&cur,vector<string>&nums){
+      
+        if(cur.size()==num){
+            //cout<<"num: "<<num<<endl;
+            int temp=0;
+            for(auto x:cur)
+                temp+=pow(2,x);
+            if(total==4&&0<=temp&&temp<=11){
+                nums.push_back(std::to_string(temp));
+            }
+            if(total==6&&0<=temp&&temp<=59){
+                if(temp==0){
+                    nums.push_back("00");
+                }else if(1<=temp&&temp<=9){
+                    string str="0";
+                    str+=std::to_string(temp);
+                    nums.push_back(str);
+                }else{
+                     nums.push_back(std::to_string(temp));
+                }
+            }
+        }
+
+        if(startIndex==total)
+            return;
+        for(int i=startIndex;i<total;i++){
+            cur.push_back(i);
+            getNumber(total,num,i+1,cur,nums);
+            cur.pop_back();
+        }
+        
+    }
+
+    void getTime(int hourNum,int minuteNum,vector<string>&res){
+        // cout<<"hourNum: "<<hourNum<<" minuteNum: "<<minuteNum<<endl;
+        vector<int> hourCur;
+        vector<string> hourNums;
+        vector<int> minuteCur;
+        vector<string> minuteNums;
+        getNumber(4,hourNum,0,hourCur,hourNums);
+        getNumber(6,minuteNum,0,minuteCur,minuteNums);
+        for(int i=0;i<hourNums.size();i++){
+            for(int j=0;j<minuteNums.size();j++){
+                res.push_back(hourNums[i]+":"+minuteNums[j]);
+            }
+        }
+        
+    }
+
+    vector<string> readBinaryWatch(int turnedOn) {
+        vector<string> res;
+        string cur;
+        for(int i=0;i<=4;i++){
+            for(int j=0;j<=6;j++){
+                if(i+j==turnedOn)
+                    getTime(i,j,res);
+            }
+        }
+        return res;
+    }
 
     /**
      * 441. 排列硬币
