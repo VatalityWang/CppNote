@@ -797,6 +797,29 @@ public:
         return res;
     }
 
+    int getOneNum(int n){
+        int res=0;
+        while(n){
+            n=n&(n-1);
+            res++;
+        }
+        return res;
+    }
+
+    vector<string> readBinaryWatch_(int turnedOn) {
+
+        vector<string> res;
+        for(int i=0;i<=11;i++){
+            for(int j=0;j<=59;j++){
+                if(getOneNum(i)+getOneNum(j)==turnedOn){
+                    res.push_back(std::to_string(i)+":"+(j<=9?"0"+std::to_string(j):std::to_string(j)));
+                }  
+            }
+        }
+        return res;
+
+    }
+
     /**
      * 441. 排列硬币
      * **/
