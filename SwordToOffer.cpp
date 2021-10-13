@@ -7156,7 +7156,7 @@ public:
     }
 
     /**
-     * 买卖股票的最佳时期
+     * 121. 买卖股票的最佳时机
      * **/
     int maxProfit_(vector<int>& prices) {
         int minprice=INT_MAX;
@@ -7167,6 +7167,27 @@ public:
             max_profit=max(max_profit,prices[i]-minprice);
         }
         return max_profit;
+    }
+
+    // 基于动态规划的算法
+    int maxProfit__(vector<int>& prices) {
+        
+        //基于动态规划的算法
+        int n=prices.size();
+        if(n==1)
+            return 0;
+        //dp[n][0]: 第i天持有股票所获得的收益；dp[n][1]:第i天不持有股票所获得的收益
+        vector<vector<int>> dp(n,vector<int>(2));
+        dp[0][0]=-prices[0];
+        dp[0][1]=0;
+        for(int i=1;i<n;i++){
+
+            // 第i天持有：max(第i-1天持有；第i-1天不持有，第i天买入);
+            dp[i][0]=max(dp[i-1][0],-prices[i]);
+            // 第i天不持有：max(第i-1天不持有;第i-1天持有，第i天卖出)
+            dp[i][1]=max(dp[i-1][1],dp[i-1][0]+prices[i]);
+        }
+        return max(dp[n-1][0],dp[n-1][1]);
     }
 
     /**
