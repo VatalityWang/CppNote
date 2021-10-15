@@ -734,6 +734,72 @@ class Solution
 public:
 
     /**
+     * 29. 两数相除 
+     * **/
+     long count_(long dividend,long divisor){
+        if(dividend==divisor)
+            return 1;
+        else if(dividend<divisor)
+            return 0;
+        
+        long res=1;
+        long temp=divisor;
+        while(temp*2<dividend){
+            res*=2;
+            temp*=2;
+        }
+       
+        return res+count_(dividend-temp,divisor);
+    }
+
+    int divide__(int dividend, int divisor) {
+
+        int flag=1;
+
+        if(!dividend)
+            return 0;
+        
+        if((dividend>0&&divisor<0)||(dividend<0&&divisor>0))
+            flag=-1;
+
+        dividend=long(dividend);
+        divisor=long(divisor);
+
+        long absDividend=labs(dividend);
+
+        long absDivisor=labs(divisor);
+
+        if(absDividend<absDivisor){
+           
+            return 0;
+        }
+        
+        else if(absDividend==absDivisor){
+           
+            return flag;
+        }
+
+        long res=count_(absDividend,absDivisor);
+
+        cout<<"res: "<<res<<endl;
+       
+       long boundary=INT_MAX+long(1);
+      
+
+        //负数越界
+        if(flag<0&&res>boundary){
+          
+            return INT_MAX;
+        }
+        
+        //正数越界
+        if(flag>0&&res>=INT_MAX)
+            return INT_MAX;
+        
+        return flag*res;
+    }
+
+    /**
      * 401. 二进制手表
      * **/
      void getNumber(int total,int num,int startIndex,vector<int>&cur,vector<string>&nums){
@@ -7177,17 +7243,20 @@ public:
         if(n==1)
             return 0;
         //dp[n][0]: 第i天持有股票所获得的收益；dp[n][1]:第i天不持有股票所获得的收益
-        vector<vector<int>> dp(n,vector<int>(2));
+        vector<vector<int>> dp(2,vector<int>(2));
         dp[0][0]=-prices[0];
         dp[0][1]=0;
         for(int i=1;i<n;i++){
 
             // 第i天持有：max(第i-1天持有；第i-1天不持有，第i天买入);
-            dp[i][0]=max(dp[i-1][0],-prices[i]);
+            dp[1][0]=max(dp[0][0],-prices[i]);
+            dp[0][0]=dp[1][0];
+
             // 第i天不持有：max(第i-1天不持有;第i-1天持有，第i天卖出)
-            dp[i][1]=max(dp[i-1][1],dp[i-1][0]+prices[i]);
+            dp[1][1]=max(dp[0][1],dp[0][0]+prices[i]);
+            dp[0][1]=dp[1][1];
         }
-        return max(dp[n-1][0],dp[n-1][1]);
+        return max(dp[1][0],dp[1][1]);
     }
 
     /**
@@ -8887,18 +8956,12 @@ private:
 int main()
 {
     Solution slu;
-    vector<int> input{4,6,7,7};
-    vector<vector<int>> res;
-    res=slu.findSubsequences(input);
-    for(auto&it:res){
-        for(auto&im:it){
-            cout<<im<<" ";
-        }
-        cout<<endl;
-    }
+    int dividend=INT_MIN,divisor=1;
+    cout<<slu.divide__(dividend,divisor)<<endl;
+   
     return 0;
 }
-    /*
+    /*  
     cout<<"sizeof(int): "<<sizeof(int)<<endl;
     cout<<sizeof(struct int_)<<endl;*、
     /*
