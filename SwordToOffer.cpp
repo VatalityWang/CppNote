@@ -817,49 +817,124 @@ public:
         return nums.top();
     }
 
-    void getExpressions(string &num,int startIndex, vector<string>&expressions,string&cur,int target){
+    vector<string> addOperators_(string num, int target) {
+        int n = num.length();
+        vector<string> ans;
+
+        function<void(string&, int, long, long)> backtrack = [&](string &expr, int i, long res, long mul) {
+            if (i == n) {
+                if (res == target) {
+                    ans.emplace_back(expr);
+                }
+                return;
+            }
+            int signIndex = expr.size();
+           
+            if (i > 0) {
+                expr.push_back(0); // 占位，下面填充符号
+            }
+            long val = 0;
+            // 枚举截取的数字长度（取多少位），注意数字可以是单个 0 但不能有前导零
+            for (int j = i; j < n && (j == i || num[i] != '0'); ++j) {
+                val = val * 10 + num[j] - '0';
+                expr.push_back(num[j]);
+                if (i == 0) { // 表达式开头不能添加符号
+                    backtrack(expr, j + 1, val, val);
+                } else { // 枚举符号
+                   
+                    expr[signIndex] = '+'; backtrack(expr, j + 1, res + val, val);
+                    expr[signIndex] = '-'; backtrack(expr, j + 1, res - val, -val);
+                    expr[signIndex] = '*'; backtrack(expr, j + 1, res - mul + mul * val, mul * val);
+                }
+            }
+            expr.resize(signIndex);
+        };
+
+        string expr;
+        backtrack(expr, 0, 0, 0);
+        return ans;
+    }
+
+    void getExpressionBacktrack(string&num,string &expr, int i, long res, long mul,int target,vector<string>&ans) {
+            if (i == num.size()) {
+                if (res == target) {
+                    ans.emplace_back(expr);
+                }
+                return;
+            }
+            int signIndex = expr.size();
+          
+            if (i > 0) {
+                expr.push_back(0); // 占位，下面填充符号
+            }
+            long val = 0;
+            // 枚举截取的数字长度（取多少位），注意数字可以是单个 0 但不能有前导零
+            for (int j = i; j < num.size() && (j == i || num[i] != '0'); ++j) {
+                val = val * 10 + num[j] - '0';
+                expr.push_back(num[j]);
+                if (i == 0) { // 表达式开头不能添加符号
+                    getExpressionBacktrack(num,expr, j + 1, val, val,target,ans);
+                } else { // 枚举符号
+                    
+                    expr[signIndex] = '+'; getExpressionBacktrack(num,expr, j + 1, res + val, val,target,ans);
+                    expr[signIndex] = '-'; getExpressionBacktrack(num,expr, j + 1, res - val, -val,target,ans);
+                    expr[signIndex] = '*'; getExpressionBacktrack(num,expr, j + 1, res - mul + mul * val, mul * val,target,ans);
+                }
+            }
+            expr.resize(signIndex);
+        };
+
+
+    void getExpressions(string &num,int startIndex, vector<string>&expressions,string&cur,int target,long curNumber,long multi){
         /*
         * 回溯求算术表达式字符串
         */
+       
         if(startIndex==num.size()){
-            bool isValid=true;
-            if(cur.size()>num.size()&&getCalucate(cur,isValid)==target)
+            
+            if(curNumber==target)
             {
-                if(isValid){
-                    // cout<<cur<<endl;
-                    expressions.push_back(cur);
-                }
+                expressions.push_back(cur);
+                
             }
             return;
         }
-        for(int i=startIndex;i<num.size();i++){
-            int curlen=cur.size();
-            cur+=num.substr(startIndex,i-startIndex+1);
+        int curlen=cur.size();
+        
+        if(startIndex>0)
+            cur.push_back(0);
+        long val=0;
+        for(int i=startIndex;i<num.size()&&(i==startIndex||num[startIndex]!='0');i++){
+            val=val*10+num[i]-'0';
+            cur.push_back(num[i]);
+            //第一个数字字符后不需要添加运算符
+            if(startIndex==0)
+                getExpressions(num,i+1,expressions,cur,target,val,val);
+            else{
+               
 
-            if(i!=num.size()-1){
-                cur+="*";
-                getExpressions(num,i+1,expressions,cur,target);
-                cur.pop_back();
+                cur[curlen]='+';
+                getExpressions(num,i+1,expressions,cur,target,curNumber+val,val);
+               
+            
+                cur[curlen]='-';
+                getExpressions(num,i+1,expressions,cur,target,curNumber-val,-val);
+                
 
-                cur+="+";
-                getExpressions(num,i+1,expressions,cur,target);
-                cur.pop_back();
-            
-            
-                cur+="-";
-                getExpressions(num,i+1,expressions,cur,target);
-                cur.pop_back();
+                cur[curlen]='*';
+                getExpressions(num,i+1,expressions,cur,target,curNumber-multi+val*multi,val*multi);
+                
             }
-            else
-                getExpressions(num,i+1,expressions,cur,target);
-            cur=cur.substr(0,curlen);
+           
         }
+        cur.resize(curlen);
     }
 
     vector<string> addOperators(string num, int target) {
         vector<string> expressions;
         string cur;
-        getExpressions(num,0,expressions,cur,target);
+        getExpressions(num,0,expressions,cur,target,0,0);
+        // getExpressionBacktrack(num,cur,0,0,0,target,expressions);
         return expressions;
     }
 
@@ -9099,9 +9174,9 @@ private:
 int main()
 {
     Solution slu;
-    string input="3456237490";
+    string input="105";
 
-    int target=9191;
+    int target=5;
     vector<string>res=slu.addOperators(input,target);
     for(auto&it:res)
         cout<<it<<endl;
