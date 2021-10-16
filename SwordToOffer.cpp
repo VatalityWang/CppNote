@@ -733,6 +733,136 @@ class Solution
 {
 public:
 
+
+    /**
+     * 282. 给表达式添加运算符
+     * **/
+    int getNum(string &nums){
+        int ans=0;
+        int temp=1;
+        for(int i=nums.size()-1;i>=0;i--){
+            ans+=(nums[i]-'0')*temp;
+            temp*=10;
+        }
+        return ans;
+    }
+
+
+    int getCalucate(string expression,bool &isValid){
+        /*
+        * 计算表达式字符串如:2*3+2的值
+        */
+       cout<<expression<<endl;
+        stack<char> operators;
+        stack<int> nums;
+        string temp;
+        int top1,top2;
+        for(int i=0;i<expression.size();i++){
+            //数字
+            if('0'<=expression[i]&&expression[i]<='9'){
+               temp+=expression[i]; 
+            }
+            //运算符
+            else {
+                if(temp.size()){
+
+                    //不合法的数字字符串
+                    if(temp[0]=='0'&&temp.size()>1)
+                        isValid=false;
+                    nums.push(getNum(temp));
+                    temp.clear();
+                    if(operators.size()&&operators.top()=='*'){
+                        top1=nums.top();
+                        nums.pop();
+                        top2=nums.top();
+                        nums.pop();
+                        nums.push(top1*top2);
+                        operators.pop();
+                    }
+                }
+                operators.push(expression[i]);
+            }
+        }
+
+        if(temp.size()){
+             //不合法的数字字符串
+            if(temp[0]=='0'&&temp.size()>1)
+                isValid=false;
+            nums.push(getNum(temp));
+            temp.clear();
+            if(operators.size()&&operators.top()=='*'){
+                top1=nums.top();
+                nums.pop();
+                top2=nums.top();
+                nums.pop();
+                nums.push(top1*top2);
+                operators.pop();
+            }
+        }
+
+        while(operators.size()){
+            top1=nums.top();
+            nums.pop();
+            top2=nums.top();
+            nums.pop();
+            // cout<<"operator pop..."<<endl;
+            if(operators.top()=='+'){
+                nums.push(top1+top2);
+            }
+            else{
+                nums.push(top2-top1);
+            }
+            operators.pop();
+        }
+        return nums.top();
+    }
+
+    void getExpressions(string &num,int startIndex, vector<string>&expressions,string&cur,int target){
+        /*
+        * 回溯求算术表达式字符串
+        */
+        if(startIndex==num.size()){
+            bool isValid=true;
+            if(cur.size()>num.size()&&getCalucate(cur,isValid)==target)
+            {
+                if(isValid){
+                    // cout<<cur<<endl;
+                    expressions.push_back(cur);
+                }
+            }
+            return;
+        }
+        for(int i=startIndex;i<num.size();i++){
+            int curlen=cur.size();
+            cur+=num.substr(startIndex,i-startIndex+1);
+
+            if(i!=num.size()-1){
+                cur+="*";
+                getExpressions(num,i+1,expressions,cur,target);
+                cur.pop_back();
+
+                cur+="+";
+                getExpressions(num,i+1,expressions,cur,target);
+                cur.pop_back();
+            
+            
+                cur+="-";
+                getExpressions(num,i+1,expressions,cur,target);
+                cur.pop_back();
+            }
+            else
+                getExpressions(num,i+1,expressions,cur,target);
+            cur=cur.substr(0,curlen);
+        }
+    }
+
+    vector<string> addOperators(string num, int target) {
+        vector<string> expressions;
+        string cur;
+        getExpressions(num,0,expressions,cur,target);
+        return expressions;
+    }
+
     /**
      * 29. 两数相除 
      * **/
@@ -1046,6 +1176,7 @@ public:
                 backTracking(cur,res,s,i+1);
                 cur.pop_back();
             }
+
         }
         
     }
@@ -1071,6 +1202,8 @@ public:
         backTracking(cur,res,s,0);
         return res;
     }
+
+
     /**
      * 482. 密钥格式化
      * **/
@@ -1227,6 +1360,7 @@ public:
         int minPrice=prices[0];
         int res=0;
         for(i=0;i<n;i++){
+
             //更新截至目前的最小价格
             if(minPrice>prices[i])
                 minPrice=prices[i];
@@ -1243,6 +1377,7 @@ public:
         }
         return res;
     }
+
     /**
      * 35. 搜索插入位置
      * **/
@@ -1254,11 +1389,9 @@ public:
         while(left<=right){
             mid=(left+right)>>1;
             if(nums[mid]>target){
-             
                 right=mid-1;
             }
             else if(nums[mid]<target){
-             
                 left=mid+1;
             }
             else
@@ -1280,6 +1413,7 @@ public:
         int res=0;
         int i,preRight;
         auto f=[&](vector<int> &left,vector<int>& right){return left[1]<right[1];};
+
         sort(intervals.begin(),intervals.end(),f);
 
         int n=intervals.size();
@@ -1664,7 +1798,7 @@ public:
         int n=s.size();
         //统计各个字符出现次数
         for(i=0;i<n;i++){
-                charStatic[int(s[i])]++;
+            charStatic[int(s[i])]++;
         }
         //存入大顶堆
         priority_queue<charinfo> charQue;
@@ -8203,6 +8337,7 @@ public:
         }
         return res;
     }
+    
     //leetcode
     vector<vector<int>> levelOrder(TreeNode* root) {
         vector<vector<int>> res;
@@ -8448,6 +8583,7 @@ public:
             static_count[ch]++;
         }
     }
+
     //return the first appearence once char in current stringstream
     char FirstAppearingOnce()
     {
@@ -8570,6 +8706,7 @@ public:
                 return false;
         }
     }
+
     /*
     * 构建乘积数组
     **/
@@ -8596,6 +8733,7 @@ public:
             }
         return res;
     }
+
     //leetcode 
     vector<int> constructArr(vector<int>& a) {
         int n=a.size();
@@ -8625,6 +8763,7 @@ public:
     //        duplication: (Output) the duplicated number in the array number
     // Return value:       true if the input is valid, and there are some duplications in the array number
     //                     otherwise false
+
     bool duplicate(int numbers[], int length, int *duplication)
     {
         if (length <= 1)
@@ -8814,7 +8953,7 @@ public:
         stack<string> InternalWords;
         string delimiter = " ";
         string ResStr = "";
-        string token;
+        string token; 
         size_t pos = 0;
         while ((pos = str.find(delimiter)) != string::npos)
         {
@@ -8823,6 +8962,7 @@ public:
             InternalWords.push(token);
             str.erase(0, pos + delimiter.length());
         }
+
         cout << str << endl;
         InternalWords.push(str);
         while (!InternalWords.empty())
@@ -8832,6 +8972,7 @@ public:
             if (!InternalWords.empty())
                 ResStr += " ";
         }
+
         return ResStr;
     }
 
@@ -8850,6 +8991,7 @@ public:
         string TempStr2 = str.substr(n, str.size() - n);
         return TempStr2 + TempStr1;
     }
+
     /**
     *   输入一个递增排序的数组和一个数字S，在数组中查找两个数，使得他们的和正好是S，如果有多对数字的和等于S，输出两个数的乘积最小的。
     * */
@@ -8907,6 +9049,7 @@ public:
             return Result;
         }
     }
+
     /*
     *   1-1  输出所有和为S的连续正数序列。序列内按照从小至大的顺序，序列间按照开始数字从小到大的顺序 
     */
@@ -8956,9 +9099,13 @@ private:
 int main()
 {
     Solution slu;
-    int dividend=INT_MIN,divisor=1;
-    cout<<slu.divide__(dividend,divisor)<<endl;
-   
+    string input="3456237490";
+
+    int target=9191;
+    vector<string>res=slu.addOperators(input,target);
+    for(auto&it:res)
+        cout<<it<<endl;
+    
     return 0;
 }
     /*  
