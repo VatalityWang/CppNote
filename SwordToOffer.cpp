@@ -733,6 +733,24 @@ class Solution
 {
 public:
 
+    /**
+     * 230. 二叉搜索树中第K小的元素
+     * **/
+    void inOrder(TreeNode*root,vector<int>&elements,int k){
+        if(!root)
+            return;
+        inOrder(root->left,elements,k);
+        elements.push_back(root->val);
+        if(elements.size()>k)
+            return;
+        inOrder(root->right,elements,k);
+    }
+
+    int kthSmallest(TreeNode* root, int k) {
+        vector<int> elements;
+        inOrder(root,elements,k);
+        return elements[k-1];
+    }
 
     /**
      * 282. 给表达式添加运算符
