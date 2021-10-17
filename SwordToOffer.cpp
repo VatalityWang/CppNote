@@ -751,6 +751,28 @@ public:
         inOrder(root,elements,k);
         return elements[k-1];
     }
+    //基于非递归
+    int kthSmallest_(TreeNode* root, int k) {
+       int ans;
+       stack<TreeNode*> elements;
+       vector<int> orders;
+       TreeNode *p=root;
+       while(!elements.empty()||p){
+            while(p){
+                elements.push(p);
+                p=p->left;
+            }   
+            p=elements.top();
+            elements.pop();
+            orders.push_back(p->val);
+            if(orders.size()==k){
+                ans=orders.back(); 
+                break;
+            }
+            p=p->right;
+       }
+       return ans;
+    }
 
     /**
      * 282. 给表达式添加运算符
