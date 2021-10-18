@@ -734,6 +734,38 @@ class Solution
 public:
 
     /**
+     * 476. 数字的补数
+     * **/
+    int findComplement(int num) {
+
+        int flag=1;
+        //求该数字的二进制最大位数
+        int digitNum=0;
+        for(int i=0;i<31;i++){
+            if(flag&num){
+                digitNum=i+1;
+            }
+            flag<<=1;
+        }
+        flag=1;
+     
+        int auxilNum=pow(2,digitNum)-1;
+        for(int i=0;i<digitNum;i++){
+            int tempNum=auxilNum-pow(2,i);
+            //1变0
+            if(num&flag){
+                num=num&tempNum;
+            }
+            //0变1
+            else{
+                num=num|flag;
+            }
+            flag<<=1;
+        }
+        return num;
+    }
+
+    /**
      * 230. 二叉搜索树中第K小的元素
      * **/
     void inOrder(TreeNode*root,vector<int>&elements,int k){
