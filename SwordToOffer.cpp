@@ -734,6 +734,162 @@ class Solution
 public:
 
     /**
+     * 229. 求众数 II
+     * **/
+      vector<int> majorityElement(vector<int>& nums) {
+        int n=nums.size();
+        int num=n/3;
+        vector<int> res;
+        int vote1=0,vote2=0;
+        int num1=0,num2=0;
+       
+        
+        num1=nums[0];
+        num2=nums[0];
+
+        for(int i=0;i<n;i++){
+           if(vote1&&nums[i]==num1){
+                vote1++;
+           }
+           else if(vote2&&nums[i]==num2){
+               vote2++;
+           }
+           else if(!vote1){
+               num1=nums[i];
+               vote1=1;
+           }else if(!vote2){
+               num2=nums[i];
+               vote2=1;
+           }else{
+               vote1--;
+               vote2--;
+           }
+
+        }
+        int cnt1=0;
+        int cnt2=0;
+        for(int i=0;i<n;i++){
+            if(vote1&&nums[i]==num1)
+                cnt1++;
+            if(vote2&&nums[i]==num2)
+                cnt2++;
+        }
+
+        if(vote1&&cnt1>num)
+            res.push_back(num1);
+        if(vote2&&cnt2>num)
+            res.push_back(num2);
+        return res;
+    }
+
+    /**
+     * 剑指 Offer 51. 数组中的逆序对
+     * **/
+    //超时算法
+     int reversePairs(vector<int>& nums) {
+        int i,ans=0;
+        int n=nums.size();
+        multiset<int> elements;
+        for(i=n-1;i>=0;i--){
+            elements.insert(nums[i]);
+
+            //找第一个大于等于当前元素所在下标
+            auto it=elements.lower_bound(nums[i]);
+            if(it!=elements.end()){
+                int temp1=std::distance(elements.begin(),it);
+               
+                ans+=temp1;
+            }
+            //每找到，则处该元素外所有元素比当前元素小
+            else{
+                int temp2=elements.size()-1;
+               
+                ans+=temp2;
+            }
+        }
+        return ans;
+    }
+
+    void merge(vector<int>&nums,int start,int end,int mid,int &ans){
+        int i=start,j=mid+1;
+        vector<int> temp;
+        while(i<=mid&&j<=end){
+            // 前面的大于后面的,构成一个逆序对
+            if(nums[i]>nums[j]){
+                temp.push_back(nums[j]);
+                //前面一部分构成逆序对的有多少个元素
+                ans+=mid-i+1;
+                j++;
+            }
+            //本身已经有序
+            else{
+                temp.push_back(nums[i]);
+                i++;
+            }
+        }
+
+        while(i<=mid)
+            temp.push_back(nums[i++]);
+
+        while(j<=end)
+            temp.push_back(nums[j++]);
+ 
+        for(i=start,j=0;i<=end;i++,j++)
+            nums[i]=temp[j];
+    }
+
+    void mergeSort(vector<int>& nums,int start,int end,int&ans){
+        if(start<end){
+            int mid=(start+end)>>1;
+            mergeSort(nums,start,mid,ans);
+            mergeSort(nums,mid+1,end,ans);
+            merge(nums,start,end,mid,ans);
+        }
+    }
+
+    int reversePairs_(vector<int>& nums) {
+        int i,ans=0;
+        int n=nums.size();
+        mergeSort(nums,0,n-1,ans);
+        
+        return ans;
+    }
+
+    /**
+     * 1438. 绝对差不超过限制的最长连续子数组
+     * **/
+    //超时解法
+    int longestSubarray(vector<int>& nums, int limit) {
+
+        int ans=0;
+        int n=nums.size();
+
+        //dp[i][j]: [i,j]范围内的最大/最小值
+        //递归公式：dpMax[i][j]=max(dpMax[i][j-1],nums[j]);
+        //         dpMin[i][j]=min(dpMax[i][j-1],nums[j]);
+        vector<vector<int>>dpMax(n,vector<int>(n));
+        vector<vector<int>>dpMin(n,vector<int>(n));
+
+        int i,j;
+        for(i=0;i<n;i++){
+            for(j=i;j<n;j++){
+                if(j==i){
+                    dpMax[i][j]=nums[j];
+                    dpMin[i][j]=nums[j];
+                }
+                else if(j>0){
+                    dpMax[i][j]=max(dpMax[i][j-1],nums[j]);
+                    dpMin[i][j]=min(dpMin[i][j-1],nums[j]);
+                }
+                if(dpMax[i][j]-dpMin[i][j]<=limit)
+                    ans=max(j-i+1,ans);
+            }
+        }
+
+        return ans;
+    }
+
+    /**
      * 476. 数字的补数
      * **/
     int findComplement(int num) {
@@ -9246,13 +9402,19 @@ private:
 int main()
 {
     Solution slu;
-    string input="105";
+    vector<int> elements{1,2,3,4,5};
 
-    int target=5;
-    vector<string>res=slu.addOperators(input,target);
-    for(auto&it:res)
-        cout<<it<<endl;
-    
+    int ans=slu.reversePairs_(elements);
+    cout<<"ans: "<<ans<<endl;
+   
+
+    // auto it=cur.find(6);
+    // cout<<*it<<endl;
+    // for(auto im:it)
+    //     cout<<im<<endl;
+    // for(int i=10;i>=0;i--)
+    //     cur.insert(i);
+  
     return 0;
 }
     /*  
