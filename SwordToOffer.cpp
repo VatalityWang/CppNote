@@ -734,6 +734,27 @@ class Solution
 public:
 
     /**
+     * 66. 加一
+     * **/
+    vector<int> plusOne(vector<int>& digits) {
+        vector<int> res;
+        int over,temp;
+        for(int i=digits.size()-1;i>=0;i--){
+            if(i==digits.size()-1){
+                temp=digits[i]+1;
+            }
+            else
+                temp=digits[i]+over;
+            res.push_back(temp%10);
+            over=temp/10;
+        }
+        if(over>0)
+            res.push_back(over);
+        reverse(res.begin(),res.end());
+        return res;
+    }
+
+    /**
      * 229. 求众数 II
      * **/
       vector<int> majorityElement(vector<int>& nums) {
@@ -6662,7 +6683,7 @@ public:
     /**
      * 多数元素
      * **/
-    int majorityElement(vector<int>& nums) {
+    int majorityElement__(vector<int>& nums) {
         if(nums.size()==1)
             return nums[0];
         int majority;
@@ -9397,26 +9418,49 @@ private:
 
 
 
+//设定4字节对齐
+#pragma pack(push)
+#pragma pack(4)
+
+struct test{
+    char m1;
+    double m4;
+    int m3;
+};
+
+
+
+//测试类的public成员类外可访问可改变
+class PublicClass{
+    public:
+
+        PublicClass(int a_,int b_,int c_):a(a_),b(b_),c(c_){}
+        int a;
+        int b;
+
+    private:
+        int c;
+};
+
+
 
 
 int main()
 {
-    Solution slu;
-    vector<int> elements{1,2,3,4,5};
+    Solution slu;    
+    PublicClass pc(1,3,4);
+    pc.b=1;
 
-    int ans=slu.reversePairs_(elements);
-    cout<<"ans: "<<ans<<endl;
-   
+    cout<<pc.b<<endl;
+   cout<<"sizeof(double): "<<sizeof(double)<<endl;
 
-    // auto it=cur.find(6);
-    // cout<<*it<<endl;
-    // for(auto im:it)
-    //     cout<<im<<endl;
-    // for(int i=10;i>=0;i--)
-    //     cur.insert(i);
-  
+   cout<<sizeof(struct test)<<endl;
+
     return 0;
 }
+
+#pragma pack(pop)
+
     /*  
     cout<<"sizeof(int): "<<sizeof(int)<<endl;
     cout<<sizeof(struct int_)<<endl;*、
