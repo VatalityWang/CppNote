@@ -734,6 +734,47 @@ class Solution
 public:
 
     /**
+     * 99. 恢复二叉搜索树
+     * **/
+      void inOrderBst(TreeNode*root,vector<int>&elements,map<int,TreeNode*>&ele2node){
+        if(root){
+            inOrderBst(root->left,elements,ele2node);
+            elements.push_back(root->val);
+            ele2node[root->val]=root;
+            inOrderBst(root->right,elements,ele2node);
+        }
+    }
+
+    void recoverTree(TreeNode* root) {
+        vector<int> elements;
+        map<int,TreeNode*> ele2node;
+        inOrderBst(root,elements,ele2node);
+      
+        int first=-1,second=-1;
+        for(int i=0;i<elements.size()-1;i++){
+            //存在逆序
+            if(elements[i]>elements[i+1]){
+                if(first==-1)
+                    first=i;  
+                else if(second==-1)
+                    second=i+1;
+                if(first!=-1&&second!=-1)
+                    break;
+            }
+        }
+
+        //相邻元素被交换
+        if(second==-1)
+            second=first+1;
+        
+   
+        ele2node[elements[first]]->val=elements[second];
+        ele2node[elements[second]]->val=elements[first];
+        
+
+    }
+
+    /**
      * 66. 加一
      * **/
     vector<int> plusOne(vector<int>& digits) {
