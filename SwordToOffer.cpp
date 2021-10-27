@@ -734,6 +734,54 @@ class Solution
 public:
 
     /**
+     * 167. 两数之和 II - 输入有序数组
+     * **/
+     vector<int> twoSumII(vector<int>& numbers, int target) {
+        vector<int> res;
+        //存 target-nums[i] 和 元素对应的下标
+        map<int,int> statistics;
+        
+        for(int i=0;i<numbers.size();i++){
+            auto it=statistics.find(numbers[i]);
+            if(it!=statistics.end()){
+                res.push_back(it->second+1);
+                res.push_back(i+1);
+                break;
+            }
+            else{
+                statistics.insert({target-numbers[i],i});
+            }
+        }
+
+        return res;
+    }
+
+    /**
+     * 496. 下一个更大元素 I
+     * **/
+    vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
+        vector<int> res;
+        map<int,int> ele2pos;
+        int k;
+        for(int j=0;j<nums2.size();j++)
+            ele2pos[nums2[j]]=j;
+        
+        for(int i=0;i<nums1.size();i++){
+
+            for(k=ele2pos[nums1[i]]+1;k<nums2.size();k++){
+                if(nums2[k]>nums1[i]){
+                    res.push_back(nums2[k]);
+                    break;
+                }
+            }
+           
+            if(k==nums2.size())
+                res.push_back(-1);
+        }
+        return res;
+    }
+
+    /**
      * 99. 恢复二叉搜索树
      * **/
       void inOrderBst(TreeNode*root,vector<int>&elements,map<int,TreeNode*>&ele2node){
