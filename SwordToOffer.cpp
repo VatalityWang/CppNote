@@ -734,6 +734,24 @@ class Solution
 public:
 
     /**
+     * 219. 存在重复元素 II
+     * **/
+     bool containsNearbyDuplicate(vector<int>& nums, int k) {
+        bool res=false;
+        map<int,int> elements;
+        for(int i=0;i<nums.size();i++){
+            auto it=elements.find(nums[i]);
+            if(it!=elements.end()){
+                if(i-it->second<=k){
+                    res|=true;
+                }
+            }
+            elements[nums[i]]=i;
+        }
+        return res;
+    }
+
+    /**
      * 869. 重新排序得到 2 的幂
      * **/
      //判断是否是2的幂次方
