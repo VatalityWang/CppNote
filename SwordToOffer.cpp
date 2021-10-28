@@ -734,6 +734,79 @@ class Solution
 public:
 
     /**
+     * 869. 重新排序得到 2 的幂
+     * **/
+     //判断是否是2的幂次方
+    bool isExponential(vector<int>cur){
+       long num=0;
+       for(int i=0;i<cur.size();i++){
+            num+=pow(10,cur.size()-1-i)*cur[i];
+       }
+       return (num&(num-1))==0;
+    }
+
+    //划分数字
+    void dividNum(int n,vector<int>&div){
+        while(n){
+            div.push_back(n%10);
+            n=n/10;
+        }
+    }
+
+    //求对应数字组合而成的数字
+    void backTrackNum(vector<int>&div,long &num,vector<int>&cur,bool &res,vector<bool> &used){
+
+        if(res)
+            return;
+
+        if(cur.size()&&cur[0]==0)
+            return;
+
+        if(cur.size()==div.size()){
+            if(isExponential(cur))
+                res|=true;
+            return;
+        }
+
+
+        for(int i=0;i<div.size();i++){
+            if(used[i]==false){
+                used[i]=true;
+                cur.push_back(div[i]);
+                backTrackNum(div,num,cur,res,used);
+                cur.pop_back();
+                used[i]=false;
+            }
+        }
+    }
+
+    bool reorderedPowerOf2(int n) {
+        long num=0;
+        bool res=false;
+        vector<int> div;
+        vector<int> cur;
+        dividNum(n,div);
+        vector<bool> used(div.size(),false);
+        backTrackNum(div,num,cur,res,used);
+        return res;
+    }
+
+     bool reorderedPowerOf2_(int n) {
+        string num=std::to_string(n);
+        sort(num.begin(),num.end());
+        set<string> nums;
+        for(long i=0;i<=32;i++){
+            long temp=pow(2,i);
+            if((temp&(temp-1))==0){
+                string numTemp=std::to_string(temp);
+                sort(numTemp.begin(),numTemp.end());
+                nums.insert(numTemp);
+            }
+        }
+        return nums.count(num)!=0;
+    }
+
+    /**
      * 167. 两数之和 II - 输入有序数组
      * **/
      vector<int> twoSumII(vector<int>& numbers, int target) {
