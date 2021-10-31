@@ -729,9 +729,180 @@ bool cmp_(vector<int>&left,vector<int>&right){
     return left[1]<right[1];
 }
 
+string strLow1="qwertyuiop";
+string strLow2="asdfghjkl";
+string strLow3="zxcvbnm";
+
+string strUp1="QWERTYUIOP";
+string strUp2="ASDFGHJKL";
+string strUp3="ZXCVBNM";
+
+set<char> strSetlow1(strLow1.begin(),strLow1.end());
+set<char> strSetlow2(strLow2.begin(),strLow2.end());
+set<char> strSetlow3(strLow3.begin(),strLow3.end());
+
+set<char> strSetUp1(strUp1.begin(),strUp1.end());        
+set<char> strSetUp2(strUp2.begin(),strUp2.end());
+set<char> strSetUp3(strUp3.begin(),strUp3.end());
+
 class Solution
 {
 public:
+
+    /**
+     * 500. 键盘行
+     * **/
+    void checkNum(string word,vector<int>&statistics){
+       
+        for(auto it:word){
+            if(strSetlow1.count(it)||strSetUp1.count(it))
+                statistics[0]++;
+            else if(strSetlow2.count(it)||strSetUp2.count(it))
+                statistics[1]++;
+            else if(strSetlow3.count(it)||strSetUp3.count(it))
+                statistics[2]++;
+        }
+    }
+
+    vector<string> findWords(vector<string>& words) {
+        vector<string> res;
+        vector<int> statistics(3,0);
+        for(int i=0;i<words.size();i++){
+            checkNum(words[i],statistics);
+            if(statistics[0]==words[i].size()||statistics[1]==words[i].size()||statistics[2]==words[i].size())
+                res.push_back(words[i]);
+            std::fill(statistics.begin(),statistics.end(),0);
+          
+        }
+        return res;
+    }
+    /**
+     * 54. 螺旋矩阵
+     * **/
+     void dfsMatrixRight(vector<vector<int>>&matrix,int i,int j,vector<int>&res,vector<vector<bool>>&visited,int direction,vector<int>&pos){
+        int m=matrix.size();
+        int n=matrix[0].size();
+        if(0<=i&&i<m&&0<=j&&j<n&&visited[i][j]==false){
+            visited[i][j]=true;
+            res.push_back(matrix[i][j]);
+          
+            switch (direction){
+                case 1:
+                    dfsMatrixRight(matrix,i,j+1,res,visited,direction,pos);
+                    break;
+                case 2:
+                    dfsMatrixRight(matrix,i+1,j,res,visited,direction,pos);
+                    break;
+                case 3:
+                    dfsMatrixRight(matrix,i,j-1,res,visited,direction,pos); 
+                    break;
+                case 4:
+                    dfsMatrixRight(matrix,i-1,j,res,visited,direction,pos);
+                    break;
+                default:
+                    break;
+            }            
+        }
+        else {
+            switch(direction){
+                case 1:
+                   
+                    pos[0]=i+1;
+                    pos[1]=j-1;
+                    break;
+                case 2:
+                    pos[0]=i-1;
+                    pos[1]=j-1;
+                    break;
+                case 3:
+                    pos[0]=i-1;
+                    pos[1]=j+1;
+                    break;
+                case 4:
+                  
+                    pos[0]=i+1;
+                    pos[1]=j+1;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    }
+
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        vector<int> res;
+        vector<int> pos(2,0);
+        int m=matrix.size();
+        int n=matrix[0].size();
+        
+        vector<vector<bool>> visited(m,vector<bool>(n,false));
+        while(res.size()!=m*n){
+            dfsMatrixRight(matrix,pos[0],pos[1],res,visited,1,pos);
+          
+            dfsMatrixRight(matrix,pos[0],pos[1],res,visited,2,pos);
+           
+            dfsMatrixRight(matrix,pos[0],pos[1],res,visited,3,pos);
+          
+            dfsMatrixRight(matrix,pos[0],pos[1],res,visited,4,pos);
+           
+        }
+        return res;
+    }
+    /**
+     * 228. 汇总区间
+     * **/
+    vector<string> summaryRanges(vector<int>& nums) {
+        vector<string> res;
+        if(nums.size()==0)
+            return res;
+        if(nums.size()==1){
+            res.push_back(std::to_string(nums[0]));
+            return res;
+        }
+
+        string  temp;
+        int start,j;
+        for(int i=0;i<nums.size();i++){
+            start=i;
+            j=start+1;
+            while(i<nums.size()&&j<nums.size()&&nums[j]-1==nums[i]){
+                i++;
+                j++;
+            }
+            if(start!=i){
+                temp+=std::to_string(nums[start]);
+                temp+="->";
+                temp+=std::to_string(nums[i]);
+                res.push_back(temp);
+                temp.clear();
+            }
+            else
+                res.push_back(std::to_string(nums[start]));
+           
+            i=j;
+            //消除for循环里面i++造成的影响
+            i--;
+        }
+        return res;
+    }
+
+    /**
+     * 260. 只出现一次的数字 III
+     * **/
+     vector<int> singleNumberIII(vector<int>& nums) {
+        map<int,int> eles;
+        vector<int> res;
+        for(int i=0;i<nums.size();i++){
+            eles[nums[i]]++;
+        }
+        
+        for(auto it:eles)
+            if(it.second==1)
+                res.push_back(it.first);
+
+        return res;
+    }
 
     /**
      * 219. 存在重复元素 II
@@ -9628,13 +9799,11 @@ class PublicClass{
 int main()
 {
     Solution slu;    
-    PublicClass pc(1,3,4);
-    pc.b=1;
-
-    cout<<pc.b<<endl;
-   cout<<"sizeof(double): "<<sizeof(double)<<endl;
-
-   cout<<sizeof(struct test)<<endl;
+    vector<int> test(3,1);
+    test.clear();
+    test.resize(3);
+    for(auto it:test)
+        cout<<it<<endl;
 
     return 0;
 }
