@@ -750,6 +750,20 @@ class Solution
 public:
 
     /**
+    * 237. 删除链表中的节点
+    *  
+    **/
+     void deleteNode(ListNode* node) {
+        ListNode *pre=node;
+        while(node->next){
+            node->val=node->next->val;
+            pre=node;
+            node=node->next;
+        }
+        pre->next=NULL;
+    }
+
+    /**
      * 500. 键盘行
      * **/
     void checkNum(string word,vector<int>&statistics){
