@@ -750,6 +750,85 @@ class Solution
 public:
 
     /**
+     * 332. 重新安排行程
+     * **/
+    // 超时算法
+      void backTracking(vector<vector<string>>&tickets,string &cur,string &res,vector<bool>&visited,int startIndex){
+        
+        if(cur.size()==(tickets.size()+1)*3){
+           
+            if(res.size()==0)
+                res=cur;
+            else if(cur<res)
+                res=cur;
+            return;
+        }
+        
+        int curNum=0;
+        int i=startIndex;
+        while(curNum!=tickets.size()){
+             if(cur.size()==0){
+                if(tickets[i][0]=="JFK"){
+                    cur+=tickets[i][0];
+                    cur+=tickets[i][1];
+                    visited[i]=true;
+                 
+                  
+                }
+            }
+            else{
+               
+                //上一次的地点名
+                string lastStr=cur.substr(cur.size()-3,3);
+                if(visited[i]==false){
+                    if(tickets[i][0]==lastStr)
+                        cur+=tickets[i][1];
+                    visited[i]=true;
+                    backTracking(tickets,cur,res,visited,(i+1)%tickets.size());
+                    if(tickets[i][0]==lastStr)
+                        cur=cur.substr(0,cur.size()-3);
+                    visited[i]=false;
+                }
+            }
+           
+            i=(i+1)%tickets.size();
+            curNum++;
+        }
+        
+    }
+
+    vector<string> findItinerary(vector<vector<string>>& tickets) {
+        vector<string> res;
+        vector<bool> visited(tickets.size(),false);
+        string cur;
+        string toatlRes;
+        int startIndex;
+        vector<int> startIndexs;
+        for(int i=0;i<tickets.size();i++)
+            if(tickets[i][0]=="JFK"){
+                startIndexs.push_back(i);
+            }
+        
+        for(int i=0;i<startIndexs.size();i++){
+          
+            backTracking(tickets,cur,toatlRes,visited,startIndexs[i]);
+            cur.clear();
+            std::fill(visited.begin(),visited.end(),false);
+        }
+        // cout<<"toatoRes: "<<toatlRes<<endl;
+        string temp;
+        for(int i=0;i<toatlRes.size();i++){
+            temp+=toatlRes[i];
+            if((i+1)%3==0){
+                res.push_back(temp);
+                temp.clear();
+            }
+        }
+        return res;
+    }
+
+
+    /**
     * 237. 删除链表中的节点
     *  
     **/
@@ -9813,12 +9892,11 @@ class PublicClass{
 int main()
 {
     Solution slu;    
-    vector<int> test(3,1);
-    test.clear();
-    test.resize(3);
-    for(auto it:test)
+    vector<vector<string>> tickets({{"JFK","SFO"},{"JFK","ATL"},{"SFO","ATL"},{"ATL","JFK"},{"ATL","SFO"}});
+    vector<string> res=slu.findItinerary(tickets);
+    for(auto&it:res)
         cout<<it<<endl;
-
+    
     return 0;
 }
 
