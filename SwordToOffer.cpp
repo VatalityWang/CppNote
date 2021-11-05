@@ -750,6 +750,21 @@ class Solution
 public:
 
     /**
+     * 1218. 最长定差子序列
+     * **/
+     int longestSubsequence(vector<int>& arr, int difference) {
+        int ans=INT_MIN;
+        map<int,int> dp;
+        int n=arr.size();
+        //dp[i]:以i结尾的数组最长等差子序列长度
+        for(auto v:arr){
+            dp[v]=dp[v-difference]+1;
+            ans=max(dp[v],ans);
+        }
+        return ans;
+    }
+
+    /**
      * 332. 重新安排行程
      * **/
     // 超时算法
