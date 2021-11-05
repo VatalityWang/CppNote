@@ -750,6 +750,115 @@ class Solution
 public:
 
     /**
+     * 67. 二进制求和
+     * **/
+    string addBinary(string a, string b) {
+        int i=a.size()-1;
+        int j=b.size()-1;
+        string res;
+        bool carry=false;
+        while(i>=0&&j>=0){
+            if(a[i]=='1'&&b[j]=='1'){
+                if(carry){
+                    res+="1";
+                    carry=true;
+                }
+                else{
+                    res+="0";
+                    carry=true;
+                } 
+                
+            }
+            else if(a[i]=='0'&&b[j]=='1'){
+                 if(carry){
+                    res+="0";
+                    carry=true;
+                 }
+                else{
+                    res+="1";
+                    carry=false;
+                } 
+            }
+            else if(a[i]=='1'&&b[j]=='0'){
+                 if(carry){
+                    res+="0";
+                    carry=true;
+                 }
+                else{
+                    res+="1";
+                    carry=false;
+
+                } 
+            }
+            else if(a[i]=='0'&&b[j]=='0'){
+                 if(carry)
+                    res+="1";
+                else 
+                    res+="0";
+                carry=false;
+            }
+            i--;
+            j--;
+        }
+       
+        int k=i>j?i:j;
+        if(i>=0){
+             while(k>=0){
+                if(a[k]=='1'){
+                    if(carry){
+                        res+="0";
+                        carry=true;
+                    }
+                    else{
+                        res+="1";
+                        carry=false;
+                    }
+
+                }else{
+                    if(carry){
+                        res+="1";
+                        carry=false;
+                    }
+                    else{
+                        res+="0";
+                        carry=false;
+                    }
+                }
+                k--;
+            }
+        }
+        else{
+             while(k>=0){
+                if(b[k]=='1'){
+                    if(carry){
+                        res+="0";
+                        carry=true;
+                    }
+                    else{
+                        res+="1";
+                        carry=false;
+                    }
+
+                }else{
+                    if(carry){
+                        res+="1";
+                        carry=false;
+                    }
+                    else{
+                        res+="0";
+                        carry=false;
+                    }
+                }
+                k--;
+            }
+        }
+        if(carry)
+            res+="1";
+        reverse(res.begin(),res.end());
+        return res;
+    }
+
+    /**
      * 1218. 最长定差子序列
      * **/
      int longestSubsequence(vector<int>& arr, int difference) {
