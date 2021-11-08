@@ -750,6 +750,60 @@ class Solution
 public:
 
     /**
+     * 299. 猜数字游戏
+     * **/
+     string getHint(string secret, string guess) {
+        map<char,int> match;
+        map<char,int> statistics1;
+        map<char,int> statistics2;
+
+        for(int i=0;i<secret.size();i++){
+            if(secret[i]==guess[i])
+                match[secret[i]]++;
+            statistics1[secret[i]]++;
+            statistics2[guess[i]]++;
+        }
+
+        int res1=0;
+        for(auto &it:match)
+            res1+=it.second;
+       
+        int res2=0;
+        for(int i=0;i<secret.size();i++){
+            if(secret[i]!=guess[i]){
+                if(statistics2[secret[i]]&&statistics2[secret[i]]-match[secret[i]]){
+                    res2++;
+                    statistics2[secret[i]]--;
+                }
+            }
+        }
+        
+        string res=std::to_string(res1)+"A"+std::to_string(res2)+"B";
+        return res;
+    }
+
+    //leetcode 官方
+    string getHint_(string secret, string guess) {
+        int bulls = 0;
+        vector<int> cntS(10), cntG(10);
+        for (int i = 0; i < secret.length(); ++i) {
+            if (secret[i] == guess[i]) {
+                ++bulls;
+            } else {
+                ++cntS[secret[i] - '0'];
+                ++cntG[guess[i] - '0'];
+            }
+        }
+        int cows = 0;
+        for (int i = 0; i < 10; ++i) {
+            cows += min(cntS[i], cntG[i]);
+        }
+        return to_string(bulls) + "A" + to_string(cows) + "B";
+    }
+
+
+
+    /**
      * 598. 范围求和 II
      * **/
      int maxCount(int m, int n, vector<vector<int>>& ops) {
