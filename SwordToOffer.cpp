@@ -750,6 +750,20 @@ class Solution
 public:
 
     /**
+     * 598. 范围求和 II
+     * **/
+     int maxCount(int m, int n, vector<vector<int>>& ops) {
+        int minR=m,minC=n;
+        if(ops.size()==0)
+            return m*n;
+        for(int i=0;i<ops.size();i++){
+            minR=min(minR,ops[i][0]);
+            minC=min(minC,ops[i][1]);
+        }
+        return minR*minC;
+    }
+
+    /**
      * 67. 二进制求和
      * **/
     string addBinary(string a, string b) {
