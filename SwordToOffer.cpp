@@ -750,6 +750,27 @@ class Solution
 public:
 
     /**
+     * 242. 有效的字母异位词
+     * **/
+      bool isAnagram(string s, string t) {
+        if(s.size()!=t.size())
+            return false;
+        map<char,int> ele1;
+        map<char,int> ele2;
+
+        for(int i=0;i<s.size();i++){
+            ele1[s[i]]++;
+            ele2[t[i]]++;
+        }
+
+        for(auto &it:ele1)
+            if(ele1[it.first]!=ele2[it.first])
+                return false;
+
+        return true;
+    }
+
+    /**
      * 299. 猜数字游戏
      * **/
      string getHint(string secret, string guess) {
