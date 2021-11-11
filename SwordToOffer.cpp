@@ -750,6 +750,28 @@ class Solution
 public:
 
     /**
+     * 80. 删除有序数组中的重复项 II
+     * **/
+     int removeDuplicates__(vector<int>& nums) {
+        if(nums.size()<=2)
+            return nums.size();
+
+
+        int slow=2,fast=2;
+       
+        while(fast<nums.size()){
+            //当前元素应该被保留
+           if(nums[slow-2]!=nums[fast]){
+               nums[slow]=nums[fast];
+               slow++;
+           }
+           fast++;
+
+        }
+        return slow;
+    }
+
+    /**
      * 242. 有效的字母异位词
      * **/
       bool isAnagram(string s, string t) {
@@ -7905,6 +7927,17 @@ public:
             }
         }
         return nums.size();
+    }
+    //通用解法
+    int work(vector<int>& nums, int k) {
+        int len = 0;
+        for(auto num : nums)
+            if(len < k || nums[len-k] != num)
+                nums[len++] = num;
+        return len;
+    }
+    int removeDuplicates_(vector<int>& nums) {
+        return work(nums, 1);
     }
 
     /**
