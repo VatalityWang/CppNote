@@ -749,6 +749,21 @@ class Solution
 {
 public:
 
+    /**
+     * 349. 两个数组的交集
+     * **/
+     vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        vector<int> res;
+        set<int> eles(nums1.begin(),nums1.end());
+        set<int> eles_;
+        for(int i=0;i<nums2.size();i++){
+            if(eles.count(nums2[i]))
+                eles_.insert(nums2[i]);
+        }
+        for(auto&it:eles_)
+            res.push_back(it);
+        return res;
+    }
     /***
      * 59. 螺旋矩阵 II
      * 
