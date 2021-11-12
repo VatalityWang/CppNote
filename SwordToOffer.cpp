@@ -749,6 +749,84 @@ class Solution
 {
 public:
 
+    /***
+     * 59. 螺旋矩阵 II
+     * 
+    */
+     void dfsMatrixGenerate(vector<vector<int>>&res,int i, int j,int &cur,int dir,vector<int>&pre){
+        
+        //不能越界且可以填入
+        if(0<=i&&i<res.size()&&0<=j&&j<res.size()&&res[i][j]==0){
+            switch(dir){
+                case 1:
+                    cur++;
+                    res[i][j]=cur;
+                    dfsMatrixGenerate(res,i,j+1,cur,1,pre);
+                    break;
+                case 2:
+                    cur++;
+                    res[i][j]=cur;
+                    dfsMatrixGenerate(res,i+1,j,cur,2,pre);
+                    break;
+                case 3:
+                    cur++;
+                    res[i][j]=cur;
+                    dfsMatrixGenerate(res,i,j-1,cur,3,pre);
+                    break;
+                case 4:
+                    cur++;
+                    res[i][j]=cur;
+                    dfsMatrixGenerate(res,i-1,j,cur,4,pre);
+                    break;
+                default:
+                    break;
+            }
+        }
+        //越界或者已经填充过
+        else{
+            switch(dir){
+                case 1:
+                    pre[0]=i+1;
+                    pre[1]=j-1;
+                    break;
+                case 2:
+                    pre[0]=i-1;
+                    pre[1]=j-1;
+                  
+                    break;
+                case 3:
+                    pre[0]=i-1;
+                    pre[1]=j+1;
+                    break;
+                case 4:
+                    pre[0]=i+1;
+                    pre[1]=j+1;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    vector<vector<int>> generateMatrix(int n) {
+        vector<vector<int>> res(n,vector<int>(n));
+        int cur=0;
+        //越界后下一次遍历的起始位置
+        vector<int> pre(2,0);
+        while(cur!=n*n){
+            
+            dfsMatrixGenerate(res,pre[0],pre[1],cur,1,pre);
+          
+            dfsMatrixGenerate(res,pre[0],pre[1],cur,2,pre);
+           
+            dfsMatrixGenerate(res,pre[0],pre[1],cur,3,pre);
+            
+            dfsMatrixGenerate(res,pre[0],pre[1],cur,4,pre);
+           
+        }
+        return res;
+    }
+
     /**
      * 80. 删除有序数组中的重复项 II
      * **/
