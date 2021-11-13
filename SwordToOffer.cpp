@@ -748,6 +748,83 @@ set<char> strSetUp3(strUp3.begin(),strUp3.end());
 class Solution
 {
 public:
+    /**
+     * 71. 简化路径
+     * **/
+     string simplifyPath(string path) {
+        stack<string> eles;
+        string str;
+
+        for(int i=0;i<path.size();i++){
+            if(path[i]=='/'){
+                if(str.size()){
+                    if(str==".."){
+                            if(eles.size())
+                                eles.pop();
+                    }
+                    else{
+                        if(str!=".")
+                            eles.push(str);
+                    }
+                }
+                str.clear();
+            }
+            else{
+                str+=path[i];
+                //不以'/'结尾
+                if(i==path.size()-1){
+                    if(str==".."){
+                            if(eles.size())
+                                eles.pop();
+                    }
+                    else{
+                        if(str!=".")
+                            eles.push(str);
+                    }
+                }
+            }
+        }
+
+        //颠倒顺序
+        stack<string> auxEle;
+        while(!eles.empty()){
+            auxEle.push(eles.top());
+            eles.pop();
+        }
+
+
+        //加入"/"
+        string res="/";
+        while(!auxEle.empty()){
+            res+=auxEle.top();
+            res+="/";
+            auxEle.pop();
+        }
+        if(res.size()>1)
+            return res.substr(0,res.size()-1);
+        else
+            return res;
+    }
+    /**
+     * 520. 检测大写字母
+     * **/
+    bool detectCapitalUse(string word) {
+        int lowerNum=0;
+        int upperNum=0;
+        for(int i=0;i<word.size();i++){
+            if('a'<=word[i]&&word[i]<='z')
+                lowerNum++;
+            else
+                upperNum++;
+        }
+        if(lowerNum==word.size())
+            return true;
+        if(upperNum==word.size())
+            return true;
+        if(upperNum==1&&'A'<=word[0]&&word[0]<='Z')
+            return true;
+        return false;
+    }
 
     /**
      * 349. 两个数组的交集
