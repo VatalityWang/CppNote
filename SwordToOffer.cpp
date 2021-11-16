@@ -748,6 +748,27 @@ set<char> strSetUp3(strUp3.begin(),strUp3.end());
 class Solution
 {
 public:
+
+    /**
+     * 144. 二叉树的前序遍历
+     * **/
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int> res;
+        stack<TreeNode*> eles;
+        TreeNode *q;
+        if(!root)
+            return res;
+        eles.push(root);
+        while(!eles.empty()){
+            q=eles.top();
+            eles.pop();
+            res.push_back(q->val);
+            if(q->right) eles.push(q->right);
+            if(q->left) eles.push(q->left);
+        }
+        return res;
+    }
+
     /**
      * 71. 简化路径
      * **/
