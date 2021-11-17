@@ -750,6 +750,43 @@ class Solution
 public:
 
     /**
+     * 111. 二叉树的最小深度
+     * **/
+    int minDepth(TreeNode* root) {
+        if(!root)
+            return 0;
+        else{
+            int left=minDepth(root->left);
+            int right=minDepth(root->right);
+            if(left&&right)
+                return 1+min(left,right);
+            else
+                return left?left+1:right+1;
+        } 
+            
+    }
+
+    /**
+     * 110. 平衡二叉树
+     * **/
+     int depthTree(TreeNode*root){
+        if(!root)
+            return 0;
+        else return 1+max(depthTree(root->left),depthTree(root->right));
+
+    }
+
+    bool isBalanced(TreeNode* root) {
+        if(!root)
+            return true;
+        int leftH=depthTree(root->left);
+        int rightH=depthTree(root->right);
+        if(abs(rightH-leftH)<=1)
+           return isBalanced(root->left)&&isBalanced(root->right);
+        return false;
+    }
+
+    /**
      * 318. 最大单词长度乘积
      * **/
      int maxProduct_(vector<string>& words) {
