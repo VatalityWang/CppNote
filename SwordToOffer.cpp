@@ -750,7 +750,62 @@ class Solution
 public:
 
     /**
-     * 144. 二叉树的前序遍历
+     * 318. 最大单词长度乘积
+     * **/
+     int maxProduct_(vector<string>& words) {
+
+        int n=words.size();
+
+        //用位运算判断单词中出现的字符是否相同
+        vector<bitset<26>> eles_statics(n);
+
+        bitset<26>  temp;
+
+        for(int i=0;i<words.size();i++){
+            for(auto c:words[i])
+                eles_statics[i][c-'a']=1;
+        }
+        
+        int res=0;
+        for(int i=0;i<words.size();i++){
+            for(int j=i+1;j<words.size();j++){
+                //两个单词没有重复字符
+                if((temp=eles_statics[i]&eles_statics[j])==0){
+                    int cur=words[i].size()*words[j].size();
+                    res=std::max(cur,res);
+                }
+            }
+        }
+
+        return res;
+    }
+
+    /**
+     * 350. 两个数组的交集 II
+     * **/
+     vector<int> intersect(vector<int>& nums1, vector<int>& nums2) {
+        vector<int> res;
+
+        map<int,int> ele_statics1;
+        map<int,int> ele_statics2;
+        
+        for(int i=0;i<nums1.size();i++) {
+            ele_statics1[nums1[i]]++;
+        }
+
+        for(int i=0;i<nums2.size();i++){
+            //先判断是否存在再减少个数
+            if(ele_statics1[nums2[i]]&&ele_statics1[nums2[i]]--){
+                res.push_back(nums2[i]);
+            }
+        }
+
+        return res;
+
+    }
+
+    /**
+     * 144. 二叉树的前序遍历 非递归
      * **/
     vector<int> preorderTraversal(TreeNode* root) {
         vector<int> res;
@@ -10329,10 +10384,10 @@ class PublicClass{
 int main()
 {
     Solution slu;    
-    vector<vector<string>> tickets({{"JFK","SFO"},{"JFK","ATL"},{"SFO","ATL"},{"ATL","JFK"},{"ATL","SFO"}});
-    vector<string> res=slu.findItinerary(tickets);
-    for(auto&it:res)
-        cout<<it<<endl;
+    bitset<2> flag;
+    cout<<flag[0]<<endl;
+    flag[0]=1;
+    cout<<flag[0]<<endl;
     
     return 0;
 }
