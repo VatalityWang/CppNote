@@ -750,6 +750,34 @@ class Solution
 public:
 
     /**
+     * 455. 分发饼干
+     * **/
+     int findContentChildren(vector<int>& g, vector<int>& s) {
+        priority_queue<int,std::vector<int>,std::greater<int>> g_;
+        priority_queue<int,std::vector<int>,std::greater<int>> s_;
+        for(int i=0;i<g.size();i++)
+            g_.push(g[i]);
+        for(int i=0;i<s.size();i++)
+            s_.push(s[i]);
+        int res=0;
+        while(!g_.empty()){
+            int cur=g_.top();
+            g_.pop();
+            
+            while(s_.size()&&s_.top()<cur){
+                s_.pop();
+            }
+            if(s_.size()&&s_.top()>=cur){
+                res++;
+                s_.pop();
+            }
+            if(s_.empty())
+                break;
+        }
+        return res;
+    }
+
+    /**
      * 111. 二叉树的最小深度
      * **/
     int minDepth(TreeNode* root) {
@@ -7932,6 +7960,31 @@ public:
     /**
      * 二叉树的坡度
      * **/
+
+    //二刷
+    //求二叉树所有节点的和
+    int TreeNodeSum(TreeNode*root){
+        if(!root)
+            return 0;
+        else return root->val+TreeNodeSum(root->left)+TreeNodeSum(root->right);
+    }
+
+    void findTilt(TreeNode*root,int &res){
+        if(!root)
+            return;
+        int left=TreeNodeSum(root->left);
+        int right=TreeNodeSum(root->right);
+        res+=abs(left-right);
+        findTilt(root->left,res);
+        findTilt(root->right,res);
+    }
+
+    int findTilt(TreeNode* root) {
+        int res=0;
+        findTilt(root,res);
+        return res;
+    }
+
     int get_node_sum(TreeNode *root){
         if(!root)
             return 0;
@@ -7953,7 +8006,7 @@ public:
         total_grad+=abs(left-right);
     }
 
-    int findTilt(TreeNode* root) {
+    int findTilt_(TreeNode* root) {
         int total_grad=0;
         calucate_gradient(root,total_grad);
         return total_grad;
