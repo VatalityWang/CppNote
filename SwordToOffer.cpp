@@ -750,6 +750,28 @@ class Solution
 public:
 
     /**
+     * 594. 最长和谐子序列
+     * **/
+    int findLHS(vector<int>& nums) {
+        map<int,int> eles;
+        for(int i=0;i<nums.size();i++){
+            eles[nums[i]]++;
+        }
+        
+        int res=0;
+
+        for(auto it=eles.begin();it!=eles.end();it++){
+             auto  im=std::next(it);
+            if(im!=eles.end()){
+                if(abs(it->first-im->first)==1){
+                    res=max(res,it->second+im->second);
+                }
+            }
+        }
+        return res;
+    }
+
+    /**
      * 455. 分发饼干
      * **/
      int findContentChildren(vector<int>& g, vector<int>& s) {
