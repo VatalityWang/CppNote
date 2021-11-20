@@ -750,6 +750,46 @@ class Solution
 public:
 
     /**
+     * 6. Z 字形变换
+     * **/
+      string convert(string s, int numRows) {
+        //行数为1直接返回原来的字符串
+        if(numRows==1)
+            return s;
+        
+        vector<string> eles(numRows);
+        string res;
+        int i=0;
+
+        while(i<s.size()){
+            int j=0;
+            //累加numRows个字符串
+            while(i<s.size()&&j<numRows){
+                eles[j]+=s[i];
+                j++;
+                i++;
+                
+            }
+
+            //回到倒数第二个字符串
+            j=numRows-2;
+
+            //累加到正数第二个字符串
+            while(i<s.size()&&j>=1){
+                eles[j]+=s[i];
+                i++;
+                j--;
+            }
+           
+        }
+
+        for(auto &it:eles){
+            res+=it;
+        }
+        return res;
+    }
+
+    /**
      * 594. 最长和谐子序列
      * **/
     int findLHS(vector<int>& nums) {
