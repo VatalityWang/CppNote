@@ -745,9 +745,68 @@ set<char> strSetUp1(strUp1.begin(),strUp1.end());
 set<char> strSetUp2(strUp2.begin(),strUp2.end());
 set<char> strSetUp3(strUp3.begin(),strUp3.end());
 
+
+// Definition for a Node.
+class NNode {
+public:
+    int val;
+    vector<NNode*> children;
+
+    NNode() {}
+
+    NNode(int _val) {
+        val = _val;
+    }
+
+    NNode(int _val, vector<NNode*> _children) {
+        val = _val;
+        children = _children;
+    }
+};
+
+
 class Solution
 {
 public:
+
+    /**
+     * 559. N 叉树的最大深度
+     * **/
+    void dfsTree(NNode*root,int num,int&res){
+        //到达叶子节点
+        if(root->children.size()==0){
+            res=max(res,num);
+            return;
+        }
+        else{
+            for(int i=0;i<root->children.size();i++){
+                dfsTree(root->children[i],num+1,res);
+            }
+        }
+    }
+
+
+    int maxDepth(NNode* root) {
+        int res=-1;
+        int num=1;
+        if(!root)
+            return 0;
+        dfsTree(root,num,res);
+        return res;
+    }
+
+    int maxDepth_(NNode* root) {
+        if(!root)   
+            return 0;
+        else{
+            int ans=0;
+            for(auto&it:root->children)
+                ans=max(ans,maxDepth(it));
+            //返回当前节点深度
+            return ans+1;
+        }
+        
+    }
 
     /**
      * 6. Z 字形变换
