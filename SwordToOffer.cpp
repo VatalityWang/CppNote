@@ -729,23 +729,6 @@ bool cmp_(vector<int>&left,vector<int>&right){
     return left[1]<right[1];
 }
 
-string strLow1="qwertyuiop";
-string strLow2="asdfghjkl";
-string strLow3="zxcvbnm";
-
-string strUp1="QWERTYUIOP";
-string strUp2="ASDFGHJKL";
-string strUp3="ZXCVBNM";
-
-set<char> strSetlow1(strLow1.begin(),strLow1.end());
-set<char> strSetlow2(strLow2.begin(),strLow2.end());
-set<char> strSetlow3(strLow3.begin(),strLow3.end());
-
-set<char> strSetUp1(strUp1.begin(),strUp1.end());        
-set<char> strSetUp2(strUp2.begin(),strUp2.end());
-set<char> strSetUp3(strUp3.begin(),strUp3.end());
-
-
 // Definition for a Node.
 class NNode {
 public:
@@ -764,10 +747,77 @@ public:
     }
 };
 
+string strLow1="qwertyuiop";
+string strLow2="asdfghjkl";
+string strLow3="zxcvbnm";
+
+string strUp1="QWERTYUIOP";
+string strUp2="ASDFGHJKL";
+string strUp3="ZXCVBNM";
+
+set<char> strSetlow1(strLow1.begin(),strLow1.end());
+set<char> strSetlow2(strLow2.begin(),strLow2.end());
+set<char> strSetlow3(strLow3.begin(),strLow3.end());
+
+set<char> strSetUp1(strUp1.begin(),strUp1.end());        
+set<char> strSetUp2(strUp2.begin(),strUp2.end());
+set<char> strSetUp3(strUp3.begin(),strUp3.end());
+
+
+
+
 
 class Solution
 {
 public:
+
+    /**
+     * 859. 亲密字符串
+     * **/
+    bool buddyStrings(string s, string goal) {
+
+        if(s.size()!=goal.size())
+            return false;
+      
+        map<char,int> eles1;
+        map<char,int> eles2;
+        int diff=0;
+
+        //统计字符个数
+        for(int i=0;i<s.size();i++){
+            if(s[i]!=goal[i])
+                diff++;
+            eles1[s[i]]++;
+            eles2[goal[i]]++;
+        }
+        //字符种类数不等
+        if(eles1.size()!=eles2.size())
+            return false;
+        
+       
+        //可交换位置不为2也不为0
+        if(diff!=0&&diff!=2)
+            return false;
+
+        auto it=eles1.begin();
+        auto im=eles2.begin();
+        while(it!=eles1.end()&&im!=eles2.end()){
+            if(it->first==im->first&&it->second==im->second){
+                //两个字符串完全相同且某一类字符个数大于等于2，则可以交换
+                if(diff==0&&it->second>=2){
+                    return true;
+                }
+                it=std::next(it);
+                im=std::next(im);
+            }
+            else
+                return false;
+        }
+        if(diff==0)
+            return false;
+        else 
+            return true;
+    }
 
     /**
      * 559. N 叉树的最大深度
@@ -10595,10 +10645,9 @@ class PublicClass{
 int main()
 {
     Solution slu;    
-    bitset<2> flag;
-    cout<<flag[0]<<endl;
-    flag[0]=1;
-    cout<<flag[0]<<endl;
+    int i=1;
+    for(int j=0;j<10;j++)  
+        cout<<rand()%(i+1)<<endl;
     
     return 0;
 }
