@@ -772,6 +772,60 @@ class Solution
 public:
 
     /**
+     * 143. 重排链表
+     * **/
+     void reorderList(ListNode* head) {
+        //单节点
+        if(head&&!head->next)
+            return;
+        //双节点
+        if(head&&head->next&&!head->next->next)
+            return;
+        ListNode*slow=head;
+        ListNode*fast=head;    
+
+        //先找到中间节点
+        while(fast->next&&fast->next->next){
+            slow=slow->next;
+            fast=fast->next->next;
+        }
+
+        //逆序中间节点以后的节点
+        ListNode*mid=slow;
+        ListNode*aux1;
+        slow=slow->next;
+        mid->next=nullptr;
+        while(slow){
+            aux1=slow->next;
+            slow->next=mid->next;
+            mid->next=slow;
+            slow=aux1;
+        }
+
+      
+        //重排节点
+        ListNode*aux2;
+        slow=head;
+        fast=mid->next;
+        while(slow!=mid){
+            aux1=slow->next;
+            slow->next=fast;
+            aux2=fast->next;
+            fast->next=aux1;
+            slow=aux1;
+            fast=aux2;
+        }
+
+        //偶数个节点,aux2指向最后一个节点
+        if(aux2)
+            mid->next=aux2;
+        //奇数个节点，aux2指向空
+        else
+            mid->next=nullptr;
+
+    }
+
+    /**
      * 859. 亲密字符串
      * **/
     bool buddyStrings(string s, string goal) {
