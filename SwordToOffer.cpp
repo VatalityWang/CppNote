@@ -772,6 +772,31 @@ class Solution
 public:
 
     /**
+     * 674. 最长连续递增序列
+     * **/
+     int findLengthOfLCIS(vector<int>& nums) {
+        int res=1;
+        bool start=false;
+        int temp=1;
+        for(int i=1;i<nums.size();i++){
+            if(!start&&nums[i]>nums[i-1]){
+                start=true;
+                temp++;
+                res=max(res,temp);
+            }
+            else if(start&&nums[i]>nums[i-1]){
+                temp++;
+                res=max(res,temp);
+            }
+            else{
+                start=false;
+                temp=1;
+            }
+        }
+        return res;
+    }
+
+    /**
      * 143. 重排链表
      * **/
      void reorderList(ListNode* head) {
