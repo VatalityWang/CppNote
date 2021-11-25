@@ -771,6 +771,33 @@ class Solution
 {
 public:
 
+    /**
+     * 112. 路径总和
+     * **/
+    void dfsTreeNodeSum(TreeNode*root,int&sum,int target,bool&res){
+        //减枝
+        if(res)
+            return;
+        if(!root)
+            return;
+        sum+=root->val;
+        //叶子节点
+        if(sum==target&&!root->left&&!root->right){
+            res|=true;
+            return;
+        }
+        dfsTreeNodeSum(root->left,sum,target,res);
+        dfsTreeNodeSum(root->right,sum,target,res);
+        sum-=root->val;
+        return;
+    }
+
+    bool hasPathSum(TreeNode* root, int targetSum) {
+        int sum=0;
+        bool res=false;
+        dfsTreeNodeSum(root,sum,targetSum,res);
+        return res;
+    }
 
     /**
      * 718. 最长重复子数组
