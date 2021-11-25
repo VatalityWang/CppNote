@@ -772,6 +772,31 @@ class Solution
 public:
 
     /**
+     * 583. 两个字符串的删除操作
+     * **/
+      int minDistance(string word1, string word2) {
+        //dp[i][j]:以i-1,j-1结尾的两个字符串要相同需要的最少删除次数
+        //dp[i][j]=dp[i-1][j-1];if word1[i-1]==word2[j-1];
+        //否则为删除word[i-1],或则删除word2[j-1];或则二者都删除后的最小删除次数
+        int m=word1.size();
+        int n=word2.size();
+        vector<vector<int>> dp(m+1,vector<int>(n+1));
+        for(int i=0;i<=m;i++)
+            dp[i][0]=i;
+        for(int i=0;i<=n;i++)
+            dp[0][i]=i;
+        for(int i=1;i<=m;i++)
+            for(int j=1;j<=n;j++){
+                if(word1[i-1]==word2[j-1])
+                    dp[i][j]=dp[i-1][j-1];
+                else{
+                    dp[i][j]=min(min(dp[i-1][j]+1,dp[i][j-1]+1),dp[i-1][j-1]+2);
+                }
+            }
+        return dp[m][n];
+    }
+
+    /**
      * 112. 路径总和
      * **/
     void dfsTreeNodeSum(TreeNode*root,int&sum,int target,bool&res){
