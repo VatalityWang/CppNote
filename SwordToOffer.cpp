@@ -772,6 +772,24 @@ class Solution
 public:
 
     /**
+     * 700. 二叉搜索树中的搜索
+     * **/
+     TreeNode* searchBST(TreeNode* root, int val) {
+        if(!root)
+            return nullptr;
+        if(root->val==val)
+            return root;
+        TreeNode* ll=searchBST(root->left,val);
+        if(ll)
+            return ll;
+        TreeNode *lr=searchBST(root->right,val);
+        if(lr)
+            return lr;
+        return nullptr;
+    }
+
+
+    /**
      * 583. 两个字符串的删除操作
      * **/
       int minDistance(string word1, string word2) {
