@@ -770,6 +770,25 @@ set<char> strSetUp3(strUp3.begin(),strUp3.end());
 class Solution
 {
 public:
+    /**
+     * 179. 最大数
+     * **/
+     static bool comp(int &left,int &right){
+        string l=std::to_string(left)+std::to_string(right);
+        string r=std::to_string(right)+std::to_string(left);
+        return l>r;
+    }
+
+    string largestNumber(vector<int>& nums) {
+        string res;
+        sort(nums.begin(),nums.end(),comp);
+        for(auto it:nums){
+            res+=std::to_string(it);
+        }
+        if(res[0]=='0')
+            return string(1,'0');
+        return res;
+    }
 
     /**
      * 700. 二叉搜索树中的搜索
