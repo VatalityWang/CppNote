@@ -31,21 +31,18 @@ public:
      * 485. 最大连续 1 的个数
      * **/
      int findMaxConsecutiveOnes(vector<int>& nums) {
-       int res=0;
-       if(nums.size()==1&&nums[0]==1)
-            return 1;
-       int l=0,r=l+1;
-       while(r<nums.size()){
-           while(r<nums.size()&&nums[l]==nums[r]&&nums[l]==1)
-                r++;
-           if(nums[l]==1&&nums[r-1]==1)
-                res=max(r-l,res);
-           l=r;
-           r=l+1;
-       }
-        if(l<nums.size()&&r-1<nums.size()&&nums[l]==1&&nums[r-1]==1)
-            res=max(r-l,res);
-       return res;
+        int res=0;
+        int count=0;
+        for(int i=0;i<nums.size();i++){
+            if(nums[i]==1)
+                count++;
+            else{
+                res=max(res,count);
+                count=0;
+            }
+        }
+        res=max(res,count);
+        return res;
     }
 
     /**
