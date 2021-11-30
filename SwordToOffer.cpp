@@ -7412,6 +7412,25 @@ public:
     }
 
     /**
+     * 利用二叉搜索树性质的解法
+     * **/
+     TreeNode* lowestCommonAncestor_(TreeNode* root, TreeNode* p, TreeNode* q) {
+        TreeNode*pWork=root;
+        TreeNode *res=root;
+        while(pWork){
+            if(pWork->val>p->val&&pWork->val>q->val)
+                pWork=pWork->left;
+            else if(pWork->val<p->val&&pWork->val<q->val)
+                pWork=pWork->right;
+            else{
+                res=pWork;
+                break;
+            } 
+        }
+        return res;
+    }
+
+    /**
      * 二叉树展开为链表
      * **/
     void preorder(TreeNode*root,vector<TreeNode*>&elements){
