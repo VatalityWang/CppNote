@@ -27,6 +27,22 @@ using std::vector;
 class Solution {
 public:
 
+
+    /**
+     * 1446. 连续字符
+     * **/
+     int maxPower(string s) {
+        int cur=1;
+        int res=1;
+        for(int i=1;i<s.size();i++){
+            if(s[i]==s[i-1])
+                cur++;
+            else
+                cur=1;
+            res=max(cur,res);
+        }
+        return res;
+    }
     /**
      * 485. 最大连续 1 的个数
      * **/
