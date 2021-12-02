@@ -28,6 +28,7 @@ class Solution {
 public:
 
 
+
     /**
      * 1446. 连续字符
      * **/
