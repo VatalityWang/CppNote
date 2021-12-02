@@ -27,6 +27,29 @@ using std::vector;
 class Solution {
 public:
 
+    /**
+     * 506. 相对名次
+     * **/
+    vector<string> findRelativeRanks(vector<int>& score) {
+        vector<int> handle;
+        vector<string> res;
+        map<int,int> socre2rank;
+        std::copy(score.begin(),score.end(),back_inserter(handle));
+        sort(handle.begin(),handle.end(),std::greater<int>());
+        for(int i=0;i<handle.size();i++)
+            socre2rank[handle[i]]=i+1;
+        for(int i=0;i<score.size();i++){
+            if(socre2rank[score[i]]==1)
+                res.push_back("Gold Medal");
+            else if(socre2rank[score[i]]==2)
+                res.push_back("Silver Medal");
+            else if(socre2rank[score[i]]==3)
+                res.push_back("Bronze Medal");
+            else 
+                res.push_back(std::to_string(socre2rank[score[i]]));
+        }
+        return res;    
+    }
 
 
     /**
