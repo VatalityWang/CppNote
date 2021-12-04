@@ -28,6 +28,28 @@ class Solution {
 public:
 
     /**
+     * 1005. K 次取反后最大化的数组和
+     * **/
+      int largestSumAfterKNegations(vector<int>& nums, int k) {
+        sort(nums.begin(),nums.end());
+        int minEle=INT_MAX;
+        int sum=0;
+        for(int i=0;i<nums.size();i++){
+            if(nums[i]<0&&k>0){
+                nums[i]=-nums[i];
+                k--;
+            }
+            sum+=nums[i];
+            minEle=min(minEle,nums[i]);
+        }
+        if(k>0&&k%2){
+            sum-=2*minEle;
+        }
+        return sum;
+    }
+
+
+    /**
      * 506. 相对名次
      * **/
     vector<string> findRelativeRanks(vector<int>& score) {
