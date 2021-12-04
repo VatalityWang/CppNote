@@ -28,6 +28,26 @@ class Solution {
 public:
 
     /**
+     * 383. 赎金信
+     * **/
+     bool canConstruct(string ransomNote, string magazine) {
+        bool res=true;
+        map<int,int> ele1;
+        map<int,int> ele2;
+        for(int i=0;i<magazine.size();i++)
+            ele1[magazine[i]]++;
+        for(int i=0;i<ransomNote.size();i++)
+            ele2[ransomNote[i]]++;
+        for(auto it:ele2){
+            if(ele1[it.first]<it.second){
+                res=false;
+                break;
+            }
+        }
+        return res;
+    }
+
+    /**
      * 1005. K 次取反后最大化的数组和
      * **/
       int largestSumAfterKNegations(vector<int>& nums, int k) {
