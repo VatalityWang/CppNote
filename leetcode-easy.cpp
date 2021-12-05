@@ -28,6 +28,38 @@ class Solution {
 public:
 
     /**
+     * 13. 罗马数字转整数
+     * **/
+     int romanToInt(string s) {
+        int res=0;
+        map<char,int> statistics;
+        statistics.insert({'I',1});
+        statistics.insert({'V',5});
+        statistics.insert({'X',10});
+        statistics.insert({'L',50});
+        statistics.insert({'C',100});
+        statistics.insert({'D',500});
+        statistics.insert({'M',1000});
+
+        for(int i=s.size()-1;i>=0;i--){
+            if(i>=1){
+                if(statistics[s[i]]<=statistics[s[i-1]])
+                     res+=statistics[s[i]];
+                else{
+                    res+=statistics[s[i]]-statistics[s[i-1]];
+                    i--;
+                }
+
+            }
+            else{
+                res+=statistics[s[i]];
+            }
+            
+        }
+        return res;
+    }
+
+    /**
      * 383. 赎金信
      * **/
      bool canConstruct(string ransomNote, string magazine) {
