@@ -30,6 +30,41 @@ class Solution {
 public:
 
     /**
+     * 90. 子集 II
+     * **/
+     void dfsSubSetsWithDup(vector<int>&nums,int startIndex,vector<vector<int>>&res,int curLen,vector<int>&cur){
+        if(cur.size()==curLen){
+            res.push_back(cur);
+            return;
+        }
+        //用于当前层去重
+        set<int> curEles;
+        for(int i=startIndex;i<nums.size();i++){
+            if(curEles.count(nums[i])==0){
+                curEles.insert(nums[i]);
+                cur.push_back(nums[i]);
+                dfsSubSetsWithDup(nums,i+1,res,curLen,cur);
+                cur.pop_back();
+            }
+        }
+        curEles.clear();
+    }
+
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        vector<vector<int>> res;
+        vector<int> cur;
+        sort(nums.begin(),nums.end());
+        for(int i=0;i<nums.size();i++){
+            dfsSubSetsWithDup(nums,0,res,i,cur);
+            cur.clear();
+        }
+        //加入原始数组
+        res.push_back(nums);
+        return res;
+    }
+
+
+    /**
      * 81. 搜索旋转排序数组 II
      * **/
 
