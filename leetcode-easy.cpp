@@ -28,6 +28,24 @@ class Solution {
 public:
 
     /**
+     * 495. 提莫攻击
+     * **/
+     int findPoisonedDuration(vector<int>& timeSeries, int duration) {
+        int res=0;
+        for(int i=0;i<timeSeries.size();i++){
+            if(i+1<timeSeries.size()){
+                if(timeSeries[i+1]<=timeSeries[i]+duration-1)
+                    res+=timeSeries[i+1]-timeSeries[i];
+                else
+                    res+=duration;
+            }
+            else
+                res+=duration;
+        }
+        return res;
+    }
+
+    /**
      * 13. 罗马数字转整数
      * **/
      int romanToInt(string s) {
