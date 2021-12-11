@@ -28,6 +28,62 @@ class Solution {
 public:
 
     /**
+     * 748. 最短补全词
+     * **/
+    string shortestCompletingWord(string licensePlate, vector<string>& words) {
+        int board[26]={0};
+        int cur[26]={0};
+        int res=-1;
+        for(int i=0;i<licensePlate.size();i++){
+            if(isupper(licensePlate[i]))
+                board[tolower(licensePlate[i])-'a']++;
+            if(islower(licensePlate[i]))
+                board[licensePlate[i]-'a']++;
+        }
+
+      
+        for(int i=0;i<words.size();i++){
+            for(int j=0;j<words[i].size();j++){
+                if(isupper(words[i][j]))
+                    cur[tolower(words[i][j])-'a']++;
+                if(islower(words[i][j]))
+                    cur[words[i][j]-'a']++;
+            }
+         
+            bool statisfy=true;
+            for(int k=0;k<26;k++){
+                
+
+               
+                
+                if(cur[k]&&board[k]&&cur[k]<board[k]){
+                    statisfy=false;
+                    break;
+                }
+
+                if(!cur[k]&&board[k]){
+                    statisfy=false;
+                    break;
+                }
+
+            }
+
+            if(statisfy){
+                if(res==-1)
+                    res=i;
+                else{
+                    if(words[i].size()<=words[res].size())
+                        res=i;
+                }
+            }
+  
+            memset(cur,0,sizeof(cur));
+  
+        }
+        return words[res];
+    }
+
+    /**
      * 495. 提莫攻击
      * **/
      int findPoisonedDuration(vector<int>& timeSeries, int duration) {
@@ -200,5 +256,10 @@ public:
     }
 };
 int main(){
+    Solution slu;
+    string licensePlate="1s3 PSt";
+    vector<string> words={"step","steps","stripe","stepple"};
+    string res=slu.shortestCompletingWord(licensePlate,words);
+    cout<<"res: "<<res<<endl;
     return 0;
 }
