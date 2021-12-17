@@ -30,6 +30,48 @@ class Solution {
 public:
 
     /**
+     * 316. 去除重复字母
+     * **/
+   string removeDuplicateLetters(string s) {
+        int eles[26]={0};
+        for(int i=0;i<s.size();i++){
+            eles[s[i]-'a']++;
+        }
+        stack<char> work;  //单调递减栈
+        set<char> contain; //记录已插入的字符
+        for(int i=0;i<s.size();i++){
+            if(work.size()==0){
+                work.push(s[i]);
+                contain.insert(s[i]);
+                eles[s[i]-'a']--;
+                continue;
+            }
+           if(contain.count(s[i])!=0){
+                eles[s[i]-'a']--;
+                continue;
+           }
+        
+            //比栈顶元素小且栈顶后面还存在
+            while(work.size()&&s[i]<work.top()&&eles[work.top()-'a']){
+                contain.erase(work.top());
+                work.pop();
+            }
+          
+            work.push(s[i]);
+            contain.insert(s[i]);
+            eles[s[i]-'a']--;
+        }
+        string res;
+        while(work.size()){
+            res+=work.top();
+            work.pop();
+        }
+        reverse(res.begin(),res.end());
+        return res;
+    }
+
+
+    /**
      * 90. 子集 II
      * **/
      void dfsSubSetsWithDup(vector<int>&nums,int startIndex,vector<vector<int>>&res,int curLen,vector<int>&cur){
@@ -104,6 +146,9 @@ public:
 };
 
 int main(){
-    
+    string input="cbacdcbc";
+    Solution slu;
+    string res=slu.removeDuplicateLetters(input);
+    cout<<"res: "<<res<<endl;
     return 0;
 }
