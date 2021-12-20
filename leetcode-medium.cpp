@@ -29,6 +29,51 @@ using std::vector;
 class Solution {
 public:
 
+
+    /**
+     * 130. 被围绕的区域
+     * **/
+
+    void dfsFind(vector<vector<char>>& board,int i,int j,vector<vector<int>>&memory,vector<vector<int>>&visited){
+       
+        int m=board.size();
+        int n=board[0].size();
+        //超出范围
+        if(i<0||i>=m||j<0||j>=n)
+            return;
+        if(visited[i][j]==0&&board[i][j]=='O'){
+            memory[i][j]=1;
+            visited[i][j]=1;
+            dfsFind(board,i+1,j,memory,visited);
+            dfsFind(board,i-1,j,memory,visited);
+            dfsFind(board,i,j+1,memory,visited);
+            dfsFind(board,i,j-1,memory,visited);
+        }
+    }
+
+    void solve(vector<vector<char>>& board) {
+        //找某个'O'是否有边界的'O'与之相连，如果有则该区域不被'X'包围
+        int m=board.size();
+        int n=board[0].size();
+        vector<vector<int>>memory(m,vector<int>(n,0));
+         vector<vector<int>>visited(m,vector<int>(n,0));
+        for(int i=0;i<m;i++)
+            for(int j=0;j<n;j++){
+                if((i==0||i==m-1||j==0||j==n-1)&&board[i][j]=='O'){
+                    dfsFind(board,i+1,j,memory,visited);
+                    dfsFind(board,i-1,j,memory,visited);
+                    dfsFind(board,i,j+1,memory,visited);
+                    dfsFind(board,i,j-1,memory,visited);
+                }
+            }
+        
+        for(int i=0;i<m;i++)
+            for(int j=0;j<n;j++){
+                if((i!=0&&i!=m-1&&j!=0&&j!=n-1)&&memory[i][j]==0&&board[i][j]=='O')
+                        board[i][j]='X';
+            }
+    }
+
     /**
      * 316. 去除重复字母
      * **/
@@ -146,9 +191,14 @@ public:
 };
 
 int main(){
-    string input="cbacdcbc";
+    vector<vector<char>> input={{'O','O'},{'O','O'}};
     Solution slu;
-    string res=slu.removeDuplicateLetters(input);
-    cout<<"res: "<<res<<endl;
+    slu.solve(input);
+    for(auto it:input){
+        for(auto im:it){
+            cout<<im<<" ";
+        }
+        cout<<endl;
+    }  
     return 0;
 }
