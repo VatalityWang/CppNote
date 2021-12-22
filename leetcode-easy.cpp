@@ -28,6 +28,14 @@ class Solution {
 public:
 
     /**
+     * 575. 分糖果
+     * **/
+     int distributeCandies(vector<int>& candyType) {
+      
+        return min(unordered_set<int>(candyType.begin(),candyType.end()).size(),candyType.size()/2);
+    }
+
+    /**
      * 748. 最短补全词
      * **/
     string shortestCompletingWord(string licensePlate, vector<string>& words) {

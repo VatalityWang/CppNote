@@ -31,6 +31,85 @@ public:
 
 
     /**
+     * 12. 整数转罗马数字
+     * **/
+    string intToRoman(int num) {
+        map<int,char> dict;
+        dict.insert({1,'I'});
+        dict.insert({5,'V'});
+        dict.insert({10,'X'});
+        dict.insert({50,'L'});
+        dict.insert({100,'C'});
+        dict.insert({500,'D'});
+        dict.insert({1000,'M'});
+        vector<string> midStr;
+        string strnum;
+        int cur=1;
+        while(num){
+            int remain=num%10;
+            int curNum=remain*cur;
+            if(remain){
+                if(dict.find(curNum)!=dict.end()){
+                    midStr.push_back(string(1,dict[curNum]));
+                }
+                else{
+                    switch(cur){
+                        case 1:
+                            if(remain==4)
+                                midStr.push_back("IV");
+                            else if(remain==9){
+                                midStr.push_back("IX");
+                            }else if(remain<4){
+                                midStr.push_back(string(remain,'I'));
+                            }
+                            else{
+                                midStr.push_back("V"+string(remain-5,'I'));
+                            }
+                            break;
+                        case 10:
+                            if(remain==4)
+                                midStr.push_back("XL");
+                            else if(remain==9){
+                                midStr.push_back("XC");
+                            }else if(remain<4){
+                                midStr.push_back(string(remain,'X'));
+                            }
+                            else{
+                                midStr.push_back("L"+string(remain-5,'X'));
+                            }
+                            break;
+                        case 100:
+                            if(remain==4)
+                                midStr.push_back("CD");
+                            else if(remain==9){
+                                midStr.push_back("CM");
+                            }else if(remain<4){
+                                midStr.push_back(string(remain,'C'));
+                            }
+                            else{
+                                midStr.push_back("D"+string(remain-5,'C'));
+                            }
+                            break;
+                        case 1000:
+                            midStr.push_back(string(remain,'M'));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+               
+            }
+            cur*=10;
+            num/=10;
+        }
+        string res;
+        reverse(midStr.begin(),midStr.end());
+        for(auto it:midStr)
+            res+=it;
+        return res;
+    }
+
+    /**
      * 130. 被围绕的区域
      * **/
 
