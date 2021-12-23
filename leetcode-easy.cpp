@@ -24,8 +24,49 @@ using std::endl;
 using std::map;
 using std::string;
 using std::vector;
+
+
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    vector<Node*> children;
+
+    Node() {}
+
+    Node(int _val) {
+        val = _val;
+    }
+
+    Node(int _val, vector<Node*> _children) {
+        val = _val;
+        children = _children;
+    }
+};
+
+
+
 class Solution {
 public:
+
+    /**
+     * 590. N 叉树的后序遍历
+     * **/
+     void nTreePostorder(Node*root,vector<int>&res){
+        if(root){
+            if((root->children).size()){
+                for(auto it:root->children)
+                    nTreePostorder(it,res);
+            }
+            res.push_back(root->val);
+        }
+    }
+
+    vector<int> postorder(Node* root) {
+        vector<int> res;
+        nTreePostorder(root,res);
+        return res;
+    }
 
     /**
      * 575. 分糖果
