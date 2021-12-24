@@ -29,6 +29,18 @@ using std::vector;
 class Solution {
 public:
 
+    /**
+     * 137. 只出现一次的数字 II
+     * */
+     int singleNumber(vector<int>& nums) {
+        int a=0,b=0;
+        for(int i=0;i<nums.size();i++){
+            a=(a^nums[i])&~b;
+            b=(b^nums[i])&~a;
+        }
+        return a;
+    }
+
 
     /**
      * 12. 整数转罗马数字
