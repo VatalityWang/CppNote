@@ -68,6 +68,29 @@ public:
         return res;
     }
 
+    //非递归方法
+      vector<int> postorderNtree(Node* root) {
+        vector<int> res;
+        if(!root)
+            return res;
+        stack<Node*> eles;
+        eles.push(root);
+        while(eles.size()){
+            Node * p=eles.top();
+            eles.pop();
+            res.push_back(p->val);
+            int childS=p->children.size();
+            if(childS){
+                for(int i=0;i<childS;i++){
+                    eles.push(p->children[i]);
+                }
+            }
+        }
+      
+        reverse(res.begin(),res.end());
+        return res;
+    }
+
     /**
      * 575. 分糖果
      * **/
