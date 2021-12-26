@@ -50,6 +50,39 @@ class Solution {
 public:
 
     /**
+     * 1078. Bigram 分词
+     * */
+      vector<string> split(string input,string delimiter){
+        vector<string> res;
+        size_t pos=0;
+        string token;
+        while ((pos=input.find(delimiter))!=string::npos){
+            token=input.substr(0,pos);
+            res.push_back(token);
+            input.erase(0,pos+delimiter.length());
+        }
+    
+        res.push_back(input);
+        return res;
+}
+
+    vector<string> findOcurrences(string text, string first, string second) {
+        vector<string> res;
+        vector<string> words;
+        string delimiter=" ";
+        words=split(text,delimiter);
+        int i=0;
+        while(i<words.size()-2){
+            if(words[i]==first&&words[i+1]==second){
+                res.push_back(words[i+2]);
+            }
+            i++;
+        }
+        return res;
+    }
+
+
+    /**
      * 590. N 叉树的后序遍历
      * **/
      void nTreePostorder(Node*root,vector<int>&res){
