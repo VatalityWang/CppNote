@@ -30,6 +30,28 @@ class Solution {
 public:
 
     /**
+     * 153. 寻找旋转排序数组中的最小值
+     * **/
+    int findMin(vector<int>& nums) {
+        int low=0;
+        int high=nums.size()-1;
+        while(low<=high){
+            
+            if(nums[low]<=nums[high])
+                return nums[low];
+            int mid=(low+high)>>1;
+            //右半部分有序，最小值在左半部分，包括mid所指元素
+            if(nums[mid]<nums[high])
+                high=mid;
+            //左半部分有序，最小值在右半部分，不包括mid下标所指元素，因为nums[mid]>nums[high],nums[mid]不可能为最小元素
+            else
+                low=mid+1;
+
+        }
+        return 0;
+    }
+
+    /**
      * 137. 只出现一次的数字 II
      * */
      int singleNumber(vector<int>& nums) {
