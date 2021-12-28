@@ -50,6 +50,25 @@ class Solution {
 public:
 
     /**
+     * 202. 快乐数
+     * **/
+     bool isHappy(int n) {
+
+        int ans=0;
+        for(int i=0;i<100;i++){
+            while(n) {
+                ans+=(n%10)*(n%10);
+                n/=10;
+            }
+            n=ans;
+            if(n==1)
+                return true;
+            ans=0;
+        }
+        return false;
+    }
+
+    /**
      * 1078. Bigram 分词
      * */
       vector<string> split(string input,string delimiter){
