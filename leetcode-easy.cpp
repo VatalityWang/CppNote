@@ -67,7 +67,29 @@ public:
         }
         return false;
     }
+    // 基于集合的方法
+     bool isHappy_(int n) {
 
+        int ans=0;
+        set<int> eles;
+        while(n){
+            while(n){
+                ans+=(n%10)*(n%10);
+                n/=10;
+            }
+            if(eles.count(ans)){
+                if(ans==1)
+                    return  true;
+                else 
+                    return false;
+            }
+            else
+                eles.insert(ans);
+            n=ans;
+            ans=0;
+        }
+        return false;
+    }
     /**
      * 1078. Bigram 分词
      * */
