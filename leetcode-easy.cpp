@@ -50,6 +50,30 @@ class Solution {
 public:
 
     /**
+     * 205. 同构字符串
+     * **/
+     bool isIsomorphic(string s, string t) {
+        map<char,char> l2r;
+        map<char,char> r2l;
+        //映射关系要唯一
+        for(int i=0;i<s.size();i++){
+            if(l2r.find(s[i])==l2r.end())
+                l2r[s[i]]=t[i];
+            else{
+                if(l2r[s[i]]!=t[i])
+                    return false;
+            }
+            if(r2l.find(t[i])==r2l.end())
+                r2l[t[i]]=s[i];
+            else{
+                if(r2l[t[i]]!=s[i])
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * 202. 快乐数
      * **/
      bool isHappy(int n) {
