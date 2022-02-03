@@ -30,6 +30,34 @@ class Solution {
 public:
 
     /**
+     * 1414. 和为 K 的最少斐波那契数字数目
+     * **/
+    int findMinFibonacciNumbers(int k) {
+
+        int a=1,b=1,c=a+b;
+        vector<int> eles{1,1};
+
+        while(c<=k){
+            eles.push_back(c);
+            a=b;
+            b=c;
+            c=a+b;
+        }
+
+        int num=0;
+        while(k){
+
+            if(eles.back()<=k){
+                k=k-eles.back();
+                num++;
+            }
+            else
+                eles.pop_back();    
+        }
+        return num;
+    }
+
+    /**
      * 153. 寻找旋转排序数组中的最小值
      * **/
     int findMin(vector<int>& nums) {
