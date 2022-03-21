@@ -44,10 +44,46 @@ public:
     }
 };
 
+/**
+ * Definition for a binary tree node.
+ */
+struct TreeNode {
+      int val;
+      TreeNode *left;
+      TreeNode *right;
+      TreeNode() : val(0), left(nullptr), right(nullptr) {}
+      TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+      TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
 
+ 
 
 class Solution {
 public:
+
+    /**
+     * 653. 两数之和 IV - 输入 BST
+     * **/
+
+    void inOrderTree(TreeNode*root,map<int,int>&statistic,bool & res,int target){
+        if(!root)
+            return;
+        //找到与当前元素互补的元素
+        if(statistic.find(root->val)!=statistic.end()){
+            res=true;
+            return;
+        }
+        statistic[target-root->val]=root->val;
+        inOrderTree(root->left,statistic,res,target);
+        inOrderTree(root->right,statistic,res,target);
+    }
+
+    bool findTarget(TreeNode* root, int k) {
+        map<int,int> statistic;
+        bool res=false;
+        inOrderTree(root,statistic,res,k);
+        return res;
+    }
 
     /**
      * 205. 同构字符串
