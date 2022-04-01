@@ -24,10 +24,65 @@ using std::endl;
 using std::map;
 using std::string;
 using std::vector;
-
+/**
+ * Definition for singly-linked list.
+ */
+  struct ListNode {
+      int val;
+      ListNode *next;
+      ListNode() : val(0), next(nullptr) {}
+      ListNode(int x) : val(x), next(nullptr) {}
+      ListNode(int x, ListNode *next) : val(x), next(next) {}
+};
 
 class Solution {
 public:
+
+    /**
+     * 86. 分隔链表
+     * **/
+     ListNode* partition(ListNode* head, int x) {
+        
+        ListNode * min_tail=nullptr;
+        ListNode * max_tail=nullptr;
+        ListNode * newHead=nullptr;
+        ListNode * maxHead=nullptr;
+        ListNode * pwork=head;
+
+        while(pwork){
+            if(pwork->val<x){
+                if(!min_tail)
+                    min_tail=pwork;
+                else{
+                    min_tail->next=pwork;
+                    min_tail=pwork;
+                }
+                if(!newHead)
+                    newHead=min_tail;
+            }else{
+                if(!max_tail)
+                    max_tail=pwork;
+                else{
+                    max_tail->next=pwork;
+                    max_tail=pwork;
+                }
+                if(!maxHead)
+                    maxHead=pwork;
+            }
+            pwork=pwork->next;
+           
+        }
+        // 尾指针置空
+        if(max_tail)
+            max_tail->next=nullptr;
+        //存在小于x的节点
+        if(min_tail)
+            min_tail->next=maxHead;
+        //不存在小于x的节点
+        if(!newHead)
+            newHead=maxHead;
+        return newHead;
+    }
 
     /**
      * 1414. 和为 K 的最少斐波那契数字数目
