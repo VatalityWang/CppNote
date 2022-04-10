@@ -39,6 +39,43 @@ class Solution {
 public:
 
     /**
+     * 38. 外观数列
+     * **/
+     string countAndSay(int n) {
+
+            string cur="";
+            string pre="1";
+            string res;
+
+            int cur_count=1;
+            char cur_char=pre[0];
+
+            for(int j=1;j<n;j++){
+                cur="";
+                cur_char=pre[0];
+                cur_count=1;
+                for(int i=1;i<pre.size();i++){
+                    if(pre[i]==pre[i-1]){
+                        cur_count++;
+                    }else{
+                        cur+=std::to_string(cur_count);
+                        cur+=cur_char;
+                        cur_char=pre[i];
+                        cur_count=1;
+                    }
+                }
+                cur+=std::to_string(cur_count);
+                cur+=cur_char;        
+                pre=cur;
+              
+
+            }
+          
+            return pre;
+    }
+
+
+    /**
      * 86. 分隔链表
      * **/
      ListNode* partition(ListNode* head, int x) {
