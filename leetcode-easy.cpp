@@ -62,6 +62,22 @@ class Solution {
 public:
 
     /**
+     * 804. 唯一摩尔斯密码词
+     * **/
+     int uniqueMorseRepresentations(vector<string>& words) {
+        vector<string> dicts={".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."};
+        set<string> res;
+        string cur;
+        for(int i=0;i<words.size();i++){
+            for(int j=0;j<words[i].size();j++)
+                cur+=dicts[words[i][j]-'a'];
+            res.insert(cur);
+            cur="";
+        }
+        return res.size();
+    }
+
+    /**
      * 653. 两数之和 IV - 输入 BST
      * **/
 
