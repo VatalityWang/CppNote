@@ -39,6 +39,29 @@ class Solution {
 public:
 
     /**
+     * 357. 统计各位数字都不同的数字个数
+     * **/
+    int count(int n){
+        int res=9;
+        int start=9;
+        for(int i=0;i<n-1;i++){
+            res*=start;
+            start--;
+        }
+        return res;
+    }
+
+    int countNumbersWithUniqueDigits(int n) {
+        if(n==0)
+            return 1;
+        else if(n==1)
+            return 10;
+        else{
+            return count(n)+countNumbersWithUniqueDigits(n-1);
+        }
+    }
+
+    /**
      * 38. 外观数列
      * **/
      string countAndSay(int n) {
