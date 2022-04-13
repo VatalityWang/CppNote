@@ -35,6 +35,49 @@ using std::vector;
       ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
+/*
+*380. O(1) 时间插入、删除和获取随机元素
+*/
+class RandomizedSet {
+public:
+
+    map<int,int> elesTable; // 元素---元素下标
+    vector<int> eles; // 存元素
+
+    RandomizedSet() {
+
+    }
+    
+    bool insert(int val) {
+        // 该元素已存在
+        if(elesTable.find(val)!=elesTable.end())
+            return false;
+        eles.push_back(val);
+        int index=eles.size()-1;
+        elesTable[val]=index;
+        return true;
+    }
+    
+    bool remove(int val) {
+        // 没有该元素
+        if(elesTable.find(val)==elesTable.end())
+            return false;
+        int last=eles.back();
+        int index=elesTable[val];
+        eles[index]=last;
+        //更新最后一个元素对应下标新下标
+        elesTable[last]=index;
+        elesTable.erase(val);
+        eles.pop_back();
+        return true;
+    }
+    
+    int getRandom() {
+        int rand_index=rand()%eles.size();
+        return eles[rand_index];
+    }
+};
+
 class Solution {
 public:
 
