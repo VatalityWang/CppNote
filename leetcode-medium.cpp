@@ -104,6 +104,7 @@ public:
         for(int mask=0;mask<(1<<n);mask++){
             if(dp[mask]==-1) continue;
             for(int i=0;i<n;i++){
+                //当前位置未被选择，更新选择以后的状态
                 if(!(mask&(1<<i))&&(dp[mask]+nums[i]<=avg))
                     dp[mask|(1<<i)]=(dp[mask]+nums[i])%avg;
             }
