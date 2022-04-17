@@ -82,6 +82,38 @@ class Solution {
 public:
 
     /**
+     * 698. 划分为k个相等的子集
+     * **/
+     bool canPartitionKSubsets(vector<int>& nums, int k) {
+        int sum=std::accumulate(nums.begin(),nums.end(),0);
+        if(sum%k)
+            return false;
+        int avg=sum/k;
+
+        for(auto it:nums){
+            // 大于均分k份的和
+            if(it>avg)
+                return false;
+        }
+
+        // 创建用于状态压缩的dp数组
+        int n=nums.size();
+        vector<int> dp((1<<16)+2,-1); // 表示16个位置的数字选或者不选的状态，dp[i]表示当前状态求和之后整除target的余数，余数为0，则表示存在满足题意条件的划分。
+        // 状态转移方程：如果第i位没有选择，选择第i位。dp[mask|1<<i]=dp[mask]+nums[i]
+        dp[0]=0;
+        for(int mask=0;mask<(1<<n);mask++){
+            if(dp[mask]==-1) continue;
+            for(int i=0;i<n;i++){
+                if(!(mask&(1<<i))&&(dp[mask]+nums[i]<=avg))
+                    dp[mask|(1<<i)]=(dp[mask]+nums[i])%avg;
+            }
+        }
+
+        return dp[(1<<n)-1]==0;
+       
+    }
+
+    /**
      * 357. 统计各位数字都不同的数字个数
      * **/
     int count(int n){
@@ -488,6 +520,8 @@ public:
         return false;
     }
 };
+
+typedef std::string AddressLines[4];  //每个人的地址有4行，每行是一个string.
 
 int main(){
     vector<vector<char>> input={{'O','O'},{'O','O'}};
