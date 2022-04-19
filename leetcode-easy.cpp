@@ -62,6 +62,33 @@ class Solution {
 public:
 
     /**
+     * 821. 字符的最短距离
+     * **/
+     vector<int> shortestToChar(string s, char c) {
+        vector<int> res;
+        int left=-1,right=-1;//距离当前位置左边最近的c字符和右边最近的c字符
+
+        //获取最左和最右位置
+        for(int i=0;i<s.size();i++){
+           left=i,right=i;
+           while(left>=0&&s[left]!=c)
+                left--;
+           while(right<s.size()&&s[right]!=c)
+                right++;
+           if(left>=0&&right<s.size()){
+                res.push_back(min(abs(left-i),abs(right-i)));
+           }
+           else{
+               if(left>=0)
+                    res.push_back(abs(left-i));
+                else
+                    res.push_back(abs(right-i));
+           }
+        }
+        return res;
+    }
+
+    /**
      * 804. 唯一摩尔斯密码词
      * **/
      int uniqueMorseRepresentations(vector<string>& words) {
