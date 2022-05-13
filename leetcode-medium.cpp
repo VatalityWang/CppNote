@@ -82,6 +82,20 @@ class Solution {
 public:
 
     /**
+     * 1049. 最后一块石头的重量 II
+     * **/
+    int lastStoneWeightII(vector<int>& stones) {
+        int sum=std::accumulate(stones.begin(),stones.end(),0);
+        int volume=sum/2;
+        vector<int> dp(volume+1);// 背包最大容量,装满容量为i的背包所获得的最大价值
+        for(int i=0;i<stones.size();i++){ //遍历物品
+            for(int j=volume;j>=stones[i];j--) //遍历背包，从大到小，每个物品只装一次
+                dp[j]=max(dp[j],dp[j-stones[i]]+stones[i]);
+        }
+        return sum-2*dp[volume];
+    }
+
+    /**
      * 698. 划分为k个相等的子集
      * **/
      bool canPartitionKSubsets(vector<int>& nums, int k) {
