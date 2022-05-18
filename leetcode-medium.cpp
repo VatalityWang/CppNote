@@ -82,6 +82,21 @@ class Solution {
 public:
 
     /**
+     * 377. 组合总和 Ⅳ
+     * **/
+     int combinationSum4(vector<int>& nums, int target) {
+        vector<int> dp(target+1);//dp[i] 装满容量为i的背包的组合数
+        dp[0]=1;
+        for(int j=1;j<=target;j++){ //先遍历背包容量
+            for(int i=0;i<nums.size();i++) //再遍历物品，用容量去遍历物品。则会存在先后关系。即容量小的时候，容量小的物品被装上；容量大的背包，容量大的物品再容量小的物品后面装上，体现的了不同的装入顺序。即一种具有先后顺序的排列关系。
+                if(j>=nums[i]&&dp[j]<(INT_MAX-dp[j-nums[i]]))
+                    dp[j]+=dp[j-nums[i]]; //dp[4]=dp[1]+dp[2]+dp[3]，装满容量为1的背包然而上容量为3的背包；装满容量为2的背包的组合数然后装上容量为2的物品；装满容量为3的背包然后装上容量为1的物品。
+           
+        }
+        return dp[target];
+    }
+
+    /**
      * 1049. 最后一块石头的重量 II
      * **/
     int lastStoneWeightII(vector<int>& stones) {
