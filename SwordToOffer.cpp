@@ -7279,7 +7279,8 @@ public:
 
     }
 
-    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values,vector<vector<string>>& queries) {
+    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values,
+    vector<vector<string>>& queries) {
        
         vector<double> res;
         int num=0;
@@ -8123,6 +8124,21 @@ public:
         }
         return r;
     }
+    /**
+     * 基于完全背包的方法
+     * **/
+     int climbStairs_(int n) {
+        vector<int> dp(n+1); //dp[i]:装满容量为i的背包的方法数（爬楼梯数）,物品有2种可任意多次选择，直到装满背包---> 完全背包
+        dp[0]=1;
+        for(int j=1;j<=n;j++){ //遍历背包容量
+            for(int i=1;i<=2;i++){ //遍历物品
+                if(j>=i)
+                    dp[j]+=dp[j-i];
+            }  
+        }
+        return dp[n];
+    }
+
 
     /**
      * 数据流的中位数
