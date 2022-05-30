@@ -82,6 +82,82 @@ class Solution {
 public:
 
     /**
+     * 91. 解码方法
+     * **/
+     int numDecodings(string s) {
+        int n=s.size();
+        vector<int> dp(n+1); //dp[i]表示以i下标结束的字符串的可解码组合数
+        if(s[0]=='0')
+            return 0;
+        dp[1]=1; // 首字母成一个组合
+        dp[0]=1;
+        for(int i=1;i<n;i++){
+            string temp(1,s[i-1]);
+            if(temp=="0"){
+                if(s[i]!='0'){
+                    dp[i+1]=dp[i];
+                    continue;
+                }else{//连续的0则必不能组合
+                    return 0;
+                }
+            }
+            temp+=s[i];
+            int curnum=stoi(temp);
+          
+            if(s[i]!='0'){ //不为0
+                if(curnum<=26&&curnum>=0) //可与上一位组合成一个26以内的整数，即一个字符
+                    dp[i+1]=dp[i-1]+dp[i];
+                else
+                    dp[i+1]=dp[i];
+            }else{ // 当前字符为0单独考虑
+                 if(curnum<=26&&curnum>=0) {//可与上一位组合成一个26以内的整数，即一个字符
+                    if(i==n-1)//最后的0只能与上一位非零的组合
+                        dp[i+1]=dp[i-1];
+                    else    
+                        dp[i+1]=dp[i-1];
+                 }
+                 else   
+                    return 0;
+            }
+         
+        }
+        return dp[n];
+    }
+    /**
+     * 216. 组合总和 III
+     * **/
+    void combinationSum3Dfs(vector<vector<int>>&res,vector<int>&cur,int k,int n,int index,int &sum){
+        if(sum>n)
+            return;
+        if(cur.size()==k){
+            // int sum=std::accumulate(cur.begin(),cur.end(),0);
+            if(sum==n)
+                res.push_back(cur);
+            return;
+        }
+        
+        //增加剪枝操作
+
+        for(int i=index;i<=9-(k-cur.size())+1;i++){
+            cur.push_back(i);
+            sum+=i;
+            combinationSum3Dfs(res,cur,k,n,i+1,sum);
+            sum-=i;
+            cur.pop_back();
+        }
+    }
+
+    // 选k个数使和等于n
+    vector<vector<int>> combinationSum3(int k, int n) {
+        int sum=0;
+        vector<vector<int>> res;
+        vector<int> cur;
+        combinationSum3Dfs(res,cur,k,n,1,sum);
+        return res;
+    }
+
+
+    /**
      * 377. 组合总和 Ⅳ
      * **/
      int combinationSum4(vector<int>& nums, int target) {
