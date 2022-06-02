@@ -78,8 +78,52 @@ public:
     }
 };
 
+
+//  Definition for a binary tree node.
+  struct TreeNode {
+      int val;
+      TreeNode *left;
+      TreeNode *right;
+      TreeNode() : val(0), left(nullptr), right(nullptr) {}
+      TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+      TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+  };
+ 
+
+
 class Solution {
 public:
+
+    /**
+     * 95. 不同的二叉搜索树 II
+     * **/
+     vector<TreeNode*>generate(int left,int right){
+        vector<TreeNode*> allTrees;
+        if(left>right){
+            allTrees.push_back(nullptr);
+            return allTrees;
+        }
+        for(int i=left;i<=right;i++){
+            vector<TreeNode*> left_nodes=generate(left,i-1);
+            vector<TreeNode*> right_nodes=generate(i+1,right);
+            for(TreeNode*left_node:left_nodes)
+                for(TreeNode*right_node:right_nodes){
+                    TreeNode*t=new TreeNode(i);
+                    t->left=left_node;
+                    t->right=right_node;
+                    allTrees.push_back(t);
+                }
+        }
+        return allTrees;
+    }
+
+    vector<TreeNode*> generateTrees(int n) {
+        if(n>=1)
+            return generate(1,n);
+        else
+            return vector<TreeNode*>{};
+
+    }
 
     /**
      * 91. 解码方法
