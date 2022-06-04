@@ -114,7 +114,14 @@ public:
         for(int i=1;i<=n1;i++)
             for(int j=1;j<=n2;j++){
                 dp[i][j]=dp[i-1][j]&&s1[i-1]==s3[i+j-1]||dp[i][j-1]&&s2[j-1]==s3[i+j-1];
+                //错误解法
+                /*
+                 if(s1[i-1]==s3[i+j-1])
+                    dp[i][j]=(dp[i-1][j]);
                 
+                if(s2[j-1]==s3[i+j-1])
+                    dp[i][j]=(dp[i][j-1]);
+                */
             }
         
         
