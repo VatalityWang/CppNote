@@ -95,6 +95,30 @@ class Solution {
 public:
 
     /**
+     * 
+     * **/
+    //利用l,r两个数组,l存某个位置上元素左边第一个比该位置元素小的位置；r存右边第一个比当前元素小的元素位置;
+    //当前位置与两个位置的差即最小数组中该位置元素被选中为最小元素的次数。
+    //注意：初始化
+     int sumSubarrayMins(vector<int>& arr) {
+        int n = arr.size();
+        vector<ll> l(n, -1), r(n, n);
+        stack<int> st;
+        for (int i = 0; i < n; i ++ ) {
+            while (!st.empty() && arr[i] <= arr[st.top()]) {//当前位置元素比栈顶位置(以前位置)对应元素大，则利用当前位置更新栈顶位置对应r数组。
+                r[st.top()] = i;
+                st.pop();
+            }
+            if (!st.empty()) l[i] = st.top();//用比当前位置元素小且在当前元素左边的第一个元素位置更新l数组
+            st.push(i);
+        }
+        ll ans = 0; 
+       
+        for (int i = 0; i < n; i ++ ) ans += (i - l[i]) * (r[i] - i) * arr[i] % mod;
+        return (ans + mod) % mod;
+    }
+
+    /**
      * 97. 交错字符串
      * **/
      bool isInterleave(string s1, string s2, string s3) {
