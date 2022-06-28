@@ -96,6 +96,22 @@ public:
     using ll = long long;
     const int mod = 1e9 + 7;
     /**
+     * 122. 买卖股票的最佳时机 II
+     * **/
+      int maxProfit(vector<int>& prices) {
+        int n=prices.size();
+        vector<vector<int>> dp(n,vector<int>(2)); //dp[i][0]表示第i天持有股票的最大受益；\
+        dp[i][1]表示第i天不持有股票的最大受益.
+        dp[0][0]=-prices[0];
+        dp[0][1]=0;
+        for(int i=1;i<prices.size();i++) {
+            dp[i][0]=max(dp[i-1][0],dp[i-1][1]-prices[i]);
+            dp[i][1]=max(dp[i-1][1],dp[i-1][0]+prices[i]);
+        }
+        return dp[n-1][1];
+    }
+
+    /**
      * 907. 子数组的最小值之和
      * **/
     //利用l,r两个数组,l存某个位置上元素左边第一个比该位置元素小的位置；r存右边第一个比当前元素小的元素位置;
