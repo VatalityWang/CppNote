@@ -46,7 +46,28 @@ class Solution {
             dp[i][4]=max(dp[i-1][3]+prices[i],dp[i-1][4]);
         }
         return dp[n-1][4];
-}
+    }
+    /**
+     * 188. 买卖股票的最佳时机 IV
+     * **/
+    int maxProfit(int k, vector<int>& prices) {
+        if(k==0||prices.size()<=1)//边界条件
+            return 0;
+        vector<int> dp(2*k+1,0);//表示没有任何操作，第1次买入，第一次卖出，第i次买入，第i次卖出
+        for(int j=1;j<=2*k;j++)
+            if(j%2)
+                dp[j]=-prices[0];
+        for(int i=0;i<prices.size();i++){
+            for(int j=1;j<=2*k;j++){
+                if(j%2) //买入
+                    dp[j]=max(dp[j],dp[j-1]-prices[i]);
+                else{ //卖出
+                    dp[j]=max(dp[j],dp[j-1]+prices[i]);
+                }
+            }
+        }
+        return dp[2*k];
+    }
 
 };
 
