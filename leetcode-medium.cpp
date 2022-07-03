@@ -590,7 +590,8 @@ public:
      * 130. 被围绕的区域
      * **/
 
-    void dfsFind(vector<vector<char>>& board,int i,int j,vector<vector<int>>&memory,vector<vector<int>>&visited){
+    void dfsFind(vector<vector<char>>& board,int i,int j,vector<vector<int>>&memory,\
+    vector<vector<int>>&visited){
        
         int m=board.size();
         int n=board[0].size();
@@ -675,7 +676,8 @@ public:
     /**
      * 90. 子集 II
      * **/
-     void dfsSubSetsWithDup(vector<int>&nums,int startIndex,vector<vector<int>>&res,int curLen,vector<int>&cur){
+     void dfsSubSetsWithDup(vector<int>&nums,int startIndex,vector<vector<int>>&res,\
+     int curLen,vector<int>&cur){
         if(cur.size()==curLen){
             res.push_back(cur);
             return;
