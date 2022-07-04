@@ -6985,6 +6985,24 @@ public:
         }
         return *std::max_element(dp.begin(),dp.end());
     }
+    //优化
+     int lengthOfLIS_(vector<int>& nums) {
+        int res=1;
+        int n=nums.size();
+        if(n==1)
+            return 1;
+        vector<int> dp(n+1,1);   //dp[i]长度为i的数组的最长递增子序列
+        for(int i=1;i<=n;i++){ //长度
+            for(int j=0;j<i;j++){
+                if(nums[j]<nums[i-1]){
+                    dp[i]=max(dp[j+1]+1,dp[i]);
+                }
+            }
+           res=max(dp[i],res);
+        }
+        return res;
+    }
+
 
     /**
      * 从前序与中序遍历序列构造二叉树
@@ -10888,7 +10906,10 @@ int main()
     int i=1;
     for(int j=0;j<10;j++)  
         cout<<rand()%(i+1)<<endl;
-    
+    typedef char MacBytes[6];
+
+    cout<<"sizeof(MacBytes)"<<sizeof(MacBytes)<<endl;
+
     return 0;
 }
 
