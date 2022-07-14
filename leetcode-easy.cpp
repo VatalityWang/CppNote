@@ -60,6 +60,31 @@ struct TreeNode {
 
 class Solution {
 public:
+    /**
+     * 53. 最大子数组和
+     * **/
+     vector<int> calucateMaxSubArray(vector<int>&nums,int start,int end){
+      //存以左端点为起始点的最大子数组和，存以右端点为起始点的最大子数组和，该区间段的最大子数组和，该区间段的总和。
+       
+        if(start==end){
+            return {nums[start],nums[start],nums[start],nums[start]};
+        }
+       
+        int mid=(start+end)>>1;
+        vector<int> leftRes=calucateMaxSubArray(nums,start,mid);
+        vector<int> rightRes=calucateMaxSubArray(nums,mid+1,end);
+        int lsum=max(leftRes[0],leftRes[3]+rightRes[0]);
+        int rsum=max(rightRes[1],leftRes[1]+rightRes[3]);
+        int sum=leftRes[3]+rightRes[3];
+        int maxSubSum=max(max(leftRes[2],rightRes[2]),leftRes[1]+rightRes[0]);
+        return {lsum,rsum,maxSubSum,sum};
+
+    }
+
+    int maxSubArray(vector<int>& nums) {
+        vector<int>res=calucateMaxSubArray(nums,0,nums.size()-1);
+        return res[2];
+    }
 
     /**
      * 821. 字符的最短距离
