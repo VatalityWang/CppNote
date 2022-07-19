@@ -60,6 +60,20 @@ struct TreeNode {
 
 class Solution {
 public:
+
+    /**
+     * 2119. 反转两次的数字
+     * **/
+    bool isSameAfterReversals(int num) {
+        string str_first=std::to_string(num);
+        reverse(str_first.begin(),str_first.end());
+        int re_num=stoi(str_first);
+        string str_sec=std::to_string(re_num);
+        reverse(str_sec.begin(),str_sec.end());
+        int second_num=stoi(str_sec);
+        return second_num==num;
+    }
+
     /**
      * 53. 最大子数组和
      * **/
