@@ -95,6 +95,37 @@ class Solution {
 public:
     using ll = long long;
     const int mod = 1e9 + 7;
+
+    /**
+     * 151. 颠倒字符串中的单词
+     * **/
+    string reverseWords(string s) {
+        vector<string> words;
+        string tmp;
+        string res;
+        for(int i=0;i<s.size();i++){
+            if(s[i]!=' '){
+                tmp+=s[i];
+            }else{
+                if(tmp.size()){
+                    words.push_back(tmp);
+                    tmp.clear();
+                }
+            }
+        }
+        if(tmp.size())
+            words.push_back(tmp);
+        reverse(words.begin(),words.end());
+        for(int i=0;i<words.size();i++){
+            if(i!=words.size()-1){
+                res+=words[i];
+                res+=" ";
+            }else{
+                res+=words[i];
+            }
+        }
+        return res;
+    }
     /**
      * 122. 买卖股票的最佳时机 II
      * **/
