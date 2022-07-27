@@ -27,6 +27,32 @@ using std::vector;
 class Solution {
     public:
         /**
+         * 115. 不同的子序列
+         * **/
+        int numDistinct(string s, string t) {
+        int n1=s.size(),n2=t.size();
+
+        //dp[i][j]: s[0:i-1]中子序列t[0:j-1]的个数
+        vector<vector<unsigned long long>> dp(n1+1,vector<unsigned long long>(n2+1));
+
+        //初始化
+        dp[0][0]=1;
+        for(int i=1;i<=n1;i++)
+                dp[i][0]=1; //任何字符串空字符子串的个数为1
+                
+        for(int i=1;i<=n1;i++){
+            for(int j=1;j<=n2;j++){
+                if(t[j-1]==s[i-1]){
+                    dp[i][j]=dp[i-1][j-1]+dp[i-1][j];
+                }else{
+                    dp[i][j]=dp[i-1][j];
+                }
+            }
+        }
+        return dp[n1][n2];
+    }
+
+        /**
          * 123. 买卖股票的最佳时机 III
          * **/
         int maxProfit(vector<int>& prices) {
