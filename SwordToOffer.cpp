@@ -6968,6 +6968,32 @@ public:
         return final_res;
     }
 
+    //另一种解法
+     void backtrack(vector<vector<int>>&res,vector<int>& candidates,vector<int>&cur,int sum,int index,int target){
+        if(index==candidates.size())//越界
+            return;
+        if(sum>target)
+            return;
+        if(sum==target){
+            res.push_back(cur);
+            return;
+        }   
+        for(int i=index;i<candidates.size();i++){
+            cur.push_back(candidates[i]);
+            sum+=candidates[i];
+            backtrack(res,candidates,cur,sum,i,target);
+            sum-=candidates[i];
+            cur.pop_back();
+        }
+       
+    }
+
+    vector<vector<int>> combinationSumPlus(vector<int>& candidates, int target) {
+        vector<vector<int>> res;
+        vector<int> cur;
+        backtrack(res,candidates,cur,0,0,target);
+        return res;
+    }
 
     /**
      * 最长递增子序列
