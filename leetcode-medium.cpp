@@ -96,6 +96,50 @@ public:
     using ll = long long;
     const int mod = 1e9 + 7;
 
+    /***
+     * 131. 分割回文串
+     * 
+    */
+    bool judge(string&s,int start,int end){
+        if(start==end)
+            return true;
+        else{
+            int i,j;
+            for(i=start,j=end;i<j&&s[i]==s[j];i++,j--);
+            if(i<j)
+                return false;
+            else    
+                return true;
+        }
+    }
+
+    void backtrack(string &s,int index,vector<vector<string>> &res,vector<string>&cur){
+
+        if(index==s.size()){
+            res.push_back(cur);
+            return;
+        }
+       
+
+        for(int i=index;i<s.size();i++){
+            if(judge(s,index,i)){
+                string temp=s.substr(index,i-index+1);
+               
+                cur.push_back(temp);
+                backtrack(s,i+1,res,cur);
+                cur.pop_back();
+            }
+        }
+    }
+
+    vector<vector<string>> partition(string s) {
+        vector<vector<string>> res;
+        vector<string> cur;
+        backtrack(s,0,res,cur);
+      
+        return res;
+    }
+
     /**
      * 151. 颠倒字符串中的单词
      * **/
@@ -782,14 +826,14 @@ public:
 typedef std::string AddressLines[4];  //每个人的地址有4行，每行是一个string.
 
 int main(){
-    vector<vector<char>> input={{'O','O'},{'O','O'}};
+  
     Solution slu;
-    slu.solve(input);
-    for(auto it:input){
-        for(auto im:it){
+    string input="aabcdcfgh";
+    vector<vector<string>>res=slu.partition(input);
+    for(auto it:res){
+        for(auto im:it)
             cout<<im<<" ";
-        }
         cout<<endl;
-    }  
+    }
     return 0;
 }
