@@ -30,7 +30,8 @@ class Solution {
         /*
         * 332. 重新安排行程
         */
-        bool backtrack(vector<vector<string>>& tickets,vector<string>&res,unordered_map<string,map<string,int>>&statistic){
+        bool backtrack(vector<vector<string>>& tickets,vector<string>&res,\
+        unordered_map<string,map<string,int>>&statistic){
         if(res.size()==tickets.size()+1){
             return true;
         }
