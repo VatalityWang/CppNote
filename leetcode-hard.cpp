@@ -32,35 +32,35 @@ class Solution {
         */
         bool backtrack(vector<vector<string>>& tickets,vector<string>&res,\
         unordered_map<string,map<string,int>>&statistic){
-        if(res.size()==tickets.size()+1){
-            return true;
-        }
-        for(auto &it:statistic[res.back()]){    
-            if(it.second){
-                it.second--;
-                res.push_back(it.first);
-                if(!backtrack(tickets,res,statistic)){
-                    res.pop_back();
-                    it.second++;
-                }
-                else
-                    return true;
+            if(res.size()==tickets.size()+1){
+                return true;
             }
+            for(auto &it:statistic[res.back()]){    
+                if(it.second){
+                    it.second--;
+                    res.push_back(it.first);
+                    if(!backtrack(tickets,res,statistic)){
+                        res.pop_back();
+                        it.second++;
+                    }
+                    else
+                        return true;
+                }
+            }
+            return false;
         }
-        return false;
-    }
 
 
-    vector<string> findItinerary(vector<vector<string>>& tickets) {
-        vector<string> res;
-        unordered_map<string,map<string,int>> statistic;
-        for(int i=0;i<tickets.size();i++){
-            statistic[tickets[i][0]][tickets[i][1]]++;
+        vector<string> findItinerary(vector<vector<string>>& tickets) {
+            vector<string> res;
+            unordered_map<string,map<string,int>> statistic;
+            for(int i=0;i<tickets.size();i++){
+                statistic[tickets[i][0]][tickets[i][1]]++;
+            }
+            res.push_back("JFK");
+            backtrack(tickets,res,statistic);
+            return res;
         }
-        res.push_back("JFK");
-        backtrack(tickets,res,statistic);
-        return res;
-    }
         /**
          * 115. 不同的子序列
          * **/
