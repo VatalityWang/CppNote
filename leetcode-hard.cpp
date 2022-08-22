@@ -28,6 +28,66 @@ class Solution {
     public:
 
         /*
+        * 51. N皇后
+        */
+        bool judge_place(int row,int column,vector<vector<int>>&exist){
+        //当前列是否能放置
+        bool c_place=true;
+        for(int i=0;i<exist.size();i++){
+           
+            if(exist[i][column]){
+                c_place=false;
+                break;
+            }
+        }
+        //正对角线
+        for(int i=row-1,j=column-1;i>=0&&j>=0;i--,j--){
+            if(exist[i][j]){
+               c_place=false;
+                break;
+            }
+        }
+        //负对角线
+        for(int i=row-1,j=column+1;i>=0&&j<exist.size();i--,j++){
+            if(exist[i][j]){
+                c_place=false;
+                break;
+            }
+        }
+        return c_place;
+    }
+
+
+    void backtrack(vector<vector<string>>&res,vector<string>&cur,int index,vector<vector<int>>&exist,int n){ //index表示处理到的当前行
+       
+        if(index==n){
+            res.push_back(cur);
+            return;
+        }
+        for(int i=0;i<n;i++){//遍历位于index行的各个列是否满足放置条件
+            if(judge_place(index,i,exist)){
+               exist[index][i]=1;
+               string cur_str(n,'.');
+               cur_str[i]='Q';
+               cur.push_back(cur_str);
+               backtrack(res,cur,index+1,exist,n);
+               cur.pop_back();
+               exist[index][i]=0;
+            }
+        }
+    }
+
+    vector<vector<string>> solveNQueens(int n) {
+        vector<vector<string>> res;
+        vector<string> cur;
+        vector<vector<int>> exist(n,vector<int>(n,0));
+       
+        backtrack(res,cur,0,exist,n);
+        return res;
+    }
+
+
+        /*
         * 332. 重新安排行程
         */
         bool backtrack(vector<vector<string>>& tickets,vector<string>&res,\
@@ -136,6 +196,8 @@ class Solution {
 };
 
 int main(){
+  
+    Solution slu;
+    vector<vector<string>> res=slu.solveNQueens(4);
     return 0;
-    printf("hello\n");
 }
