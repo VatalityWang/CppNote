@@ -28,6 +28,62 @@ class Solution {
     public:
 
         /*
+        * 37. 解数独
+        */
+       bool judge_can_insert(int i,int j,vector<vector<char>>& board,char cur){
+      
+        //判断各个9宫格的起始位置
+        int start_i=(i/3)*3;
+        int start_j=(j/3)*3;
+
+        for(int m=0;m<3;m++){
+            for(int n=0;n<3;n++){
+                if(board[start_i+m][start_j+n]==cur){
+                    return false;
+                }
+            }
+        }
+
+        //判断所在行
+        for(int m=0;m<9;m++){
+            if(board[i][m]==cur)
+                return false;
+        }
+
+        //判断所在列
+        for(int m=0;m<9;m++){
+            if(board[m][j]==cur)
+                return false;
+        }
+
+        return  true;
+
+    }
+
+    bool backtrack(vector<vector<char>>& board){
+        for(int i=0;i<9;i++)
+            for(int j=0;j<9;j++){
+                if(board[i][j]=='.'){
+                    for(char k='1';k<='9';k++){
+                        if(judge_can_insert(i,j,board,k)){
+                            board[i][j]=k;
+                            if(backtrack(board)) 
+                                return true;
+                            board[i][j]='.';
+                        }
+                    }
+                    return false;
+                }
+            }
+        return true;
+    }
+
+    void solveSudoku(vector<vector<char>>& board) {
+        backtrack(board);
+        return;
+    }
+
+        /*
         * 51. N皇后
         */
         bool judge_place(int row,int column,vector<vector<int>>&exist){
@@ -197,7 +253,8 @@ class Solution {
 
 int main(){
   
-    Solution slu;
-    vector<vector<string>> res=slu.solveNQueens(4);
+    //Solution slu;
+    //vector<vector<string>> res=slu.solveNQueens(4);
+    
     return 0;
 }
