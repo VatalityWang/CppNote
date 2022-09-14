@@ -96,6 +96,70 @@ public:
     using ll = long long;
     const int mod = 1e9 + 7;
 
+    /**
+     * 376. 摆动序列
+     * **/
+    int wiggleMaxLength(vector<int>& nums) {
+
+        int res=0;
+        int n=nums.size();
+
+        if(n==1)
+            return 1;
+        vector<int> cur;
+
+        //连续相同元素去重
+        cur.push_back(nums[0]);
+        for(int k=1;k<nums.size();k++){
+            if(nums[k]!=cur.back()){
+                cur.push_back(nums[k]);
+            }
+        }
+        if(cur.size()==1)
+            return 1;
+        
+        bool ascend=true;
+        int j;
+
+        //初始值
+        res++;
+        for(j=1;j<cur.size();j++){
+            if(cur[j]>cur[j-1]){
+                ascend=true;
+                break;
+            }
+            else if(cur[j]<cur[j-1]){
+                ascend=false;
+                break;
+            }
+            else    
+                continue;
+        }   
+        
+        for(int i=j+1;i<cur.size();i++){
+                if(cur[i]==cur[i-1])
+                    continue;
+                if(ascend){
+                    if(cur[i]>cur[i-1])
+                        continue;
+                    else{
+                        res++;
+                        ascend=false;
+                    }
+                }else{
+                    if(cur[i]<cur[i-1])
+                        continue;
+                    else{
+                        res++;
+                        ascend=true;
+                    }
+                }
+        }
+       
+        res++;//结束值
+        return res;
+    }
+
     /***
      * 131. 分割回文串
      * 
