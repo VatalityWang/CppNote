@@ -97,6 +97,47 @@ public:
     const int mod = 1e9 + 7;
 
     /**
+     * 165. 比较版本号
+     * 
+    */
+     void splitString(string delimiter,string str,vector<int>&string_split){
+        size_t pos=0;
+        while((pos=str.find(delimiter))!=string::npos){
+            string token=str.substr(0,pos);
+            string_split.push_back(stoi(token));
+            str.erase(0,pos+delimiter.length());
+        }
+        string_split.push_back(stoi(str));
+    }
+
+    int compareVersion(string version1, string version2) {
+       
+        vector<int> v1,v2;
+        splitString(".",version1,v1);
+        splitString(".",version2,v2);
+       
+        int maxlen=max(v1.size(),v2.size());
+
+        while(v1.size()!=maxlen)
+            v1.push_back(0);
+        while(v2.size()!=maxlen)
+            v2.push_back(0);
+      
+        for(int i=0,j=0;i<v1.size()&&j<v2.size();){
+            if(v1[i]==v2[j]){
+                i++,j++;
+            }else{
+                if(v1[i]>v2[j])
+                    return 1;
+                else if(v1[i]<v2[j])
+                    return -1;
+            }
+        }
+        
+        return 0;
+    }
+
+    /**
      * 376. 摆动序列
      * **/
     int wiggleMaxLength(vector<int>& nums) {
