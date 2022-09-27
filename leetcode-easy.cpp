@@ -62,6 +62,38 @@ class Solution {
 public:
 
     /**
+     * 860. 柠檬水找零
+     * **/
+     bool lemonadeChange(vector<int>& bills) {
+        map<int,int> statistic;
+        for(int i=0;i<bills.size();i++){
+            int leave=bills[i]-5;
+            if(leave==5){
+                statistic[10]++;
+                if(statistic[5]){
+                    statistic[5]--;
+                }
+                else    
+                    return false;
+            }else if(leave==15){
+                statistic[20]++;
+                if(statistic[5]&&statistic[10]){
+                    statistic[10]--;
+                    statistic[5]--;
+                }
+                else if(statistic[5]>=3){
+                    statistic[5]-=3;
+                }else{
+                    return false;
+                }    
+            }else if(leave==0){  
+                statistic[5]++;
+            }
+        }
+        return true;
+    }
+
+    /**
      * 2119. 反转两次的数字
      * **/
     bool isSameAfterReversals(int num) {
