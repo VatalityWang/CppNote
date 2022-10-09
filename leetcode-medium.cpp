@@ -97,6 +97,45 @@ public:
     const int mod = 1e9 + 7;
 
     /**
+     * 452. 用最少数量的箭引爆气球
+     * **/
+    static bool compare(vector<int> &lhs,vector<int> &rhs){
+        if(lhs[0]<rhs[0])
+            return true;
+        else if(lhs[0]==rhs[0]){
+            if(lhs[1]<rhs[1])
+                return true;
+            else
+                return false;
+        }
+        else
+            return false;
+    }
+
+
+    int findMinArrowShots(vector<vector<int>>& points) {
+        sort(points.begin(),points.end());
+       
+        int res=1;
+        int curMinRightBound=points[0][1];
+        for(int i=1;i<points.size();i++){
+            //判断两个区间关系
+            if(points[i][0]<=curMinRightBound&&curMinRightBound<=points[i][1]){//前一个区间右边界位于当前区间内部，二者有重叠但不包含
+                continue;
+            }
+            else if(curMinRightBound>points[i][1]){ //后一个区间位于前一个区间内部，包含,更新最右最小边界
+                curMinRightBound=points[i][1];
+            }else{
+                curMinRightBound=points[i][1];
+                res++;
+            }
+        }
+      
+        return res;
+    }
+
+
+    /**
      * 165. 比较版本号
      * 
     */
