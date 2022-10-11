@@ -24,8 +24,53 @@ using std::endl;
 using std::map;
 using std::string;
 using std::vector;
+
+
+ // Definition for a binary tree node.
+struct TreeNode {
+      int val;
+      TreeNode *left;
+      TreeNode *right;
+      TreeNode() : val(0), left(nullptr), right(nullptr) {}
+      TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+      TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
+ 
+
 class Solution {
     public:
+
+        /**
+         * 
+         * **/
+         //后序遍历，3种不同的返回状态：
+    //0: 无覆盖；1：有摄像头；2：有覆盖
+    int traverse(TreeNode*root,int &res){
+        if(root==nullptr) //空节点返回状态2
+            return 2;
+        int left=traverse(root->left,res);
+        int right=traverse(root->right,res);
+        // if(left==1||right==1)//左右结点至少有一个有摄像头，则父节点为有覆盖 
+        //  return 2;
+        
+        if(left==2&&right==2)//左右结点都为有覆盖，则父节点为无覆盖
+            return 0;
+        else if(left==0||right==0){//左右结点至少有一个为无覆盖，父节点安装摄像头
+            res++;
+            return 1;
+        }else
+            return 2;
+    }   
+
+
+    int minCameraCover(TreeNode* root) {
+        int res=0;
+        int rootRes=traverse(root,res);
+       
+        if(rootRes==0)
+            res++;
+        return res;
+    }
 
         /*
         * 37. 解数独
