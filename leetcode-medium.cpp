@@ -97,6 +97,32 @@ public:
     const int mod = 1e9 + 7;
 
     /**
+     * 513. 找树左下角的值
+     * 
+    */
+    int findBottomLeftValue(TreeNode* root) {
+        queue<TreeNode*> eles;
+        int lastLeft=0;
+        eles.push(root);
+        while(!eles.empty()){
+            int size=eles.size();
+            for(int i=0;i<size;i++){
+                TreeNode * front=eles.front();
+                if(i==0)
+                    lastLeft=front->val;
+                eles.pop();
+               
+                if(front->left)
+                    eles.push(front->left);
+                if(front->right)
+                    eles.push(front->right);
+            }
+        }
+        return lastLeft;
+    }
+
+
+    /**
      * 452. 用最少数量的箭引爆气球
      * **/
     static bool compare(vector<int> &lhs,vector<int> &rhs){
