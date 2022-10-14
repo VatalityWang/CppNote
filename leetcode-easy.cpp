@@ -62,6 +62,29 @@ class Solution {
 public:
 
     /**
+     * 530. 二叉搜索树的最小绝对差
+     * 
+    */
+    void traverse(TreeNode*root,vector<int>&eles){
+        if(!root)
+            return;
+        eles.push_back(root->val);
+        traverse(root->left,eles);
+        traverse(root->right,eles);
+    }
+
+    int getMinimumDifference(TreeNode* root) {
+        int res=INT_MAX;
+        vector<int>eles;
+        traverse(root,eles);
+        sort(eles.begin(),eles.end()); 
+        for(int i=1;i<eles.size();i++){
+            res=min(res,eles[i]-eles[i-1]);
+        }
+        return res;
+    }
+
+    /**
      * 860. 柠檬水找零
      * **/
      bool lemonadeChange(vector<int>& bills) {
