@@ -62,6 +62,38 @@ class Solution {
 public:
 
     /**
+     * 501. 二叉搜索树中的众数
+     * **/
+    static bool cmp(const pair<int,int>&left,const pair<int,int>&right){
+        return right.second<left.second;
+    }
+
+    void traverseTree(TreeNode*root,map<int,int>&eles){
+        if(!root)
+            return;
+        eles[root->val]++;
+        traverseTree(root->left,eles);
+        traverseTree(root->right,eles);
+    }
+
+    vector<int> findMode(TreeNode* root) {
+        vector<int> res;
+        map<int,int> eles;
+        traverseTree(root,eles);
+        vector<pair<int,int>> duplicated(eles.begin(),eles.end());
+        sort(duplicated.begin(),duplicated.end(),cmp);
+        
+        int max_count=duplicated[0].second;
+        res.push_back(duplicated[0].first);
+        for(int i=1;i<duplicated.size();i++){
+            if(duplicated[i].second==max_count){
+                res.push_back(duplicated[i].first);
+            }
+        }
+        return res;
+    }
+
+    /**
      * 530. 二叉搜索树的最小绝对差
      * 
     */
