@@ -97,6 +97,39 @@ public:
     const int mod = 1e9 + 7;
 
     /**
+     * 701. 二叉搜索树中的插入操作
+     * 
+     * **/
+    void traverse(TreeNode*root,int val,TreeNode*&lastRoot){
+        if(!root)
+            return;
+        if(val>root->val){
+            lastRoot=root;
+            traverse(root->right,val,lastRoot);
+        }else{
+            lastRoot=root;
+            traverse(root->left,val,lastRoot);
+        }
+      
+    }
+
+    TreeNode* insertIntoBST(TreeNode* root, int val) {
+        TreeNode*lastRoot=nullptr;
+        TreeNode * newNode=new TreeNode(val);
+        traverse(root,val,lastRoot);
+        if(lastRoot){
+            if(val>lastRoot->val){
+                lastRoot->right=newNode;
+            }else{
+                lastRoot->left=newNode;
+            }
+            return root;
+        }else{
+            return newNode;
+        }
+    }
+
+    /**
      * 513. 找树左下角的值
      * 
     */
