@@ -97,6 +97,38 @@ public:
     const int mod = 1e9 + 7;
 
     /**
+     * 1780. 判断一个数字是否可以表示成三的幂的和
+     * **/
+     bool checkPowersOfThree(int n) {
+        map<int,int> numDict;
+        for(int i=0;i<16;i++){
+           numDict.insert({i,int(pow(3,i))});
+        }
+        while(n>=numDict.begin()->second){
+            map<int,int>::iterator it=numDict.end();
+            it--;
+            while(it!=numDict.begin()){
+                if(n>=it->second){
+                   
+                    n-=it->second;
+                    numDict.erase(it->first);
+                    break;
+                }
+                it--;
+            }
+            if(it==numDict.begin()&&n>=it->second){
+               
+                n-=it->second;
+                numDict.erase(it->first);
+            }
+        }
+        if(n==0)
+            return true;
+        else
+            return false;
+    }
+
+    /**
      * 701. 二叉搜索树中的插入操作
      * 
      * **/
@@ -378,8 +410,7 @@ public:
      * **/
       int maxProfit(vector<int>& prices) {
         int n=prices.size();
-        vector<vector<int>> dp(n,vector<int>(2)); //dp[i][0]表示第i天持有股票的最大受益；\
-        dp[i][1]表示第i天不持有股票的最大受益.
+        vector<vector<int>> dp(n,vector<int>(2)); //dp[i][0]表示第i天持有股票的最大受益；dp[i][1]表示第i天不持有股票的最大受益.
         dp[0][0]=-prices[0];
         dp[0][1]=0;
         for(int i=1;i<prices.size();i++) {
@@ -1029,7 +1060,6 @@ public:
 typedef std::string AddressLines[4];  //每个人的地址有4行，每行是一个string.
 
 int main(){
-  
     Solution slu;
     string input="aabcdcfgh";
     vector<vector<string>>res=slu.partition(input);
