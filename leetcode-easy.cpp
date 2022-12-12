@@ -62,6 +62,22 @@ class Solution {
 public:
 
     /**
+     * 1832. 判断句子是否为全字母句
+     * **/
+     bool checkIfPangram(string sentence) {
+        vector<int> exists(26);
+        if(sentence.size()<26)
+            return false;
+        for(int i=0;i<sentence.size();i++){
+            exists[sentence[i]-'a']=1;
+        }
+        int sum=0;
+        for(auto it:exists)
+            sum+=it;
+        return sum==26;
+    }
+
+    /**
      * 501. 二叉搜索树中的众数
      * **/
     static bool cmp(const pair<int,int>&left,const pair<int,int>&right){
