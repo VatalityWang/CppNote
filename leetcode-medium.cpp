@@ -95,6 +95,107 @@ class Solution {
 public:
     using ll = long long;
     const int mod = 1e9 + 7;
+    /* 
+    * 457. 环形数组是否存在循环
+    */
+    void dfsMap(map<int, int>& indexMap, int curPos, vector<int>& visited, bool &res, int& pathLen, int start, vector<int> &nums)
+    {
+        if (indexMap[curPos] == curPos)
+            return;
+        if (visited[curPos] == 1 && pathLen >= 2 ) {
+         
+            if (curPos == start)
+                res = true;
+            return;
+        }
+       
+        visited[curPos] = 1;
+        pathLen += 1;
+        dfsMap(indexMap, indexMap[curPos], visited, res, pathLen, start, nums);
+    }
+
+    bool circularArrayLoop(vector<int>& nums) {
+        map<int, int> indexMap; //当前下标和目标下标的映射
+        vector<int> visited(nums.size(), 0); //记录当前下标是否已经遍历过
+        bool res = false;
+        for (int i = 0; i < nums.size(); i++) {
+            int len = nums[i] > 0 ? nums[i] : nums.size() - abs(nums[i]) % nums.size();
+            indexMap[i] = (len + i) % nums.size();
+        }
+
+        int pathLen = 0;
+        int flag = 0;
+        int j;
+
+        for (int i = 0; i < nums.size(); i++) {
+            pathLen = 0;
+            fill(visited.begin(), visited.end(), 0);
+            dfsMap(indexMap, i, visited, res, pathLen, i, nums);
+            /* 判断循环方向 */
+            if (res == true) {
+                if (nums[i] > 0)
+                    flag = 1;
+                else 
+                    flag = 0;
+                j = i;
+                while (indexMap[j] != i) {
+                    j = indexMap[j];
+                    if (nums[j] > 0 && flag == 0) {
+                        res = false;
+                        break;
+                    }
+                    if (nums[j] < 0 && flag == 1) {
+                        res = false;
+                        break;
+                    }
+                }
+
+                if (res == true)
+                    break;
+
+            }
+        }
+        return res;
+    }
+
+
+    /**
+     * 443. 压缩字符串
+    */
+   void writeChars(int& pos, vector<char>& chars, string curLen, char curChar) {
+        chars[pos++] = curChar;
+        int i = 0;
+        while (i < curLen.size()) {
+            chars[pos++] = curLen[i++];
+        }
+    }
+
+    int compress(vector<char>& chars) {
+       
+        int latter = 0;
+        char temp = chars[0];
+
+        int cur = 0;
+        int res = 0;
+        for ( ; latter < chars.size(); ) {
+            if (chars[latter] == temp) {
+                cur++;
+                latter++;
+            } else {
+                char tempChar = chars[latter];
+                string curLen = std::to_string(cur);
+                writeChars(res, chars, curLen, temp);
+                temp = tempChar;
+                cur = 1;
+                latter++;
+            }
+        }
+        if (cur) {
+            string curLen = std::to_string(cur);
+            writeChars(res, chars, curLen, temp);
+        }
+        return res;
+    }
 
     /**
      * 1780. 判断一个数字是否可以表示成三的幂的和
@@ -1061,12 +1162,10 @@ typedef std::string AddressLines[4];  //每个人的地址有4行，每行是一
 
 int main(){
     Solution slu;
-    string input="aabcdcfgh";
-    vector<vector<string>>res=slu.partition(input);
-    for(auto it:res){
-        for(auto im:it)
-            cout<<im<<" ";
-        cout<<endl;
-    }
+    vector<char> input = {'a', 'b', 'b', 'b', 'b','b','b','b','b','b','b','b','b'};
+    int res=slu.compress(input);
+    for (int i = 0; i < input.size(); i++)
+        cout << input[i] << " ";
+    cout << endl;
     return 0;
 }
